@@ -6,6 +6,7 @@ export class Configuration {
   public plaidSecret?: string;
   public tellerApplicationId?: string;
   public tellerCertificate?: string;
+  public tellerPrivateKey?: string;
   public tellerTokenSigningKey?: string;
   public mxClientId?: string;
   public mxApiKey?: string;
@@ -18,6 +19,7 @@ export class Configuration {
     plaidSecret?: string,
     tellerApplicationId?: string,
     tellerCertificate?: string,
+    tellerPrivateKey?: string,
     tellerTokenSigningKey?: string,
     mxClientId?: string,
     mxApiKey?: string
@@ -29,6 +31,7 @@ export class Configuration {
     this.plaidSecret = plaidSecret;
     this.tellerApplicationId = tellerApplicationId;
     this.tellerCertificate = tellerCertificate;
+    this.tellerPrivateKey = tellerPrivateKey;
     this.tellerTokenSigningKey = tellerTokenSigningKey;
     this.mxClientId = mxClientId;
     this.mxApiKey = mxApiKey;

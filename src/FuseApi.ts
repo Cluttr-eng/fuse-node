@@ -189,6 +189,7 @@ export class FuseApi {
       "plaid-secret": this.configuration.plaidSecret,
       "teller-application-id": this.configuration.tellerApplicationId,
       "teller-certificate": this.configuration.tellerCertificate,
+      "teller-private-key": this.configuration.tellerPrivateKey,
       "mx-client-id": this.configuration.mxClientId,
       "mx-api-key": this.configuration.mxApiKey,
     };
