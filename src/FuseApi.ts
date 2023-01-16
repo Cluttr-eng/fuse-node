@@ -75,6 +75,108 @@ export interface ExchangeSessionPublicTokenResponse {
   request_id: string;
 }
 
+export interface GetFinancialConnectionsBalanceRequest {
+  access_token: string;
+}
+
+export interface FinancialConnectionsAccountBalance {
+  remote_account_id: string;
+  available: number; // Factoring in pending balance
+  current: number; // Without factoring in pending balance
+  iso_currency_code: string;
+}
+
+export interface GetFinancialConnectionsAccountBalanceResponse {
+  balances: FinancialConnectionsAccountBalance[];
+  remote_data: {
+    path: string;
+    data: any;
+  }[];
+}
+
+
+export interface GetFinancialConnectionsAccountsDetailsRequest {
+  access_token: string;
+}
+
+
+export interface FinancialConnectionsAccountDetails {
+  remote_id: string;
+  ach: {
+    account: string;
+    routing?: string;
+    wire_routing?: string;
+    bacs_routing?: string;
+  };
+}
+
+export interface GetFinancialConnectionsAccountDetailsResponse {
+  account_details: FinancialConnectionsAccountDetails[];
+  remote_data: {
+    path?: string;
+    data: any;
+  }[];
+}
+
+
+export interface GetFinancialConnectionsAccountsRequest {
+  access_token: string;
+}
+
+export interface FinancialConnectionsAccount {
+  remote_id: string;
+  institution: {
+    name: string;
+  };
+  last_four: string;
+  name: string;
+  subtype: string;
+  type: string;
+}
+
+export interface GetFinancialConnectionsAccountsResponse {
+  accounts: FinancialConnectionsAccount[];
+  remote_data: {
+    path?: string;
+    data: any;
+  }[];
+}
+
+
+export interface GetFinancialConnectionsTransactionsRequest {
+  access_token: string;
+  cursor?: string;
+  count?: number;
+}
+
+export interface FinancialConnectionsTransaction {
+  remote_id: string;
+  remote_account_id: string;
+  amount: number;
+  date: string;
+  description: string;
+  category: string[];
+  merchant: {
+    name: string;
+  };
+  status: string;
+  type: string;
+}
+
+export interface GetFinancialConnectionsTransactionsResponse {
+  transactions: FinancialConnectionsTransaction[];
+  pagination: {
+    next_cursor: string;
+    has_more: boolean;
+  };
+  remote_data: {
+    path?: string;
+    data: any;
+  }[];
+}
+
+
+
 export class FuseApi {
   private configuration: Configuration;
   private headers: any;
@@ -233,4 +335,54 @@ export class FuseApi {
       Buffer.from(dataHmac)
     );
   };
+
+  public getFinancialConnectionsBalance = async (
+      getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsAccountBalanceResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/balance",
+        getFinancialConnectionsBalanceRequest,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+  public getFinancialConnectionsAccountDetails = async (
+      getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountsDetailsRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsAccountDetailsResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/accounts/details",
+        getFinancialConnectionsAccountDetailsRequest,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+  public getFinancialConnectionsAccounts = async (
+      getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsAccountsResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/accounts",
+        getFinancialConnectionsAccountsRequest,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+  public getFinancialConnectionsTransactions = async (
+      getFinancialConnectionsTransactions: GetFinancialConnectionsTransactionsRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsTransactionsResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/transactions",
+        getFinancialConnectionsTransactions,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+
 }
