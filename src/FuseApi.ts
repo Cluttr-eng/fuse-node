@@ -16,8 +16,8 @@ export enum Aggregator {
 
 export interface UnifiedWebhook {
   webhook_type: "TRANSACTIONS";
-  webhook_code: "UPDATES_AVAILABLE";
-  connection_id: string;
+  webhook_code: 'HISTORY_AVAILABLE' | 'UPDATES_AVAILABLE';
+  financial_connection_id: string;
   environment: "SANDBOX" | "PRODUCTION";
   aggregator: Aggregator;
   remote_data: any;
@@ -25,7 +25,7 @@ export interface UnifiedWebhook {
 
 export interface CreateSessionRequest {
   phone_number?: string;
-  template_id: "BankLinking" | "KycAndBankLinking";
+  template_id: "BankLinking";
   supported_financial_institution_aggregators: ("PLAID" | "TELLER" | "MX")[];
   plaid?: {
     products: string[];
@@ -71,7 +71,7 @@ export interface ExchangeSessionPublicTokenRequest {
 
 export interface ExchangeSessionPublicTokenResponse {
   access_token: string;
-  connection_id: string;
+  financial_connection_id: string;
   request_id: string;
 }
 
