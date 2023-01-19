@@ -12,26 +12,38 @@ export enum Aggregator {
   PLAID = "plaid",
   TELLER = "teller",
   MX = "mx",
+  FUSE = "fuse"
 }
 
 export interface UnifiedWebhook {
-  webhook_type: "TRANSACTIONS";
-  webhook_code: "UPDATES_AVAILABLE";
-  connection_id: string;
+  webhook_type: string;
+  webhook_code: string;
+  financial_connection_id: string;
+  environment: "SANDBOX" | "PRODUCTION";
+  aggregator: Aggregator;
+  remote_data: any;
+}
+export interface UnifiedSyncRequiredWebhook {
+  webhook_type: "SYNC_REQUIRED";
+  webhook_code: 'TRANSACTIONS';
+  financial_connection_id: string;
   environment: "SANDBOX" | "PRODUCTION";
   aggregator: Aggregator;
   remote_data: any;
 }
 
+export interface UnifiedTransactionWebhook {
+  webhook_type: "TRANSACTIONS";
+  webhook_code: 'UPDATES_AVAILABLE';
+  financial_connection_id: string;
+  environment: "SANDBOX" | "PRODUCTION";
+  aggregator: Aggregator.FUSE;
+}
+
 export interface CreateSessionRequest {
-  phone_number?: string;
-  template_id: "BankLinking" | "KycAndBankLinking";
   supported_financial_institution_aggregators: ("PLAID" | "TELLER" | "MX")[];
   plaid?: {
     products: string[];
-  };
-  teller?: {
-    capabilities: string[];
   };
   mx?: {
     supports_account_identification: boolean;
@@ -71,7 +83,7 @@ export interface ExchangeSessionPublicTokenRequest {
 
 export interface ExchangeSessionPublicTokenResponse {
   access_token: string;
-  connection_id: string;
+  financial_connection_id: string;
   request_id: string;
 }
 
@@ -203,8 +215,8 @@ export class FuseApi {
   constructor(configuration: Configuration) {
     this.configuration = configuration;
     this.headers = {
-      "x-api-key": this.configuration.apiKey,
-      "x-client-id": this.configuration.clientId,
+      "fuse-api-key": this.configuration.fuseApiKey,
+      "fuse-client-id": this.configuration.fuseClientId,
       "plaid-client-id": this.configuration.plaidClientId,
       "plaid-secret": this.configuration.plaidSecret,
       "teller-application-id": this.configuration.tellerApplicationId,
@@ -259,7 +271,7 @@ export class FuseApi {
   ): Promise<boolean> => {
     const fuseVerificationHeader = getHeaderValue(
       headers,
-      "X-Fuse-Verification"
+      "fuse-verification"
     );
     if (unifiedWebhook.aggregator === Aggregator.PLAID) {
       const plaidVerificationHeader = fuseVerificationHeader;
@@ -314,10 +326,10 @@ export class FuseApi {
         signedMessage
       );
       return crypto.timingSafeEqual(Buffer.from(v1Value), Buffer.from(hmac));
-    } else if (unifiedWebhook.aggregator === Aggregator.MX) {
+    } else if (unifiedWebhook.aggregator === Aggregator.MX || unifiedWebhook.aggregator === Aggregator.FUSE) {
       try {
         return this.requestIsFromFuse(
-          this.configuration.apiKey,
+          this.configuration.fuseApiKey,
           unifiedWebhook,
           fuseVerificationHeader
         );
