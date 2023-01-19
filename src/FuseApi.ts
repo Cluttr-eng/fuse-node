@@ -149,6 +149,22 @@ export interface GetFinancialConnectionsTransactionsRequest {
   count?: number;
 }
 
+export interface TransactionCommonModel {
+  id: string;
+  remote_id: string;
+  remote_account_id: string;
+  amount: number;
+  date: string;
+  description: string;
+  category: string[];
+  merchant: {
+    name: string;
+  };
+  status: string;
+  type: string;
+  remote_data: any;
+}
+
 export interface FinancialConnectionsTransaction {
   remote_id: string;
   remote_account_id: string;
@@ -163,16 +179,20 @@ export interface FinancialConnectionsTransaction {
   type: string;
 }
 
-export interface GetFinancialConnectionsTransactionsResponse {
-  transactions: FinancialConnectionsTransaction[];
-  pagination: {
-    next_cursor: string;
-    has_more: boolean;
-  };
-  remote_data: {
-    path?: string;
-    data: any;
-  }[];
+
+export interface PaginationResponse<T> {
+  /**
+   * An array of the data returned for the current page.
+   */
+  data: T[];
+  /**
+   * The cursor of the last item returned.
+   */
+  cursor?: string | undefined | null;
+  /**
+   * Indicates if there's more pages to navigate through
+   */
+  has_next: boolean;
 }
 
 
@@ -375,7 +395,7 @@ export class FuseApi {
 
   public getFinancialConnectionsTransactions = async (
       getFinancialConnectionsTransactions: GetFinancialConnectionsTransactionsRequest
-  ): Promise<AxiosResponse<GetFinancialConnectionsTransactionsResponse>> => {
+  ): Promise<AxiosResponse<PaginationResponse<TransactionCommonModel>>> => {
     return await axios.post(
         this.configuration.basePath + "/financial_connections/transactions",
         getFinancialConnectionsTransactions,
