@@ -13,7 +13,7 @@ npm install fuse-node
 ## Quick start
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
-### Initialising Fuse Api
+### Initialising the Fuse Api
 ```typescript
 import {Environment, FuseApi} from "fuse-node";
 
