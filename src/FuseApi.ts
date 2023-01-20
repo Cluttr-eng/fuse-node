@@ -41,10 +41,20 @@ export interface UnifiedTransactionWebhook {
 }
 
 export interface CreateSessionRequest {
+  /**
+   * A string array of aggregators you would like to include
+   */
   supported_financial_institution_aggregators: ("PLAID" | "TELLER" | "MX")[];
+  /**
+   * If PLAID is in the supported list above, this is required.
+   * For a comprehensive list of supported plaid products, see https://plaid.com/docs/api/tokens/#link-token-create-request-products
+   */
   plaid?: {
     products: string[];
   };
+  /**
+   * See https://docs.mx.com/api#core_resources_institutions_list_institutions for more details
+   */
   mx?: {
     supports_account_identification: boolean;
     supports_account_statement: boolean;
@@ -54,36 +64,83 @@ export interface CreateSessionRequest {
 }
 
 export interface CreateSessionResponse {
+  /**
+   * The secret associated with the newly created session. This value is need to initialise the Fuse SDK.
+   */
   client_secret: string;
+  /**
+   * 4 hours from the point of creation.
+   */
   expiration: string;
+  /**
+   * Used for debugging
+   */
   request_id: string;
 }
 
 export interface CreateSessionLinkTokenRequest {
+  /**
+   * The institutionId received from the "onSelectedInstitution()" callback from the Fuse SDK.
+   */
   institution_id: string;
+  /**
+   * The session client secret retrieved when creating the session
+   */
   session_client_secret: string;
+  /**
+   * An id unique for a user in your application
+   */
   user_id: string;
+  /**
+   * The url where we should send webhooks to.
+   * Pass in if you would like to receive real time updates.
+   */
   webhook_url?: string;
+  /**
+   * 'config' follows the same schema as https://plaid.com/docs/api/tokens/#linktokencreate
+   */
   plaid?: {
     config: any;
   };
+  /**
+   * 'config' follows the same schema as https://docs.mx.com/api#connect_request_a_url
+   */
   mx?: {
     config: any;
   };
 }
 
 export interface CreateSessionLinkTokenResponse {
+  /**
+   * The link token required by the Fuse SDK callback
+   */
   link_token: string;
+  /**
+   * Used for debugging
+   */
   request_id: string;
 }
 
 export interface ExchangeSessionPublicTokenRequest {
+  /**
+   * The public token received from the "onSuccess()" callback in the Fuse SDK.
+   */
   public_token: string;
 }
 
 export interface ExchangeSessionPublicTokenResponse {
+  /**
+   * The access token is needed to query the users resources for the new connection.
+   */
   access_token: string;
+  /**
+   * The id of the new connection.
+   * The financial connection id is used to identify a financial connection in a webhook.
+   */
   financial_connection_id: string;
+  /**
+   * Used for debugging
+   */
   request_id: string;
 }
 
@@ -228,9 +285,9 @@ export class FuseApi {
   }
 
   /**
-   * This creates a session which stores information about the process of a user connecting a new financial institution.
-   * @param createSessionRequest Details about the financial institution aggregators that are supported.
-   * @returns A {@link CreateSessionResponse} containing a client_secret, expiration and request_id. This client_secret will be used to configure the SDK on the front-end.
+   * This creates a session. A session stores information about the process of a user connecting a new financial institution.
+   * @param createSessionRequest
+   * @returns A {@link CreateSessionResponse}
    */
   public createSession = async (
     createSessionRequest: CreateSessionRequest
@@ -247,7 +304,7 @@ export class FuseApi {
   /**
    * This creates a session link token which is needed to start the process of a user connecting to a specific financial institution.
    * @param createSessionLinkTokenRequest
-   * @returns A {@link CreateSessionLinkTokenResponse} containing the link_token and request_id.
+   * @returns A {@link CreateSessionLinkTokenResponse}
    */
   public createSessionLinkToken = async (
     createSessionLinkTokenRequest: CreateSessionLinkTokenRequest
@@ -266,7 +323,7 @@ export class FuseApi {
    * You can then use this access token to retrieve information for that user.
    * You need the financial connection id for listening for webhooks. Every webhook contains the financial connection id. This is how you identify the corresponding financial connection given a webhook event.
    * @param exchangeSessionPublicTokenRequest
-   * @returns An {@link ExchangeSessionPublicTokenResponse} containing the access_token, financial_connection_id and request_id.
+   * @returns An {@link ExchangeSessionPublicTokenResponse}
    */
   public exchangeSessionPublicToken = async (
     exchangeSessionPublicTokenRequest: ExchangeSessionPublicTokenRequest
@@ -284,7 +341,7 @@ export class FuseApi {
 
   /**
    * Verify the authenticity of a webhook.
-   * @param unifiedWebhook The received webhook
+   * @param unifiedWebhook
    * @param requestHeaders The request headers of the received webhook
    * @returns A {@link boolean} that is true/false depending on whether the webhook was verified.
    */
