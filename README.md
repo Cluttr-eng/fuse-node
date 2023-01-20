@@ -103,3 +103,86 @@ app.post("/webhook", async (req: any, response: any) => {
     }
 });
 ```
+
+### Getting transactions
+```typescript
+const response = await fuseApi.getFinancialConnectionsTransactions({
+    access_token: "my-access-token",
+    cursor: "my-cursor",
+    count: 200
+} as GetFinancialConnectionsTransactionsRequest);
+
+const responseData = response.data as PaginationResponse<TransactionCommonModel>;
+
+console.log(responseData.data[0].id);
+```
+<br/>
+
+### Getting balances
+```typescript
+const response = await fuseApi.getFinancialConnectionsBalances({
+    access_token: "my-access-token"
+} as GetFinancialConnectionsBalancesRequest);
+
+const responseData = response.data as GetFinancialConnectionsBalancesResponse;
+
+console.log(responseData.balances[0].current);
+```
+<br/>
+
+### Getting accounts
+```typescript
+const response = await fuseApi.getFinancialConnectionsAccounts({
+    access_token: "my-access-token"
+} as GetFinancialConnectionsAccountsRequest);
+
+const responseData = response.data as GetFinancialConnectionsAccountsResponse;
+
+console.log(responseData.accounts[0].name);
+```
+<br/>
+
+### Getting account details
+```typescript
+const response = await fuseApi.getFinancialConnectionsAccountDetails({
+    access_token: "my-access-token"
+} as GetFinancialConnectionsAccountsDetailsRequest);
+
+const responseData = response.data as GetFinancialConnectionsAccountDetailsResponse;
+
+console.log(responseData.account_details[0].remote_id);
+```
+<br/>
+
+### Sync transactions
+```typescript
+const response = await fuseApi.syncFinancialConnectionsTransactions({
+    access_token: "my-access-token",
+    cursor: "my-cursor",
+    count: 200
+} as SyncTransactionsRequest);
+
+const responseData = response.data as SyncTransactionsResponse;
+
+console.log(responseData.added.length);
+```
+<br/>
+
+### Sync financial connections data
+```typescript
+const response = await fuseApi.syncFinancialConnectionsData({
+    webhook_data: {
+        webhook_type: "SYNC_REQUIRED",
+        webhook_code: 'TRANSACTIONS',
+        financial_connection_id: "the-financial-connection-id",
+        environment: "PRODUCTION",
+        aggregator: "plaid",
+        remote_data: {}
+    }
+} as SyncFinancialConnectionsDataRequest);
+
+const responseData = response.data as SyncFinancialConnectionsDataResponse;
+
+console.log(responseData.message);
+```
+<br/>

@@ -144,71 +144,125 @@ export interface ExchangeSessionPublicTokenResponse {
   request_id: string;
 }
 
-export interface GetFinancialConnectionsBalanceRequest {
+export interface GetFinancialConnectionsBalancesRequest {
+  /**
+   * Access token for authentication
+   */
   access_token: string;
 }
 
-export interface FinancialConnectionsAccountBalance {
+export interface FinancialConnectionsBalance {
+  /**
+   * Remote Account Id of the transaction, ie Plaid Account Id
+   */
   remote_account_id: string;
-  available: number; // Factoring in pending balance
-  current: number; // Without factoring in pending balance
+  /**
+   * Amount after factoring in pending balances
+   */
+  available: number;
+  /**
+   * Amount without factoring in pending balances
+   */
+  current: number;
+  /**
+   * The ISO-4217 currency code of the balance.
+   */
   iso_currency_code: string;
+  /**
+   * The exact data from the aggregator (ie plaid) that we retrieved the information from
+   */
+  remote_data: any;
 }
 
-export interface GetFinancialConnectionsAccountBalanceResponse {
-  balances: FinancialConnectionsAccountBalance[];
-  remote_data: {
-    path: string;
-    data: any;
-  }[];
+export interface GetFinancialConnectionsBalancesResponse {
+  /**
+   * List of the users balances
+   */
+  balances: FinancialConnectionsBalance[];
 }
 
 
 export interface GetFinancialConnectionsAccountsDetailsRequest {
+  /**
+   * Access token for authentication
+   */
   access_token: string;
 }
 
 
 export interface FinancialConnectionsAccountDetails {
+  /**
+   * Remote Id of the account, ie Plaid or Teller account id
+   */
   remote_id: string;
+  /**
+   * ACH details
+   */
   ach: {
     account: string;
     routing?: string;
     wire_routing?: string;
     bacs_routing?: string;
   };
+  /**
+   * The exact data from the aggregator (ie plaid) that we retrieved the information from
+   */
+  remote_data: any;
 }
 
 export interface GetFinancialConnectionsAccountDetailsResponse {
+  /**
+   * List of account details
+   */
   account_details: FinancialConnectionsAccountDetails[];
-  remote_data: {
-    path?: string;
-    data: any;
-  }[];
 }
 
 
 export interface GetFinancialConnectionsAccountsRequest {
+  /**
+   * Access token for authentication
+   */
   access_token: string;
 }
 
 export interface FinancialConnectionsAccount {
+  /**
+   * Remote Id of the account, ie Plaid or Teller account id
+   */
   remote_id: string;
+  /**
+   * Institution details
+   */
   institution: {
     name: string;
   };
+  /**
+   * The last four digits of the account number.
+   */
   last_four: string;
+  /**
+   * The account's name, ie 'My Checking'
+   */
   name: string;
-  subtype: string;
+  /**
+   * The account's type e.g depository.
+   */
   type: string;
+  /**
+   * The account's subtype e.g checking
+   */
+  subtype: string;
+  /**
+   * The exact data from the aggregator (ie plaid) that we retrieved the information from
+   */
+  remote_data: any;
 }
 
 export interface GetFinancialConnectionsAccountsResponse {
+  /**
+   * List of accounts
+   */
   accounts: FinancialConnectionsAccount[];
-  remote_data: {
-    path?: string;
-    data: any;
-  }[];
 }
 
 
@@ -276,7 +330,6 @@ export interface TransactionCommonModel {
   remote_data: any;
 }
 
-
 export interface PaginationResponse<T> {
   /**
    * An array of the data returned for the current page.
@@ -287,11 +340,65 @@ export interface PaginationResponse<T> {
    */
   cursor?: string | undefined | null;
   /**
-   * Indicates if there's more pages to navigate through
+   * Indicates if there are more pages to navigate through
    */
   has_next: boolean;
 }
 
+export interface SyncTransactionsRequest {
+  /**
+   * The access token of the financial institution connection
+   */
+  access_token: string;
+  /**
+   * The cursor value represents the last update requested. Providing it will cause the response to only return changes after this update.
+   * If omitted, the entire history of updates will be returned, starting with the first-added transactions on the item.
+   */
+  cursor?: string;
+  /**
+   * The number of transaction updates to fetch.
+   */
+  count?: number;
+}
+
+export interface SyncTransactionsResponse {
+  /**
+   * Transactions that have been added to the item since `cursor` ordered by ascending last modified time.
+   */
+  added: Array<TransactionCommonModel>;
+  /**
+   * Transactions that have been modified on the item since `cursor` ordered by ascending last modified time.
+   */
+  modified: Array<TransactionCommonModel>;
+  /**
+   * Transactions that have been removed from the item since `cursor` ordered by ascending last modified time.
+   */
+  removed: Array<{
+    transaction_id: string
+  }>;
+  /**
+   * Cursor used for fetching any future updates after the latest update provided in this response. The cursor obtained after all pages have been pulled (indicated by `has_more` being `false`) will be valid for at least 1 year. This cursor should be persisted for later calls.
+   */
+  next_cursor: string;
+  /**
+   * Represents if more than requested count of transaction updates exist. If true, the additional updates can be fetched by making an additional request with `cursor` set to `next_cursor`. If `has_more` is true, it's important to pull all available pages, to make it less likely for underlying data changes to conflict with pagination.
+   */
+  has_next: boolean;
+}
+
+export interface SyncFinancialConnectionsDataRequest {
+  /**
+   * The sync webhook received
+   */
+  webhook_data: UnifiedSyncRequiredWebhook
+}
+
+export interface SyncFinancialConnectionsDataResponse {
+  /**
+   * Response mssage
+   */
+  message: string
+}
 
 
 export class FuseApi {
@@ -477,9 +584,14 @@ export class FuseApi {
     );
   };
 
-  public getFinancialConnectionsBalance = async (
-      getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest
-  ): Promise<AxiosResponse<GetFinancialConnectionsAccountBalanceResponse>> => {
+  /**
+   * Get a list of balances associated with the access token
+   * @param getFinancialConnectionsBalanceRequest
+   * @returns GetFinancialConnectionsBalanceResponse
+   */
+  public getFinancialConnectionsBalances = async (
+      getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalancesRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsBalancesResponse>> => {
     return await axios.post(
         this.configuration.basePath + "/financial_connections/balance",
         getFinancialConnectionsBalanceRequest,
@@ -489,6 +601,11 @@ export class FuseApi {
     );
   };
 
+  /**
+   * Get a list of account details associated with the access token
+   * @param getFinancialConnectionsAccountDetailsRequest
+   * @returns GetFinancialConnectionsAccountDetailsResponse
+   */
   public getFinancialConnectionsAccountDetails = async (
       getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountsDetailsRequest
   ): Promise<AxiosResponse<GetFinancialConnectionsAccountDetailsResponse>> => {
@@ -501,6 +618,11 @@ export class FuseApi {
     );
   };
 
+  /**
+   * Get a list of accounts associated with the access token
+   * @param getFinancialConnectionsAccountsRequest
+   * @returns GetFinancialConnectionsAccountsResponse
+   */
   public getFinancialConnectionsAccounts = async (
       getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest
   ): Promise<AxiosResponse<GetFinancialConnectionsAccountsResponse>> => {
@@ -513,12 +635,68 @@ export class FuseApi {
     );
   };
 
+  /**
+   * Get a list of accounts associated with the access token
+   * @param getFinancialConnectionsAccountsRequest
+   * @returns GetFinancialConnectionsAccountsResponse
+   */
+  public getFinancialConnectionsAccountOwner = async (
+      getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsAccountsResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/accounts",
+        getFinancialConnectionsAccountsRequest,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+  /**
+   * Get a list of transactions associated with the access token
+   * @param getFinancialConnectionsTransactions
+   * @returns TransactionCommonModel
+   */
   public getFinancialConnectionsTransactions = async (
       getFinancialConnectionsTransactions: GetFinancialConnectionsTransactionsRequest
   ): Promise<AxiosResponse<PaginationResponse<TransactionCommonModel>>> => {
     return await axios.post(
         this.configuration.basePath + "/financial_connections/transactions",
         getFinancialConnectionsTransactions,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+  /**
+   * Sync the transactions associated with the access token
+   * @param syncTransactionsRequest
+   * @returns SyncTransactionsResponse
+   */
+  public syncFinancialConnectionsTransactions = async (
+      syncTransactionsRequest: SyncTransactionsRequest
+  ): Promise<AxiosResponse<SyncTransactionsResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/transactions/sync",
+        syncTransactionsRequest,
+        {
+          headers: this.headers,
+        },
+    );
+  };
+
+  /**
+   * Syncs the financial connection data for an access token. Required to keep data up to date.
+   * @param syncFinancialConnectionsDataRequest
+   * @returns SyncFinancialConnectionsDataResponse
+   */
+  public syncFinancialConnectionsData = async (
+      syncFinancialConnectionsDataRequest: SyncFinancialConnectionsDataRequest
+  ): Promise<AxiosResponse<SyncFinancialConnectionsDataResponse>> => {
+    return await axios.post(
+        this.configuration.basePath + "/financial_connections/sync",
+        syncFinancialConnectionsDataRequest,
         {
           headers: this.headers,
         },
