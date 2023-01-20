@@ -3,9 +3,9 @@
 The Fuse library provides convenient access to the Fuse REST API. It includes TypeScript definitions for all request params and response fields. It is intended to be used on the server.
 
 ## Documentation
-The API documentation can be found [here]("https://letsfuse.readme.io/reference/post_v1-session-create").
-<h2>Installation</h2>
+The API documentation can be found [here](https://letsfuse.readme.io/reference/post_v1-session-create).
 
+## Installation
 ```
 npm install fuse-node
 ```
@@ -13,7 +13,7 @@ npm install fuse-node
 ## Quick start
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
-### Initialising Fuse Api
+### Initialising the Fuse Api
 ```typescript
 import {Environment, FuseApi} from "fuse-node";
 
