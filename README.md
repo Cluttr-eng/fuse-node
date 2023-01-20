@@ -4,8 +4,8 @@ The Fuse library provides convenient access to the Fuse REST API. It includes Ty
 
 ## Documentation
 The API documentation can be found [here]("https://letsfuse.readme.io/reference/post_v1-session-create").
-<h2>Installation</h2>
 
+## Installation
 ```
 npm install fuse-node
 ```
