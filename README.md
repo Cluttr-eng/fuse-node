@@ -142,6 +142,18 @@ console.log(responseData.accounts[0].name);
 ```
 <br/>
 
+### Getting financial connections owners
+```typescript
+const response = await fuseApi.getFinancialConnectionsOwners({
+    access_token: "my-access-token"
+} as GetFinancialConnectionsOwnersRequest);
+
+const responseData = response.data as GetFinancialConnectionsOwnersResponse;
+
+console.log(responseData.owners[0].names[0]);
+```
+<br/>
+
 ### Getting account details
 ```typescript
 const response = await fuseApi.getFinancialConnectionsAccountDetails({

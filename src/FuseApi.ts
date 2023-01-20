@@ -265,6 +265,88 @@ export interface GetFinancialConnectionsAccountsResponse {
   accounts: FinancialConnectionsAccount[];
 }
 
+export interface GetFinancialConnectionsOwnersRequest {
+  /**
+   * Access token for authentication
+   */
+  access_token: string;
+}
+
+interface AccountOwners {
+  /**
+   * Array of Address objects
+   */
+  addresses: Address[];
+  /**
+   * Array of Email objects
+   */
+  emails: Email[];
+  /**
+   * Array of names
+   */
+  names: string[]; // array of names
+  /**
+   * Array of PhoneNumber objects
+   */
+  phone_numbers: PhoneNumber[];
+}
+interface Address {
+  data: {
+    city: string;
+    country: string;
+    postal_code: string;
+    region: string;
+    street: string;
+  };
+  /**
+   * Indicating if it is the primary address
+   */
+  primary: boolean;
+}
+interface Email {
+  /**
+   * Email address
+   */
+  data: string; // email address
+  /**
+   * Indicating if it is the primary email
+   */
+  primary: boolean;
+  /**
+   * Type of the email
+   */
+  type: "primary" | "secondary" | "other";
+}
+interface PhoneNumber {
+  /**
+   * The phone number
+   */
+  data: string;
+  /**
+   * Indicating if it is the primary phone number
+   */
+  primary: boolean;
+  /**
+   * Type of the phone number
+   */
+  type: "home" | "work" | "mobile";
+}
+
+export interface GetFinancialConnectionsOwnersResponse {
+  /**
+   * Access token for authentication
+   */
+  owners: AccountOwners[];
+}
+
+
+
+export interface GetFinancialConnectionsAccountsResponse {
+  /**
+   * List of accounts
+   */
+  accounts: FinancialConnectionsAccount[];
+}
 
 export interface GetFinancialConnectionsTransactionsRequest {
   /**
@@ -636,16 +718,16 @@ export class FuseApi {
   };
 
   /**
-   * Get a list of accounts associated with the access token
-   * @param getFinancialConnectionsAccountsRequest
-   * @returns GetFinancialConnectionsAccountsResponse
+   * Get a list of owners for the financial connection
+   * @param getFinancialConnectionsOwnersRequest
+   * @returns GetFinancialConnectionsOwnersResponse
    */
-  public getFinancialConnectionsAccountOwner = async (
-      getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest
-  ): Promise<AxiosResponse<GetFinancialConnectionsAccountsResponse>> => {
+  public getFinancialConnectionsOwners = async (
+      getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest
+  ): Promise<AxiosResponse<GetFinancialConnectionsOwnersResponse>> => {
     return await axios.post(
-        this.configuration.basePath + "/financial_connections/accounts",
-        getFinancialConnectionsAccountsRequest,
+        this.configuration.basePath + "/financial_connections/owners",
+        getFinancialConnectionsOwnersRequest,
         {
           headers: this.headers,
         },
