@@ -227,6 +227,11 @@ export class FuseApi {
     };
   }
 
+  /**
+   * This creates a session which stores information about the process of a user connecting a new financial institution.
+   * @param createSessionRequest Details about the financial institution aggregators that are supported.
+   * @returns A {@link CreateSessionResponse} containing a client_secret, expiration and request_id. This client_secret will be used to configure the SDK on the front-end.
+   */
   public createSession = async (
     createSessionRequest: CreateSessionRequest
   ): Promise<AxiosResponse<CreateSessionResponse>> => {
@@ -239,6 +244,11 @@ export class FuseApi {
     );
   };
 
+  /**
+   * This creates a session link token which is needed to start the process of a user connecting to a specific financial institution.
+   * @param createSessionLinkTokenRequest
+   * @returns A {@link CreateSessionLinkTokenResponse} containing the link_token and request_id.
+   */
   public createSessionLinkToken = async (
     createSessionLinkTokenRequest: CreateSessionLinkTokenRequest
   ): Promise<AxiosResponse<CreateSessionLinkTokenResponse>> => {
@@ -251,6 +261,13 @@ export class FuseApi {
     );
   };
 
+  /**
+   * Exchange a public token for an access token and financial connection id.
+   * You can then use this access token to retrieve information for that user.
+   * You need the financial connection id for listening for webhooks. Every webhook contains the financial connection id. This is how you identify the corresponding financial connection given a webhook event.
+   * @param exchangeSessionPublicTokenRequest
+   * @returns An {@link ExchangeSessionPublicTokenResponse} containing the access_token, financial_connection_id and request_id.
+   */
   public exchangeSessionPublicToken = async (
     exchangeSessionPublicTokenRequest: ExchangeSessionPublicTokenRequest
   ): Promise<AxiosResponse<ExchangeSessionPublicTokenResponse>> => {
@@ -265,12 +282,18 @@ export class FuseApi {
     );
   };
 
+  /**
+   * Verify the authenticity of a webhook.
+   * @param unifiedWebhook The received webhook
+   * @param requestHeaders The request headers of the received webhook
+   * @returns A {@link boolean} that is true/false depending on whether the webhook was verified.
+   */
   public verify = async (
     unifiedWebhook: UnifiedWebhook,
-    headers: any
+    requestHeaders: any
   ): Promise<boolean> => {
     const fuseVerificationHeader = getHeaderValue(
-      headers,
+        requestHeaders,
       "fuse-verification"
     );
     if (unifiedWebhook.aggregator === Aggregator.PLAID) {
