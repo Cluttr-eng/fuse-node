@@ -54,7 +54,7 @@ const response = await fuseApi.createSession({
 ```
 <br/>
 
-### Creating a session link token
+### Creating a link token
 ```typescript
   const response = await fuseApi.createSessionLinkToken({
     institution_id: "fuse-institution-id-from-frontend",

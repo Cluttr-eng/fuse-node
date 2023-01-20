@@ -78,7 +78,7 @@ export interface CreateSessionResponse {
   request_id: string;
 }
 
-export interface CreateSessionLinkTokenRequest {
+export interface CreateLinkTokenRequest {
   /**
    * The institutionId received from the "onSelectedInstitution()" callback from the Fuse SDK.
    */
@@ -110,7 +110,7 @@ export interface CreateSessionLinkTokenRequest {
   };
 }
 
-export interface CreateSessionLinkTokenResponse {
+export interface CreateLinkTokenResponse {
   /**
    * The link token required by the Fuse SDK callback
    */
@@ -121,14 +121,14 @@ export interface CreateSessionLinkTokenResponse {
   request_id: string;
 }
 
-export interface ExchangeSessionPublicTokenRequest {
+export interface ExchangeFinancialConnectionsPublicTokenRequest {
   /**
    * The public token received from the "onSuccess()" callback in the Fuse SDK.
    */
   public_token: string;
 }
 
-export interface ExchangeSessionPublicTokenResponse {
+export interface ExchangeFinancialConnectionsPublicTokenResponse {
   /**
    * The access token is needed to query the users resources for the new connection.
    */
@@ -428,7 +428,7 @@ export class FuseApi {
     createSessionRequest: CreateSessionRequest
   ): Promise<AxiosResponse<CreateSessionResponse>> => {
     return await axios.post(
-      this.configuration.basePath + "/session/create",
+      this.configuration.basePath + "/session",
       createSessionRequest,
       {
         headers: this.headers,
@@ -437,16 +437,16 @@ export class FuseApi {
   };
 
   /**
-   * This creates a session link token which is needed to start the process of a user connecting to a specific financial institution.
-   * @param createSessionLinkTokenRequest
-   * @returns A {@link CreateSessionLinkTokenResponse}
+   * This creates a link token which is needed to start the process of a user connecting to a specific financial institution.
+   * @param createLinkTokenRequest
+   * @returns A {@link CreateLinkTokenResponse}
    */
-  public createSessionLinkToken = async (
-    createSessionLinkTokenRequest: CreateSessionLinkTokenRequest
-  ): Promise<AxiosResponse<CreateSessionLinkTokenResponse>> => {
+  public createLinkToken = async (
+    createLinkTokenRequest: CreateLinkTokenRequest
+  ): Promise<AxiosResponse<CreateLinkTokenResponse>> => {
     return await axios.post(
-      this.configuration.basePath + "/session/link/token/create",
-      createSessionLinkTokenRequest,
+      this.configuration.basePath + "/link/token",
+      createLinkTokenRequest,
       {
         headers: this.headers,
       }
@@ -457,16 +457,16 @@ export class FuseApi {
    * Exchange a public token for an access token and financial connection id.
    * You can then use this access token to retrieve information for that user.
    * You need the financial connection id for listening for webhooks. Every webhook contains the financial connection id. This is how you identify the corresponding financial connection given a webhook event.
-   * @param exchangeSessionPublicTokenRequest
-   * @returns An {@link ExchangeSessionPublicTokenResponse}
+   * @param exchangeFinancialConnectionsPublicTokenRequest
+   * @returns An {@link ExchangeFinancialConnectionsPublicTokenResponse}
    */
-  public exchangeSessionPublicToken = async (
-    exchangeSessionPublicTokenRequest: ExchangeSessionPublicTokenRequest
-  ): Promise<AxiosResponse<ExchangeSessionPublicTokenResponse>> => {
+  public exchangeFinancialConnectionsPublicToken = async (
+    exchangeFinancialConnectionsPublicTokenRequest: ExchangeFinancialConnectionsPublicTokenRequest
+  ): Promise<AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse>> => {
     return await axios.post(
-      this.configuration.basePath + "/session/public_token/exchange",
+      this.configuration.basePath + "/financial_connections/public_token/exchange",
       {
-        public_token: exchangeSessionPublicTokenRequest.public_token,
+        public_token: exchangeFinancialConnectionsPublicTokenRequest.public_token,
       },
       {
         headers: this.headers,
