@@ -2,18 +2,18 @@
 
 The Fuse library provides convenient access to the Fuse REST API. It includes TypeScript definitions for all request params and response fields. It is intended to be used on the server.
 
-<h2>Documentation</h2>
+## Documentation
 The API documentation can be found [here]("https://letsfuse.readme.io/reference/post_v1-session-create").
 <h2>Installation</h2>
 
-```typescript
+```
 npm install fuse-node
 ```
 
-<h2>Quick start</h2>
+## Quick start
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
-<h3>Initialising Fuse Api</h3>
+### Initialising Fuse Api
 ```typescript
 import {Environment, FuseApi} from "fuse-node";
 
@@ -31,9 +31,9 @@ const fuseApi = new FuseApi({
   mxApiKey: "my-mx-api-key"
 });
 ```
-<br></br>
+<br/>
 
-<h3>Creating a session</h3>
+### Creating a session
 ```typescript
 const response = await fuseApi.createSession({
     supported_financial_institution_aggregators: ["PLAID", "TELLER", "MX"],
@@ -52,9 +52,9 @@ const response = await fuseApi.createSession({
 
   console.log(session.client_secret)
 ```
-<br></br>
+<br/>
 
-<h2>Creating a session link token</h2>
+### Creating a session link token
 ```typescript
   const response = await fuseApi.createSessionLinkToken({
     institution_id: "fuse-institution-id-from-frontend",
@@ -78,9 +78,9 @@ const response = await fuseApi.createSession({
   console.log(linkTokenData.link_token);
 ```
 
-<br></br>
+<br/>
 
-<h2>Exchanging a public token</h2>
+### Exchanging a public token
 ```typescript
 const response = await fuseApi.exchangeSessionPublicToken({
     public_token: "public-token-from-frontend"
@@ -91,10 +91,10 @@ const responseData = response.data as ExchangeSessionPublicTokenResponse;
 console.log(responseData.access_token);
 console.log(responseData.financial_connection_id);
 ```
-<br></br>
+<br/>
 
-<h2>Verifying a webhook</h2>
-<h3>Example using express</h3>
+### Verifying a webhook
+#### Example using express
 ```typescript
 app.post("/webhook", async (req: any, response: any) => {
     const isVerified = await fuseApi.verify(req.body, req.headers);
