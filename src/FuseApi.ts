@@ -213,39 +213,67 @@ export interface GetFinancialConnectionsAccountsResponse {
 
 
 export interface GetFinancialConnectionsTransactionsRequest {
+  /**
+   * Access token for authentication
+   */
   access_token: string;
+  /**
+   * Cursor for pagination
+   */
   cursor?: string;
+  /**
+   * Number of items per page
+   */
   count?: number;
 }
 
 export interface TransactionCommonModel {
+  /**
+   * Fuse Id of the transaction
+   */
   id: string;
+  /**
+   * Remote Id of the transaction, ie Plaid or Teller Id
+   */
   remote_id: string;
+  /**
+   * Remote Account Id of the transaction, ie Plaid Account Id
+   */
   remote_account_id: string;
+  /**
+   * Amount in cents associated with the transaction
+   */
   amount: number;
+  /**
+   * Date of the transaction
+   */
   date: string;
+  /**
+   * Description of the transaction
+   */
   description: string;
+  /**
+   * Categories of the transaction, ie Computers and Electronics
+   */
   category: string[];
+  /**
+   * Merchant description
+   */
   merchant: {
     name: string;
   };
+  /**
+   * The status of the transaction. This will be either POSTED or PENDING.
+   */
   status: string;
+  /**
+   * Type of the transaction, ie adjustment
+   */
   type: string;
+  /**
+   * The exact data from the aggregator (ie plaid) that we retrieved the information from
+   */
   remote_data: any;
-}
-
-export interface FinancialConnectionsTransaction {
-  remote_id: string;
-  remote_account_id: string;
-  amount: number;
-  date: string;
-  description: string;
-  category: string[];
-  merchant: {
-    name: string;
-  };
-  status: string;
-  type: string;
 }
 
 
