@@ -23,7 +23,7 @@ export interface UnifiedWebhook {
   aggregator: Aggregator;
   remote_data: any;
 }
-export interface UnifiedSyncRequiredWebhook {
+export interface SyncRequiredWebhook {
   webhook_type: "SYNC_REQUIRED";
   webhook_code: 'TRANSACTIONS';
   financial_connection_id: string;
@@ -468,13 +468,6 @@ export interface SyncTransactionsResponse {
   has_next: boolean;
 }
 
-export interface SyncFinancialConnectionsDataRequest {
-  /**
-   * The sync webhook received
-   */
-  webhook_data: UnifiedSyncRequiredWebhook
-}
-
 export interface SyncFinancialConnectionsDataResponse {
   /**
    * Response mssage
@@ -769,16 +762,16 @@ export class FuseApi {
   };
 
   /**
-   * Syncs the financial connection data for an access token. Required to keep data up to date.
-   * @param syncFinancialConnectionsDataRequest
+   * Syncs the financial connection data for a financial connection. Required to keep data up to date.
+   * @param syncRequiredWebhook
    * @returns SyncFinancialConnectionsDataResponse
    */
   public syncFinancialConnectionsData = async (
-      syncFinancialConnectionsDataRequest: SyncFinancialConnectionsDataRequest
+      syncRequiredWebhook: SyncRequiredWebhook
   ): Promise<AxiosResponse<SyncFinancialConnectionsDataResponse>> => {
     return await axios.post(
         this.configuration.basePath + "/financial_connections/sync",
-        syncFinancialConnectionsDataRequest,
+        syncRequiredWebhook,
         {
           headers: this.headers,
         },
