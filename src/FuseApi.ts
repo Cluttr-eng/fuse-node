@@ -265,80 +265,6 @@ export interface GetFinancialConnectionsAccountsResponse {
   accounts: FinancialConnectionsAccount[];
 }
 
-export interface GetFinancialConnectionsOwnersRequest {
-  /**
-   * Access token for authentication
-   */
-  access_token: string;
-}
-
-interface AccountOwners {
-  /**
-   * Array of Address objects
-   */
-  addresses: Address[];
-  /**
-   * Array of Email objects
-   */
-  emails: Email[];
-  /**
-   * Array of names
-   */
-  names: string[]; // array of names
-  /**
-   * Array of PhoneNumber objects
-   */
-  phone_numbers: PhoneNumber[];
-}
-interface Address {
-  data: {
-    city: string;
-    country: string;
-    postal_code: string;
-    region: string;
-    street: string;
-  };
-  /**
-   * Indicating if it is the primary address
-   */
-  primary: boolean;
-}
-interface Email {
-  /**
-   * Email address
-   */
-  data: string; // email address
-  /**
-   * Indicating if it is the primary email
-   */
-  primary: boolean;
-  /**
-   * Type of the email
-   */
-  type: "primary" | "secondary" | "other";
-}
-interface PhoneNumber {
-  /**
-   * The phone number
-   */
-  data: string;
-  /**
-   * Indicating if it is the primary phone number
-   */
-  primary: boolean;
-  /**
-   * Type of the phone number
-   */
-  type: "home" | "work" | "mobile";
-}
-
-export interface GetFinancialConnectionsOwnersResponse {
-  /**
-   * Access token for authentication
-   */
-  owners: AccountOwners[];
-}
-
 
 
 export interface GetFinancialConnectionsAccountsResponse {
@@ -474,6 +400,117 @@ export interface SyncFinancialConnectionsDataResponse {
    */
   message: string
 }
+
+
+export interface GetFinancialConnectionsOwnersRequest {
+  /**
+   * The access token of the financial institution connection
+   */
+  access_token: string;
+}
+
+/**
+ * Represent a Financial Connections Owner
+ */
+export interface FinancialConnectionsOwner {
+  /**
+   * List of addresses associated with the owner
+   */
+  addresses: {
+    /**
+     * Address data
+     */
+    data: {
+      /**
+       * City of the address
+       */
+      city: string;
+      /**
+       * Country of the address
+       */
+      country: string;
+      /**
+       * Postal code of the address
+       */
+      postal_code: string;
+      /**
+       * Region of the address
+       */
+      region: string;
+      /**
+       * Street of the address
+       */
+      street: string;
+    };
+    /**
+     * Indicates if this is the owner's primary address
+     */
+    primary: boolean;
+  }[];
+  /**
+   * List of names associated with the owner
+   */
+  names: {
+    /**
+     * The name of the person or organization
+     */
+    data: string;
+    /**
+     * Type of name. Possible values are "name" or "alias"
+     */
+    type: string;
+  }[];
+  /**
+   * List of phone numbers associated with the owner
+   */
+  phone_numbers: {
+    /**
+     * The phone number
+     */
+    data: string;
+    /**
+     * Type of phone number. Possible values are "mobile", "home", "work" or "unknown"
+     */
+    type?: string;
+    /**
+     * Indicates if this is the owner's primary phone number
+     */
+    primary?: boolean;
+  }[];
+  /**
+   * List of emails associated with the owner
+   */
+  emails: {
+    /**
+     * Email address
+     */
+    data: string;
+    /**
+     * Type of email address. Possible values are "primary", "secondary", "other"
+     */
+    type?: string;
+  }[];
+}
+
+/**
+ * Represent the response of getting financial connections owners
+ */
+export interface GetFinancialConnectionsOwnersResponse {
+  /**
+   * List of accounts
+   */
+  accounts: {
+    /**
+     * Remote account id
+     */
+    remote_account_id: string;
+    /**
+     * List of account owners
+     */
+    owners: FinancialConnectionsOwner[];
+  }[];
+}
+
 
 
 export class FuseApi {
@@ -711,9 +748,9 @@ export class FuseApi {
   };
 
   /**
-   * Get a list of owners for the financial connection
+   * Get Financial Connections Owners
+   * @returns Promise that returns an AxiosResponse with a GetFinancialConnectionsOwnersResponse
    * @param getFinancialConnectionsOwnersRequest
-   * @returns GetFinancialConnectionsOwnersResponse
    */
   public getFinancialConnectionsOwners = async (
       getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest
