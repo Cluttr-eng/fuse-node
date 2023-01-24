@@ -3,6 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import { getHeaderValue } from "./helpers";
 import { getPlaidClient } from "./clients/plaid-client";
 import jwt_decode from "jwt-decode";
+import { Environment } from "./BasePath";
 const JWT = require("jose");
 const sha256 = require("js-sha256");
 const compare = require("secure-compare");
@@ -469,10 +470,6 @@ export interface SyncTransactionsResponse {
 }
 
 export interface SyncFinancialConnectionsDataResponse {
-  /**
-   * Response mssage
-   */
-  message: string
 }
 
 
@@ -567,8 +564,11 @@ export class FuseApi {
       const plaidVerificationHeader = fuseVerificationHeader;
       const plaidClient = getPlaidClient(
         this.configuration.plaidClientId,
-        this.configuration.plaidSecret
+        this.configuration.plaidSecret,
+        this.configuration.basePath === Environment.SANDBOX ? "sandbox" : "production"
       );
+
+      const decodedToken = jwt_decode(plaidVerificationHeader) as any;
       const decoded = jwt_decode(plaidVerificationHeader, {
         header: true,
       }) as any;
@@ -600,7 +600,7 @@ export class FuseApi {
       }
 
       const bodyHash = sha256(unifiedWebhook.remote_data);
-      const claimedBodyHash = decoded.request_body_sha256;
+      const claimedBodyHash = decodedToken.request_body_sha256;
       return compare(bodyHash, claimedBodyHash);
     } else if (unifiedWebhook.aggregator === Aggregator.TELLER) {
       let match = fuseVerificationHeader.match(/t=(\w+),v1=(\w+)/);

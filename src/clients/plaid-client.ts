@@ -1,8 +1,8 @@
 import { Configuration, PlaidApi, PlaidEnvironments } from "plaid";
 
-export const getPlaidClient = (clientId: string, secret: string): PlaidApi => {
+export const getPlaidClient = (clientId: string, secret: string, env: "sandbox" | "development" | "production"): PlaidApi => {
   const configuration = new Configuration({
-    basePath: getBasePath(),
+    basePath: getBasePath(env),
     baseOptions: {
       headers: {
         "PLAID-CLIENT-ID": clientId,
@@ -14,7 +14,7 @@ export const getPlaidClient = (clientId: string, secret: string): PlaidApi => {
   return new PlaidApi(configuration);
 };
 
-function getBasePath(): string {
+function getBasePath(env: string): string {
   return {
     sandbox: PlaidEnvironments.sandbox,
     development: PlaidEnvironments.development,
@@ -22,6 +22,6 @@ function getBasePath(): string {
   }[
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
-    process.env.PLAID_BASE_PATH
+    env
   ];
 }
