@@ -1,23 +1,26 @@
 export interface Configuration {
   basePath: string;
 
-  fuseApiKey: string;
+  fuse: {
+    apiKey: string
+    clientId: string
+  }
 
-  fuseClientId: string;
+  plaid?: {
+    clientId: string
+    secret: string
+  }
 
-  plaidClientId?: string;
+  teller?: {
+    applicationId: string,
+    certificate: string,
+    privateKey: string,
+    tokenSigningKey: string,
+    signingSecret: string
+  }
 
-  plaidSecret?: string;
-
-  tellerApplicationId?: string;
-
-  tellerCertificate?: string;
-
-  tellerTokenSigningKey?: string;
-
-  tellerPrivateKey?: string
-
-  mxClientId?: string;
-
-  mxApiKey?: string;
+  mx?: {
+    clientId: string,
+    apiKey: string
+  }
 }

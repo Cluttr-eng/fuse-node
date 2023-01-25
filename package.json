@@ -1,6 +1,6 @@
 {
   "name": "fuse-node",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "types",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

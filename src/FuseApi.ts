@@ -479,15 +479,17 @@ export class FuseApi {
   constructor(configuration: Configuration) {
     this.configuration = configuration;
     this.headers = {
-      "fuse-api-key": this.configuration.fuseApiKey,
-      "fuse-client-id": this.configuration.fuseClientId,
-      "plaid-client-id": this.configuration.plaidClientId,
-      "plaid-secret": this.configuration.plaidSecret,
-      "teller-application-id": this.configuration.tellerApplicationId,
-      "teller-certificate": this.configuration.tellerCertificate,
-      "teller-private-key": this.configuration.tellerPrivateKey,
-      "mx-client-id": this.configuration.mxClientId,
-      "mx-api-key": this.configuration.mxApiKey,
+      "fuse-api-key": this.configuration.fuse.apiKey,
+      "fuse-client-id": this.configuration.fuse.clientId,
+      "plaid-client-id": this.configuration.plaid?.clientId,
+      "plaid-secret": this.configuration.plaid?.secret,
+      "teller-application-id": this.configuration.teller?.applicationId,
+      "teller-certificate": this.configuration.teller?.certificate,
+      "teller-private-key": this.configuration.teller?.privateKey,
+      "teller-token-signing-key": this.configuration.teller?.tokenSigningKey,
+      "teller-signing-secret": this.configuration.teller?.signingSecret,
+      "mx-client-id": this.configuration.mx?.clientId,
+      "mx-api-key": this.configuration.mx?.apiKey,
     };
   }
 
@@ -563,8 +565,8 @@ export class FuseApi {
     if (unifiedWebhook.aggregator === Aggregator.PLAID) {
       const plaidVerificationHeader = fuseVerificationHeader;
       const plaidClient = getPlaidClient(
-        this.configuration.plaidClientId,
-        this.configuration.plaidSecret,
+        this.configuration.plaid.clientId,
+        this.configuration.plaid.secret,
         this.configuration.basePath === Environment.SANDBOX ? "sandbox" : "production"
       );
 
@@ -612,14 +614,16 @@ export class FuseApi {
 
       const signedMessage = `${tValue}.${tellerBody}`;
       const hmac = this.hmacSignature(
-        this.configuration.tellerTokenSigningKey,
-        signedMessage
+        this.configuration.teller.signingSecret,
+        signedMessage,
+        "hex"
       );
+
       return crypto.timingSafeEqual(Buffer.from(v1Value), Buffer.from(hmac));
     } else if (unifiedWebhook.aggregator === Aggregator.MX || unifiedWebhook.aggregator === Aggregator.FUSE) {
       try {
         return this.requestIsFromFuse(
-          this.configuration.fuseApiKey,
+          this.configuration.fuse.apiKey,
           unifiedWebhook,
           fuseVerificationHeader
         );
@@ -630,8 +634,8 @@ export class FuseApi {
     }
   };
 
-  hmacSignature = (key: any, msg: any) => {
-    return crypto.createHmac("sha256", key).update(msg).digest("base64");
+  hmacSignature = (key: any, msg: any, algorithm: string) => {
+    return crypto.createHmac("sha256", key).update(msg).digest(algorithm);
   };
 
   requestIsFromFuse = (
@@ -651,7 +655,7 @@ export class FuseApi {
         : value;
 
     const requestJson = JSON.stringify(unifiedWebhook, replacer);
-    const dataHmac = this.hmacSignature(apiKey, requestJson);
+    const dataHmac = this.hmacSignature(apiKey, requestJson, "base64");
 
     return crypto.timingSafeEqual(
       Buffer.from(requestHmac),
@@ -668,7 +672,7 @@ export class FuseApi {
       getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalancesRequest
   ): Promise<AxiosResponse<GetFinancialConnectionsBalancesResponse>> => {
     return await axios.post(
-        this.configuration.basePath + "/financial_connections/balance",
+        this.configuration.basePath + "/financial_connections/balances",
         getFinancialConnectionsBalanceRequest,
         {
           headers: this.headers,
