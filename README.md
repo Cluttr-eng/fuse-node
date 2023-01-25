@@ -18,17 +18,26 @@ Documentation for each method, request param, and response field are available i
 import {Environment, FuseApi} from "fuse-node";
 
 const fuseApi = new FuseApi({
-  basePath: Environment.SANDBOX,
-  fuseApiKey: "my-fuse-api-key",
-  fuseClientId: "my-fuse-client-id",
-  plaidClientId: "my-plaid-client-id",
-  plaidSecret: "my-plaid-secret",
-  tellerApplicationId: "my-teller-application-id",
-  tellerCertificate: "my-teller-certificate",
-  tellerTokenSigningKey: "my-teller-token-signing-key",
-  tellerPrivateKey: "my-teller-private-key",
-  mxClientId: "my-mx-client-id",
-  mxApiKey: "my-mx-api-key"
+    basePath: Environment.SANDBOX,
+    fuse: {
+        apiKey: "my-fuse-api-key",
+        clientId: "my-fuse-client-id"
+    },
+    plaid: {
+        clientId: "my-plaid-client-id",
+        secret: "my-plaid-secret"
+    },
+    teller: {
+        applicationId: "my-application-id",
+        certificate: "my-certificate",
+        privateKey: "my-private-key",
+        tokenSigningKey: "my-token-signing-key",
+        signingSecret: "my-signing-secret"
+    },
+    mx: {
+        apiKey: "my-api-key",
+        clientId: "my-client-id"
+    }
 });
 ```
 <br/>
