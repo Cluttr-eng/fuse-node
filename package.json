@@ -1,33 +1,33 @@
 {
   "name": "fuse-node",
-  "version": "1.0.18",
-  "description": "types",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "/dist"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "watch": "tsc --watch",
-    "pack": "npm pack"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "typescript": "^4.9.4"
-  },
-  "dependencies": {
-    "axios": "^1.2.2",
-    "crypto": "^1.0.1",
-    "jose": "^4.11.2",
-    "js-sha256": "^0.9.0",
-    "jwt-decode": "^3.1.2",
-    "plaid": "^12.2.0",
-    "secure-compare": "^3.0.1"
-  },
+  "version": "1.0.19",
+  "description": "OpenAPI client for fuse-node",
+  "author": "OpenAPI-Generator Contributors",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Cluttr-eng/fuse-node"
+    "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"
+  },
+  "keywords": [
+    "axios",
+    "typescript",
+    "openapi-client",
+    "openapi-generator",
+    "fuse-node"
+  ],
+  "license": "Unlicense",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc && tsc -p tsconfig.esm.json",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "axios": "^0.26.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.11.5",
+    "typescript": "^4.0"
   }
 }
