@@ -17,7 +17,7 @@ exports.RequiredError = exports.BaseAPI = exports.COLLECTION_FORMATS = exports.B
 // Some imports not used depending on template conditions
 // @ts-ignore
 const axios_1 = require("axios");
-exports.BASE_PATH = "https://yz9sph5c42.execute-api.us-east-1.amazonaws.com".replace(/\/+$/, "");
+exports.BASE_PATH = "https://sandbox-api.letsfuse.com".replace(/\/+$/, "");
 /**
  *
  * @export

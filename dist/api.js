@@ -22,17 +22,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum = void 0;
+exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.Product = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
 const common_1 = require("./common");
 // @ts-ignore
 const base_1 = require("./base");
-exports.CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum = {
-    Plaid: 'PLAID',
-    Teller: 'TELLER',
-    Mx: 'MX'
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+exports.Aggregator = {
+    Plaid: 'plaid',
+    Teller: 'teller',
+    Mx: 'mx',
+    Finicity: 'finicity'
 };
 exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = {
     Primary: 'primary',
@@ -51,6 +57,19 @@ exports.FuseApiErrorSourceEnum = {
 exports.FuseApiWarningSourceEnum = {
     Internal: 'internal',
     Aggregator: 'aggregator'
+};
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+exports.Product = {
+    AccountDetails: 'account_details',
+    Balance: 'balance',
+    Ownership: 'ownership',
+    Transactions: 'transactions',
+    Liabilities: 'liabilities',
+    Investments: 'investments'
 };
 /**
  * FuseApi - axios parameter creator
@@ -84,6 +103,40 @@ const FuseApiAxiosParamCreator = function (configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(createAssetReportRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Create entity
+         * @param {CreateEntityRequest} createEntityRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createEntity: (createEntityRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'createEntityRequest' is not null or undefined
+            (0, common_1.assertParamExists)('createEntity', 'createEntityRequest', createEntityRequest);
+            const localVarPath = `/v1/entities`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(createEntityRequest, localVarRequestOptions, configuration);
             return {
                 url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -208,6 +261,39 @@ const FuseApiAxiosParamCreator = function (configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(getAssetReportRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Get entity
+         * @param {string} entityId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getEntity: (entityId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'entityId' is not null or undefined
+            (0, common_1.assertParamExists)('getEntity', 'entityId', entityId);
+            const localVarPath = `/v1/entities/{entity_id}`
+                .replace(`{${"entity_id"}}`, encodeURIComponent(String(entityId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
                 url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -452,6 +538,37 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         * Refreshes the Asset Report in JSON format.
+         * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshAssetReport: (refreshAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/asset_report/refresh`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(refreshAssetReportRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
          * @param {object} body
@@ -521,6 +638,44 @@ const FuseApiAxiosParamCreator = function (configuration) {
         }),
         /**
          *
+         * @summary Update entity
+         * @param {string} entityIdToUpdate
+         * @param {UpdateEntityRequest} updateEntityRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateEntity: (entityIdToUpdate, updateEntityRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'entityIdToUpdate' is not null or undefined
+            (0, common_1.assertParamExists)('updateEntity', 'entityIdToUpdate', entityIdToUpdate);
+            // verify required parameter 'updateEntityRequest' is not null or undefined
+            (0, common_1.assertParamExists)('updateEntity', 'updateEntityRequest', updateEntityRequest);
+            const localVarPath = `/v1/entities/{entity_id_to_update}`
+                .replace(`{${"entity_id_to_update"}}`, encodeURIComponent(String(entityIdToUpdate)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'PUT' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(updateEntityRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
          * @summary Get liabilities
          * @param {GetLiabilitiesRequest} getLiabilitiesRequest
          * @param {*} [options] Override http request option.
@@ -576,6 +731,19 @@ const FuseApiFp = function (configuration) {
             });
         },
         /**
+         *
+         * @summary Create entity
+         * @param {CreateEntityRequest} createEntityRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createEntity(createEntityRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.createEntity(createEntityRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
          * Create a link token to start the process of a user connecting to a specific financial institution.
          * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
          * @param {*} [options] Override http request option.
@@ -620,6 +788,19 @@ const FuseApiFp = function (configuration) {
         getAssetReport(getAssetReportRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getAssetReport(getAssetReportRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Get entity
+         * @param {string} entityId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getEntity(entityId, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getEntity(entityId, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -715,6 +896,18 @@ const FuseApiFp = function (configuration) {
             });
         },
         /**
+         * Refreshes the Asset Report in JSON format.
+         * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshAssetReport(refreshAssetReportRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.refreshAssetReport(refreshAssetReportRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
          * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
          * @param {object} body
@@ -737,6 +930,20 @@ const FuseApiFp = function (configuration) {
         syncFinancialConnectionsTransactions(syncTransactionsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.syncFinancialConnectionsTransactions(syncTransactionsRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Update entity
+         * @param {string} entityIdToUpdate
+         * @param {UpdateEntityRequest} updateEntityRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateEntity(entityIdToUpdate, updateEntityRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.updateEntity(entityIdToUpdate, updateEntityRequest, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -773,6 +980,16 @@ const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.createAssetReport(createAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         *
+         * @summary Create entity
+         * @param {CreateEntityRequest} createEntityRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createEntity(createEntityRequest, options) {
+            return localVarFp.createEntity(createEntityRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Create a link token to start the process of a user connecting to a specific financial institution.
          * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
          * @param {*} [options] Override http request option.
@@ -807,6 +1024,16 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         getAssetReport(getAssetReportRequest, options) {
             return localVarFp.getAssetReport(getAssetReportRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Get entity
+         * @param {string} entityId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getEntity(entityId, options) {
+            return localVarFp.getEntity(entityId, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -879,6 +1106,15 @@ const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Refreshes the Asset Report in JSON format.
+         * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshAssetReport(refreshAssetReportRequest, options) {
+            return localVarFp.refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
          * @param {object} body
@@ -897,6 +1133,17 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         syncFinancialConnectionsTransactions(syncTransactionsRequest, options) {
             return localVarFp.syncFinancialConnectionsTransactions(syncTransactionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Update entity
+         * @param {string} entityIdToUpdate
+         * @param {UpdateEntityRequest} updateEntityRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateEntity(entityIdToUpdate, updateEntityRequest, options) {
+            return localVarFp.updateEntity(entityIdToUpdate, updateEntityRequest, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -927,6 +1174,17 @@ class FuseApi extends base_1.BaseAPI {
      */
     createAssetReport(createAssetReportRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).createAssetReport(createAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Create entity
+     * @param {CreateEntityRequest} createEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createEntity(createEntityRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).createEntity(createEntityRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
@@ -967,6 +1225,17 @@ class FuseApi extends base_1.BaseAPI {
      */
     getAssetReport(getAssetReportRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).getAssetReport(getAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Get entity
+     * @param {string} entityId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getEntity(entityId, options) {
+        return (0, exports.FuseApiFp)(this.configuration).getEntity(entityId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1046,6 +1315,16 @@ class FuseApi extends base_1.BaseAPI {
         return (0, exports.FuseApiFp)(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
+     * Refreshes the Asset Report in JSON format.
+     * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    refreshAssetReport(refreshAssetReportRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
      * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
@@ -1066,6 +1345,18 @@ class FuseApi extends base_1.BaseAPI {
      */
     syncFinancialConnectionsTransactions(syncTransactionsRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).syncFinancialConnectionsTransactions(syncTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Update entity
+     * @param {string} entityIdToUpdate
+     * @param {UpdateEntityRequest} updateEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    updateEntity(entityIdToUpdate, updateEntityRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).updateEntity(entityIdToUpdate, updateEntityRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *

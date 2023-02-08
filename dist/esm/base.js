@@ -14,7 +14,7 @@
 // Some imports not used depending on template conditions
 // @ts-ignore
 import globalAxios from 'axios';
-export const BASE_PATH = "https://yz9sph5c42.execute-api.us-east-1.amazonaws.com".replace(/\/+$/, "");
+export const BASE_PATH = "https://sandbox-api.letsfuse.com".replace(/\/+$/, "");
 /**
  *
  * @export
