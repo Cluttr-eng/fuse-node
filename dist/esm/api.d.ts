@@ -15,6 +15,18 @@ import { RequestArgs, BaseAPI } from './base';
 /**
  *
  * @export
+ * @enum {string}
+ */
+export declare const Aggregator: {
+    readonly Plaid: "plaid";
+    readonly Teller: "teller";
+    readonly Mx: "mx";
+    readonly Finicity: "finicity";
+};
+export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
+/**
+ *
+ * @export
  * @interface CreateAssetReportRequest
  */
 export interface CreateAssetReportRequest {
@@ -30,6 +42,12 @@ export interface CreateAssetReportRequest {
      * @memberof CreateAssetReportRequest
      */
     'days_requested': number;
+    /**
+     * Indicates whether to include identity data in the Asset Report
+     * @type {boolean}
+     * @memberof CreateAssetReportRequest
+     */
+    'include_identity'?: boolean;
 }
 /**
  *
@@ -53,21 +71,89 @@ export interface CreateAssetReportResponse {
 /**
  *
  * @export
+ * @interface CreateEntityRequest
+ */
+export interface CreateEntityRequest {
+    /**
+     * Id of the entity
+     * @type {string}
+     * @memberof CreateEntityRequest
+     */
+    'id'?: string;
+    /**
+     * Email of the entity
+     * @type {string}
+     * @memberof CreateEntityRequest
+     */
+    'email'?: string;
+    /**
+     * These will force the user to connect through all of these aggregators
+     * @type {Array<Aggregator>}
+     * @memberof CreateEntityRequest
+     */
+    'aggregators'?: Array<Aggregator>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof CreateEntityRequest
+     */
+    'institution_ids'?: Array<string>;
+}
+/**
+ *
+ * @export
+ * @interface CreateEntityResponse
+ */
+export interface CreateEntityResponse {
+    /**
+     * Id of the entity
+     * @type {string}
+     * @memberof CreateEntityResponse
+     */
+    'id'?: string;
+    /**
+     * Email of the entity
+     * @type {string}
+     * @memberof CreateEntityResponse
+     */
+    'email'?: string;
+    /**
+     * These will force the user to connect through all of these aggregators
+     * @type {Array<Aggregator>}
+     * @memberof CreateEntityResponse
+     */
+    'aggregators'?: Array<Aggregator>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof CreateEntityResponse
+     */
+    'institution_ids'?: Array<string>;
+}
+/**
+ *
+ * @export
  * @interface CreateLinkTokenRequest
  */
 export interface CreateLinkTokenRequest {
     /**
-     * The destination URL to which any webhooks should be sent.
+     * An id that is unique for an institution.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
-    'webhook_url'?: string;
+    'institution_id'?: string;
     /**
      * An id that is unique for a user of your application.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
     'user_id': string;
+    /**
+     * The name of your application.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'client_name'?: string;
     /**
      * The session client secret created from the \'Create session client secret\' endpoint
      * @type {string}
@@ -86,12 +172,6 @@ export interface CreateLinkTokenRequest {
      * @memberof CreateLinkTokenRequest
      */
     'plaid'?: CreateLinkTokenRequestPlaid;
-    /**
-     *
-     * @type {string}
-     * @memberof CreateLinkTokenRequest
-     */
-    'institution_id'?: string;
 }
 /**
  * An object specifying information about the MX configuration to use for deciding which MX supported financial institutions to display.
@@ -100,37 +180,24 @@ export interface CreateLinkTokenRequest {
  */
 export interface CreateLinkTokenRequestMx {
     /**
-     * Follows the same schema as MX\'s request a connect url(https://docs.mx.com/api#connect_request_a_url) schema. This is a stringified version of the config.
+     * Follows the same schema as MX\'s request a connect url(https://docs.mx.com/api#connect_request_a_url) schema.
      * @type {object}
      * @memberof CreateLinkTokenRequestMx
      */
     'config'?: object;
 }
 /**
- * An object specifying information about the Plaid configuration to use when creating a link token. This option is required if Plaid was enabled when displaying the financial institutions to the user.
+ * An object specifying information about the Plaid configuration to use when creating a link token.
  * @export
  * @interface CreateLinkTokenRequestPlaid
  */
 export interface CreateLinkTokenRequestPlaid {
     /**
-     *
-     * @type {CreateLinkTokenRequestPlaidConfig}
+     * Follows the same schema as Plaid\'s Link Token Create Schema(https://plaid.com/docs/api/tokens/#linktokencreate). \'products\', \'client_id\', \'secret\', \'client_user_id\', \'client_name\', \'webhook\', \'institution_data\' and \'country_codes\' (only US supported right now) will be set by Fuse and override any values you set.
+     * @type {object}
      * @memberof CreateLinkTokenRequestPlaid
      */
-    'config'?: CreateLinkTokenRequestPlaidConfig;
-}
-/**
- * Follows the same schema as Plaid\'s Link Token Create Schema(https://plaid.com/docs/api/tokens/#linktokencreate). This parameter takes a stringified version of the config. \'products\', \'client_id\', \'secret\', \'client_user_id\', \'webhook\', \'institution_data\' and \'country_codes\' (only US supported right now) will be set by Fuse and override any values you set.
- * @export
- * @interface CreateLinkTokenRequestPlaidConfig
- */
-export interface CreateLinkTokenRequestPlaidConfig {
-    /**
-     *
-     * @type {string}
-     * @memberof CreateLinkTokenRequestPlaidConfig
-     */
-    'client_name': string;
+    'config'?: object;
 }
 /**
  *
@@ -159,72 +226,16 @@ export interface CreateLinkTokenResponse {
 export interface CreateSessionRequest {
     /**
      *
-     * @type {Array<string>}
+     * @type {Array<Aggregator>}
      * @memberof CreateSessionRequest
      */
-    'supported_financial_institution_aggregators'?: Array<CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum>;
+    'supported_financial_institution_aggregators'?: Array<Aggregator>;
     /**
-     *
-     * @type {CreateSessionRequestMx}
+     * List of products that you would like the institutions to support
+     * @type {Array<Product>}
      * @memberof CreateSessionRequest
      */
-    'mx'?: CreateSessionRequestMx;
-    /**
-     *
-     * @type {CreateSessionRequestPlaid}
-     * @memberof CreateSessionRequest
-     */
-    'plaid'?: CreateSessionRequestPlaid;
-}
-export declare const CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum: {
-    readonly Plaid: "PLAID";
-    readonly Teller: "TELLER";
-    readonly Mx: "MX";
-};
-export type CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum = typeof CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum[keyof typeof CreateSessionRequestSupportedFinancialInstitutionAggregatorsEnum];
-/**
- * This can be left empty even if MX is in the list of supported_financial_institution_aggregators, although we would recommend having a look at what each field means to see if you want to override the default value of \'false\'. These fields are described here(https://docs.mx.com/api#core_resources_institutions_list_institutions). An object specifying information about the MX configuration to use for deciding which MX supported financial institutions to display.
- * @export
- * @interface CreateSessionRequestMx
- */
-export interface CreateSessionRequestMx {
-    /**
-     *
-     * @type {boolean}
-     * @memberof CreateSessionRequestMx
-     */
-    'supports_account_identification'?: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof CreateSessionRequestMx
-     */
-    'supports_account_statement'?: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof CreateSessionRequestMx
-     */
-    'supports_account_verification'?: boolean;
-    /**
-     *
-     * @type {boolean}
-     * @memberof CreateSessionRequestMx
-     */
-    'supports_transaction_history'?: boolean;
-}
-/**
- * This field is REQUIRED if PLAID is in the list of supported_financial_institution_aggregators. An object specifying information about the Plaid configuration to use for deciding which Plaid supported financial institutions to display.
- * @export
- * @interface CreateSessionRequestPlaid
- */
-export interface CreateSessionRequestPlaid {
-    /**
-     * For a comprehensive list of supported plaid products, see https://plaid.com/docs/api/tokens/#link-token-create-request-products
-     * @type {Array<string>}
-     * @memberof CreateSessionRequestPlaid
-     */
-    'products'?: Array<string>;
+    'products'?: Array<Product>;
 }
 /**
  *
@@ -393,12 +404,6 @@ export interface FinancialConnectionsAccountDetails {
      * @memberof FinancialConnectionsAccountDetails
      */
     'ach'?: FinancialConnectionsAccountDetailsAch;
-    /**
-     * The exact data from the aggregator (ie plaid) that we retrieved the information from
-     * @type {object}
-     * @memberof FinancialConnectionsAccountDetails
-     */
-    'remote_data'?: object;
 }
 /**
  *
@@ -615,6 +620,12 @@ export interface FinancialConnectionsAccountLiabilityAllOfAprs {
  * @interface FinancialConnectionsHolding
  */
 export interface FinancialConnectionsHolding {
+    /**
+     * Remote account id associated with this holding
+     * @type {string}
+     * @memberof FinancialConnectionsHolding
+     */
+    'remote_account_id'?: string;
     /**
      * The original total value of the holding.
      * @type {number}
@@ -1261,6 +1272,37 @@ export interface GetAssetReportResponseReportAccountsInnerHistoricalBalancesInne
 /**
  *
  * @export
+ * @interface GetEntityResponse
+ */
+export interface GetEntityResponse {
+    /**
+     * Id of the entity
+     * @type {string}
+     * @memberof GetEntityResponse
+     */
+    'id'?: string;
+    /**
+     * Email of the entity
+     * @type {string}
+     * @memberof GetEntityResponse
+     */
+    'email'?: string;
+    /**
+     * These will force the user to connect through all of these aggregators
+     * @type {Array<Aggregator>}
+     * @memberof GetEntityResponse
+     */
+    'aggregators'?: Array<Aggregator>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof GetEntityResponse
+     */
+    'institution_ids'?: Array<string>;
+}
+/**
+ *
+ * @export
  * @interface GetFinancialConnectionsAccountBalanceResponse
  */
 export interface GetFinancialConnectionsAccountBalanceResponse {
@@ -1393,6 +1435,12 @@ export interface GetInvestmentHoldingsRequest {
      * @memberof GetInvestmentHoldingsRequest
      */
     'access_token': string;
+    /**
+     * The ISO-4217 currency code to convert the holding to.
+     * @type {string}
+     * @memberof GetInvestmentHoldingsRequest
+     */
+    'iso_currency_code'?: string;
 }
 /**
  *
@@ -1418,12 +1466,6 @@ export interface GetInvestmentHoldingsResponse {
      * @memberof GetInvestmentHoldingsResponse
      */
     'securities'?: Array<FinancialConnectionsInvestmentSecurity>;
-    /**
-     * The exact data from the aggregator (ie plaid) that we retrieved the information from.
-     * @type {object}
-     * @memberof GetInvestmentHoldingsResponse
-     */
-    'remote_data'?: object;
 }
 /**
  *
@@ -1462,12 +1504,6 @@ export interface GetInvestmentTransactionsResponse {
      * @memberof GetInvestmentTransactionsResponse
      */
     'securities'?: Array<FinancialConnectionsInvestmentSecurity>;
-    /**
-     * The exact data from the aggregator (ie plaid) that we retrieved the information from.
-     * @type {object}
-     * @memberof GetInvestmentTransactionsResponse
-     */
-    'remote_data'?: object;
 }
 /**
  *
@@ -1494,12 +1530,6 @@ export interface GetLiabilitiesResponse {
      * @memberof GetLiabilitiesResponse
      */
     'liabilities'?: Array<FinancialConnectionsAccountLiability>;
-    /**
-     * The exact data from the aggregator (ie plaid) that we retrieved the information from.
-     * @type {object}
-     * @memberof GetLiabilitiesResponse
-     */
-    'remote_data'?: object;
 }
 /**
  *
@@ -1617,12 +1647,6 @@ export interface GetTransactionsResponseDataInner {
      * @memberof GetTransactionsResponseDataInner
      */
     'type'?: string;
-    /**
-     * The exact data from the aggregator (ie plaid) that we retrieved the information from
-     * @type {object}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'remote_data'?: object;
 }
 /**
  *
@@ -1636,6 +1660,45 @@ export interface GetTransactionsResponseDataInnerMerchant {
      * @memberof GetTransactionsResponseDataInnerMerchant
      */
     'name'?: string;
+}
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const Product: {
+    readonly AccountDetails: "account_details";
+    readonly Balance: "balance";
+    readonly Ownership: "ownership";
+    readonly Transactions: "transactions";
+    readonly Liabilities: "liabilities";
+    readonly Investments: "investments";
+};
+export type Product = typeof Product[keyof typeof Product];
+/**
+ *
+ * @export
+ * @interface RefreshAssetReportRequest
+ */
+export interface RefreshAssetReportRequest {
+    /**
+     * The asset_report_token returned by the original call to /asset_report/create
+     * @type {string}
+     * @memberof RefreshAssetReportRequest
+     */
+    'access_token'?: string;
+    /**
+     * The maximum integer number of days of history to include in the Asset Report
+     * @type {number}
+     * @memberof RefreshAssetReportRequest
+     */
+    'days_requested': number;
+    /**
+     * Indicates whether to include identity data in the Asset Report
+     * @type {boolean}
+     * @memberof RefreshAssetReportRequest
+     */
+    'include_identity'?: boolean;
 }
 /**
  *
@@ -1739,6 +1802,62 @@ export interface TransactionCommonModel {
     'data'?: Array<GetTransactionsResponseDataInner>;
 }
 /**
+ *
+ * @export
+ * @interface UpdateEntityRequest
+ */
+export interface UpdateEntityRequest {
+    /**
+     * Email of the entity
+     * @type {string}
+     * @memberof UpdateEntityRequest
+     */
+    'email'?: string;
+    /**
+     * These will force the user to connect through all of these aggregators
+     * @type {Array<Aggregator>}
+     * @memberof UpdateEntityRequest
+     */
+    'aggregators'?: Array<Aggregator>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof UpdateEntityRequest
+     */
+    'institution_ids'?: Array<string>;
+}
+/**
+ *
+ * @export
+ * @interface UpdateEntityResponse
+ */
+export interface UpdateEntityResponse {
+    /**
+     * Id of the entity
+     * @type {string}
+     * @memberof UpdateEntityResponse
+     */
+    'id'?: string;
+    /**
+     * Email of the entity
+     * @type {string}
+     * @memberof UpdateEntityResponse
+     */
+    'email'?: string;
+    /**
+     * These will force the user to connect through all of these aggregators
+     * @type {Array<Aggregator>}
+     * @memberof UpdateEntityResponse
+     */
+    'aggregators'?: Array<Aggregator>;
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof UpdateEntityResponse
+     */
+    'institution_ids'?: Array<string>;
+}
+/**
  * FuseApi - axios parameter creator
  * @export
  */
@@ -1750,6 +1869,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     createAssetReport: (createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Create entity
+     * @param {CreateEntityRequest} createEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createEntity: (createEntityRequest: CreateEntityRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -1778,6 +1905,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     getAssetReport: (getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Get entity
+     * @param {string} entityId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getEntity: (entityId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get account details
@@ -1835,6 +1970,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * Refreshes the Asset Report in JSON format.
+     * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshAssetReport: (refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
@@ -1850,6 +1992,15 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     syncFinancialConnectionsTransactions: (syncTransactionsRequest: SyncTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Update entity
+     * @param {string} entityIdToUpdate
+     * @param {UpdateEntityRequest} updateEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateEntity: (entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get liabilities
@@ -1871,6 +2022,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
+    /**
+     *
+     * @summary Create entity
+     * @param {CreateEntityRequest} createEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createEntity(createEntityRequest: CreateEntityRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateEntityResponse>>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -1899,6 +2058,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetReportResponse>>;
+    /**
+     *
+     * @summary Get entity
+     * @param {string} entityId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getEntity(entityId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>>;
     /**
      *
      * @summary Get account details
@@ -1956,6 +2123,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
     /**
+     * Refreshes the Asset Report in JSON format.
+     * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
+    /**
      * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
@@ -1971,6 +2145,15 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     syncFinancialConnectionsTransactions(syncTransactionsRequest: SyncTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncTransactionsResponse>>;
+    /**
+     *
+     * @summary Update entity
+     * @param {string} entityIdToUpdate
+     * @param {UpdateEntityRequest} updateEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateEntity(entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateEntityResponse>>;
     /**
      *
      * @summary Get liabilities
@@ -1992,6 +2175,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: any): AxiosPromise<CreateAssetReportResponse>;
+    /**
+     *
+     * @summary Create entity
+     * @param {CreateEntityRequest} createEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createEntity(createEntityRequest: CreateEntityRequest, options?: any): AxiosPromise<CreateEntityResponse>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -2020,6 +2211,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<GetAssetReportResponse>;
+    /**
+     *
+     * @summary Get entity
+     * @param {string} entityId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getEntity(entityId: string, options?: any): AxiosPromise<GetEntityResponse>;
     /**
      *
      * @summary Get account details
@@ -2077,6 +2276,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse>;
     /**
+     * Refreshes the Asset Report in JSON format.
+     * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<CreateAssetReportResponse>;
+    /**
      * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
@@ -2092,6 +2298,15 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     syncFinancialConnectionsTransactions(syncTransactionsRequest: SyncTransactionsRequest, options?: any): AxiosPromise<SyncTransactionsResponse>;
+    /**
+     *
+     * @summary Update entity
+     * @param {string} entityIdToUpdate
+     * @param {UpdateEntityRequest} updateEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateEntity(entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: any): AxiosPromise<UpdateEntityResponse>;
     /**
      *
      * @summary Get liabilities
@@ -2116,6 +2331,15 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
+    /**
+     *
+     * @summary Create entity
+     * @param {CreateEntityRequest} createEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createEntity(createEntityRequest: CreateEntityRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateEntityResponse, any>>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -2148,6 +2372,15 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetAssetReportResponse, any>>;
+    /**
+     *
+     * @summary Get entity
+     * @param {string} entityId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getEntity(entityId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetEntityResponse, any>>;
     /**
      *
      * @summary Get account details
@@ -2212,6 +2445,14 @@ export declare class FuseApi extends BaseAPI {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
     /**
+     * Refreshes the Asset Report in JSON format.
+     * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
+    /**
      * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
@@ -2229,6 +2470,16 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     syncFinancialConnectionsTransactions(syncTransactionsRequest: SyncTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncTransactionsResponse, any>>;
+    /**
+     *
+     * @summary Update entity
+     * @param {string} entityIdToUpdate
+     * @param {UpdateEntityRequest} updateEntityRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    updateEntity(entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateEntityResponse, any>>;
     /**
      *
      * @summary Get liabilities
