@@ -22,7 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.Product = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = void 0;
+exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.Product = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -55,6 +55,10 @@ exports.FuseApiErrorSourceEnum = {
     Aggregator: 'aggregator'
 };
 exports.FuseApiWarningSourceEnum = {
+    Internal: 'internal',
+    Aggregator: 'aggregator'
+};
+exports.FuseApiWarningDataWarningsInnerSourceEnum = {
     Internal: 'internal',
     Aggregator: 'aggregator'
 };
@@ -210,7 +214,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangePublicToken: (exchangeFinancialConnectionsPublicTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
             const localVarPath = `/v1/financial_connections/public_token/exchange`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -505,7 +509,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
         }),
         /**
          *
-         * @summary Get investment holdings
+         * @summary Get investment transactions
          * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -773,9 +777,9 @@ const FuseApiFp = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
+        exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -884,7 +888,7 @@ const FuseApiFp = function (configuration) {
         },
         /**
          *
-         * @summary Get investment holdings
+         * @summary Get investment transactions
          * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1013,8 +1017,8 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
-            return localVarFp.exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
+        exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
+            return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves the Asset Report in JSON format.
@@ -1097,7 +1101,7 @@ const FuseApiFactory = function (configuration, basePath, axios) {
         },
         /**
          *
-         * @summary Get investment holdings
+         * @summary Get investment transactions
          * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1213,8 +1217,8 @@ class FuseApi extends base_1.BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
-        return (0, exports.FuseApiFp)(this.configuration).exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
+    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Retrieves the Asset Report in JSON format.
@@ -1305,7 +1309,7 @@ class FuseApi extends base_1.BaseAPI {
     }
     /**
      *
-     * @summary Get investment holdings
+     * @summary Get investment transactions
      * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

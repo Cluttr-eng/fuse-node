@@ -13,13 +13,15 @@
  */
 
 
-import { Configuration } from './configuration';
-import globalAxios, { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { Configuration } from './configuration';
+import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
+import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 
 /**
  * 
@@ -156,11 +158,29 @@ export interface CreateLinkTokenRequest {
      */
     'institution_id'?: string;
     /**
-     * An id that is unique for a user of your application.
+     * Unique identifier for the user or business account.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
-    'user_id': string;
+    'entity_id': string;
+    /**
+     * The name of the user or business account.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'entity_name'?: string;
+    /**
+     * Email address associated with the user or business account.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'entity_email'?: string;
+    /**
+     * This field is used to provide the user with a link to reconnect their financial account. It may be included in an automated email sent by Fuse to the entity\'s registered email address. It\'s important to note that the reconnection_url should be a valid URL and can only be used once to reconnect the disconnected account.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'reconnection_url'?: string;
     /**
      * The name of your application.
      * @type {string}
@@ -1139,11 +1159,56 @@ export interface FuseApiWarningData {
     'aggregator'?: string;
     /**
      * 
-     * @type {Array<FuseApiWarning>}
+     * @type {Array<FuseApiWarningDataWarningsInner>}
      * @memberof FuseApiWarningData
      */
-    'errors'?: Array<FuseApiWarning>;
+    'warnings'?: Array<FuseApiWarningDataWarningsInner>;
 }
+/**
+ * 
+ * @export
+ * @interface FuseApiWarningDataWarningsInner
+ */
+export interface FuseApiWarningDataWarningsInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'details'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'code'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'source'?: FuseApiWarningDataWarningsInnerSourceEnum;
+}
+
+export const FuseApiWarningDataWarningsInnerSourceEnum = {
+    Internal: 'internal',
+    Aggregator: 'aggregator'
+} as const;
+
+export type FuseApiWarningDataWarningsInnerSourceEnum = typeof FuseApiWarningDataWarningsInnerSourceEnum[keyof typeof FuseApiWarningDataWarningsInnerSourceEnum];
+
 /**
  * 
  * @export
@@ -2058,7 +2123,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangePublicToken: async (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        exchangeFinancialConnectionsPublicToken: async (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/public_token/exchange`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2424,7 +2489,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary Get investment holdings
+         * @summary Get investment transactions
          * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2732,8 +2797,8 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
+        async exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2825,7 +2890,7 @@ export const FuseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get investment holdings
+         * @summary Get investment transactions
          * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2942,8 +3007,8 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse> {
-            return localVarFp.exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
+        exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse> {
+            return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves the Asset Report in JSON format.
@@ -3026,7 +3091,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @summary Get investment holdings
+         * @summary Get investment transactions
          * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3146,8 +3211,8 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
+    public exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3247,7 +3312,7 @@ export class FuseApi extends BaseAPI {
 
     /**
      * 
-     * @summary Get investment holdings
+     * @summary Get investment transactions
      * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
