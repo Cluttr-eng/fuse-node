@@ -9,9 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Configuration } from './configuration';
-import { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
-import { RequestArgs, BaseAPI } from './base';
+import type { Configuration } from './configuration';
+import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { RequestArgs } from './base';
+import { BaseAPI } from './base';
 /**
  *
  * @export
@@ -143,11 +144,29 @@ export interface CreateLinkTokenRequest {
      */
     'institution_id'?: string;
     /**
-     * An id that is unique for a user of your application.
+     * Unique identifier for the user or business account.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
-    'user_id': string;
+    'entity_id': string;
+    /**
+     * The name of the user or business account.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'entity_name'?: string;
+    /**
+     * Email address associated with the user or business account.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'entity_email'?: string;
+    /**
+     * This field is used to provide the user with a link to reconnect their financial account. It may be included in an automated email sent by Fuse to the entity\'s registered email address. It\'s important to note that the reconnection_url should be a valid URL and can only be used once to reconnect the disconnected account.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'reconnection_url'?: string;
     /**
      * The name of your application.
      * @type {string}
@@ -1114,11 +1133,53 @@ export interface FuseApiWarningData {
     'aggregator'?: string;
     /**
      *
-     * @type {Array<FuseApiWarning>}
+     * @type {Array<FuseApiWarningDataWarningsInner>}
      * @memberof FuseApiWarningData
      */
-    'errors'?: Array<FuseApiWarning>;
+    'warnings'?: Array<FuseApiWarningDataWarningsInner>;
 }
+/**
+ *
+ * @export
+ * @interface FuseApiWarningDataWarningsInner
+ */
+export interface FuseApiWarningDataWarningsInner {
+    /**
+     *
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'title'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'details'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'code'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'type'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FuseApiWarningDataWarningsInner
+     */
+    'source'?: FuseApiWarningDataWarningsInnerSourceEnum;
+}
+export declare const FuseApiWarningDataWarningsInnerSourceEnum: {
+    readonly Internal: "internal";
+    readonly Aggregator: "aggregator";
+};
+export type FuseApiWarningDataWarningsInnerSourceEnum = typeof FuseApiWarningDataWarningsInnerSourceEnum[keyof typeof FuseApiWarningDataWarningsInnerSourceEnum];
 /**
  *
  * @export
@@ -1897,7 +1958,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    exchangePublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Retrieves the Asset Report in JSON format.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -1963,7 +2024,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     getInvestmentHoldings: (getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
-     * @summary Get investment holdings
+     * @summary Get investment transactions
      * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2050,7 +2111,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
+    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
     /**
      * Retrieves the Asset Report in JSON format.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -2116,7 +2177,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentHoldingsResponse>>;
     /**
      *
-     * @summary Get investment holdings
+     * @summary Get investment transactions
      * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2203,7 +2264,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>;
+    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>;
     /**
      * Retrieves the Asset Report in JSON format.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -2269,7 +2330,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: any): AxiosPromise<GetInvestmentHoldingsResponse>;
     /**
      *
-     * @summary Get investment holdings
+     * @summary Get investment transactions
      * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2363,7 +2424,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    exchangePublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
+    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
     /**
      * Retrieves the Asset Report in JSON format.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -2437,7 +2498,7 @@ export declare class FuseApi extends BaseAPI {
     getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentHoldingsResponse, any>>;
     /**
      *
-     * @summary Get investment holdings
+     * @summary Get investment transactions
      * @param {GetInvestmentTransactionsRequest} getInvestmentTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

@@ -11,8 +11,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-// Some imports not used depending on template conditions
-// @ts-ignore
 import globalAxios from 'axios';
 export const BASE_PATH = "https://sandbox-api.letsfuse.com".replace(/\/+$/, "");
 /**
