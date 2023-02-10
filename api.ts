@@ -156,25 +156,13 @@ export interface CreateLinkTokenRequest {
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
-    'institution_id'?: string;
+    'institution_id': string;
     /**
-     * Unique identifier for the user or business account.
-     * @type {string}
+     * 
+     * @type {Entity}
      * @memberof CreateLinkTokenRequest
      */
-    'entity_id': string;
-    /**
-     * The name of the user or business account.
-     * @type {string}
-     * @memberof CreateLinkTokenRequest
-     */
-    'entity_name'?: string;
-    /**
-     * Email address associated with the user or business account.
-     * @type {string}
-     * @memberof CreateLinkTokenRequest
-     */
-    'entity_email'?: string;
+    'entity': Entity;
     /**
      * This field is used to provide the user with a link to reconnect their financial account. It may be included in an automated email sent by Fuse to the entity\'s registered email address. It\'s important to note that the reconnection_url should be a valid URL and can only be used once to reconnect the disconnected account.
      * @type {string}
@@ -186,7 +174,7 @@ export interface CreateLinkTokenRequest {
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
-    'client_name'?: string;
+    'client_name': string;
     /**
      * The session client secret created from the \'Create session client secret\' endpoint
      * @type {string}
@@ -294,6 +282,31 @@ export interface CreateSessionResponse {
      * @memberof CreateSessionResponse
      */
     'request_id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface Entity
+ */
+export interface Entity {
+    /**
+     * Unique identifier for the user or business account.
+     * @type {string}
+     * @memberof Entity
+     */
+    'id': string;
+    /**
+     * Name for the user or business account.
+     * @type {string}
+     * @memberof Entity
+     */
+    'name'?: string;
+    /**
+     * Email address associated with the user or business account.
+     * @type {string}
+     * @memberof Entity
+     */
+    'email'?: string;
 }
 /**
  * 
