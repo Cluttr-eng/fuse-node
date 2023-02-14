@@ -1040,6 +1040,78 @@ export type FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = typeof Financia
 /**
  * 
  * @export
+ * @interface FinancialInstitution
+ */
+export interface FinancialInstitution {
+    /**
+     * Unique identifier for the financial institution id.
+     * @type {string}
+     * @memberof FinancialInstitution
+     */
+    'id': string;
+    /**
+     * Name for the financial institution.
+     * @type {string}
+     * @memberof FinancialInstitution
+     */
+    'name': string;
+    /**
+     * 
+     * @type {FinancialInstitutionLogo}
+     * @memberof FinancialInstitution
+     */
+    'logo'?: FinancialInstitutionLogo;
+    /**
+     * Website of the financial institution.
+     * @type {string}
+     * @memberof FinancialInstitution
+     */
+    'website'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface FinancialInstitutionLogo
+ */
+export interface FinancialInstitutionLogo {
+    /**
+     * Base64-encoded image data or URL for the image.
+     * @type {string}
+     * @memberof FinancialInstitutionLogo
+     */
+    'image': string;
+    /**
+     * Type of the image.
+     * @type {string}
+     * @memberof FinancialInstitutionLogo
+     */
+    'type': FinancialInstitutionLogoTypeEnum;
+    /**
+     * Optional format of the image, if known.
+     * @type {string}
+     * @memberof FinancialInstitutionLogo
+     */
+    'format'?: FinancialInstitutionLogoFormatEnum;
+}
+
+export const FinancialInstitutionLogoTypeEnum = {
+    Base64: 'base64',
+    Url: 'url'
+} as const;
+
+export type FinancialInstitutionLogoTypeEnum = typeof FinancialInstitutionLogoTypeEnum[keyof typeof FinancialInstitutionLogoTypeEnum];
+export const FinancialInstitutionLogoFormatEnum = {
+    Png: 'png',
+    Jpeg: 'jpeg',
+    Gif: 'gif',
+    Svgxml: 'svg+xml'
+} as const;
+
+export type FinancialInstitutionLogoFormatEnum = typeof FinancialInstitutionLogoFormatEnum[keyof typeof FinancialInstitutionLogoFormatEnum];
+
+/**
+ * 
+ * @export
  * @interface FuseApiError
  */
 export interface FuseApiError {
@@ -2459,6 +2531,46 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Receive metadata for a financial institution
+         * @summary Get a financial institution
+         * @param {string} institutionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialInstitution: async (institutionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'institutionId' is not null or undefined
+            assertParamExists('getFinancialInstitution', 'institutionId', institutionId)
+            const localVarPath = `/v1/financial_connections/institutions/{institution_id}`
+                .replace(`{${"institution_id"}}`, encodeURIComponent(String(institutionId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 
          * @summary Get investment holdings
          * @param {GetInvestmentHoldingsRequest} getInvestmentHoldingsRequest 
@@ -2891,6 +3003,17 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * Receive metadata for a financial institution
+         * @summary Get a financial institution
+         * @param {string} institutionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FinancialInstitution>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialInstitution(institutionId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * 
          * @summary Get investment holdings
          * @param {GetInvestmentHoldingsRequest} getInvestmentHoldingsRequest 
@@ -3091,6 +3214,16 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: any): AxiosPromise<GetTransactionsResponse> {
             return localVarFp.getFinancialConnectionsTransactions(getTransactionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Receive metadata for a financial institution
+         * @summary Get a financial institution
+         * @param {string} institutionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialInstitution(institutionId: string, options?: any): AxiosPromise<FinancialInstitution> {
+            return localVarFp.getFinancialInstitution(institutionId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3309,6 +3442,18 @@ export class FuseApi extends BaseAPI {
      */
     public getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsTransactions(getTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Receive metadata for a financial institution
+     * @summary Get a financial institution
+     * @param {string} institutionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getFinancialInstitution(institutionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
