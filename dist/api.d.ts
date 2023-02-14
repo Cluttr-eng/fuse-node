@@ -1020,6 +1020,74 @@ export type FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = typeof Financia
 /**
  *
  * @export
+ * @interface FinancialInstitution
+ */
+export interface FinancialInstitution {
+    /**
+     * Unique identifier for the financial institution id.
+     * @type {string}
+     * @memberof FinancialInstitution
+     */
+    'id': string;
+    /**
+     * Name for the financial institution.
+     * @type {string}
+     * @memberof FinancialInstitution
+     */
+    'name': string;
+    /**
+     *
+     * @type {FinancialInstitutionLogo}
+     * @memberof FinancialInstitution
+     */
+    'logo'?: FinancialInstitutionLogo;
+    /**
+     * Website of the financial institution.
+     * @type {string}
+     * @memberof FinancialInstitution
+     */
+    'website'?: string;
+}
+/**
+ *
+ * @export
+ * @interface FinancialInstitutionLogo
+ */
+export interface FinancialInstitutionLogo {
+    /**
+     * Base64-encoded image data or URL for the image.
+     * @type {string}
+     * @memberof FinancialInstitutionLogo
+     */
+    'image': string;
+    /**
+     * Type of the image.
+     * @type {string}
+     * @memberof FinancialInstitutionLogo
+     */
+    'type': FinancialInstitutionLogoTypeEnum;
+    /**
+     * Optional format of the image, if known.
+     * @type {string}
+     * @memberof FinancialInstitutionLogo
+     */
+    'format'?: FinancialInstitutionLogoFormatEnum;
+}
+export declare const FinancialInstitutionLogoTypeEnum: {
+    readonly Base64: "base64";
+    readonly Url: "url";
+};
+export type FinancialInstitutionLogoTypeEnum = typeof FinancialInstitutionLogoTypeEnum[keyof typeof FinancialInstitutionLogoTypeEnum];
+export declare const FinancialInstitutionLogoFormatEnum: {
+    readonly Png: "png";
+    readonly Jpeg: "jpeg";
+    readonly Gif: "gif";
+    readonly Svgxml: "svg+xml";
+};
+export type FinancialInstitutionLogoFormatEnum = typeof FinancialInstitutionLogoFormatEnum[keyof typeof FinancialInstitutionLogoFormatEnum];
+/**
+ *
+ * @export
  * @interface FuseApiError
  */
 export interface FuseApiError {
@@ -2028,6 +2096,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     getFinancialConnectionsTransactions: (getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * Receive metadata for a financial institution
+     * @summary Get a financial institution
+     * @param {string} institutionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinancialInstitution: (institutionId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      *
      * @summary Get investment holdings
      * @param {GetInvestmentHoldingsRequest} getInvestmentHoldingsRequest
@@ -2181,6 +2257,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTransactionsResponse>>;
     /**
+     * Receive metadata for a financial institution
+     * @summary Get a financial institution
+     * @param {string} institutionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FinancialInstitution>>;
+    /**
      *
      * @summary Get investment holdings
      * @param {GetInvestmentHoldingsRequest} getInvestmentHoldingsRequest
@@ -2333,6 +2417,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: any): AxiosPromise<GetTransactionsResponse>;
+    /**
+     * Receive metadata for a financial institution
+     * @summary Get a financial institution
+     * @param {string} institutionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinancialInstitution(institutionId: string, options?: any): AxiosPromise<FinancialInstitution>;
     /**
      *
      * @summary Get investment holdings
@@ -2500,6 +2592,15 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetTransactionsResponse, any>>;
+    /**
+     * Receive metadata for a financial institution
+     * @summary Get a financial institution
+     * @param {string} institutionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<FinancialInstitution, any>>;
     /**
      *
      * @summary Get investment holdings
