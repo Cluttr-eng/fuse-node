@@ -335,6 +335,25 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
 /**
  *
  * @export
+ * @interface FinancialConnectionData
+ */
+export interface FinancialConnectionData {
+    /**
+     * The financial connection id.
+     * @type {string}
+     * @memberof FinancialConnectionData
+     */
+    'id'?: string;
+    /**
+     * The Fuse Institution ID associated with the financial connection
+     * @type {string}
+     * @memberof FinancialConnectionData
+     */
+    'institution_id'?: string;
+}
+/**
+ *
+ * @export
  * @interface FinancialConnectionsAccount
  */
 export interface FinancialConnectionsAccount {
@@ -1480,6 +1499,12 @@ export interface GetFinancialConnectionsAccountDetailsResponse {
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
     'account_details'?: Array<FinancialConnectionsAccountDetails>;
+    /**
+     *
+     * @type {FinancialConnectionData}
+     * @memberof GetFinancialConnectionsAccountDetailsResponse
+     */
+    'financial_connection'?: FinancialConnectionData;
 }
 /**
  *
@@ -1506,6 +1531,12 @@ export interface GetFinancialConnectionsAccountsResponse {
      * @memberof GetFinancialConnectionsAccountsResponse
      */
     'accounts'?: Array<FinancialConnectionsAccount>;
+    /**
+     *
+     * @type {FinancialConnectionData}
+     * @memberof GetFinancialConnectionsAccountsResponse
+     */
+    'financial_connection'?: FinancialConnectionData;
 }
 /**
  *
