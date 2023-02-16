@@ -335,6 +335,25 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
 /**
  *
  * @export
+ * @interface FinancialConnectionData
+ */
+export interface FinancialConnectionData {
+    /**
+     * The financial connection id.
+     * @type {string}
+     * @memberof FinancialConnectionData
+     */
+    'id'?: string;
+    /**
+     * The Fuse Institution ID associated with the financial connection
+     * @type {string}
+     * @memberof FinancialConnectionData
+     */
+    'institution_id'?: string;
+}
+/**
+ *
+ * @export
  * @interface FinancialConnectionsAccount
  */
 export interface FinancialConnectionsAccount {
@@ -1480,6 +1499,12 @@ export interface GetFinancialConnectionsAccountDetailsResponse {
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
     'account_details'?: Array<FinancialConnectionsAccountDetails>;
+    /**
+     *
+     * @type {FinancialConnectionData}
+     * @memberof GetFinancialConnectionsAccountDetailsResponse
+     */
+    'financial_connection'?: FinancialConnectionData;
 }
 /**
  *
@@ -1506,6 +1531,12 @@ export interface GetFinancialConnectionsAccountsResponse {
      * @memberof GetFinancialConnectionsAccountsResponse
      */
     'accounts'?: Array<FinancialConnectionsAccount>;
+    /**
+     *
+     * @type {FinancialConnectionData}
+     * @memberof GetFinancialConnectionsAccountsResponse
+     */
+    'financial_connection'?: FinancialConnectionData;
 }
 /**
  *
@@ -1564,6 +1595,19 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
     'owners'?: Array<FinancialConnectionsOwner>;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialInstitutionResponse
+ */
+export interface GetFinancialInstitutionResponse {
+    /**
+     *
+     * @type {FinancialInstitution}
+     * @memberof GetFinancialInstitutionResponse
+     */
+    'financial_institution'?: FinancialInstitution;
 }
 /**
  *
@@ -2263,7 +2307,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FinancialInstitution>>;
+    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialInstitutionResponse>>;
     /**
      *
      * @summary Get investment holdings
@@ -2424,7 +2468,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialInstitution(institutionId: string, options?: any): AxiosPromise<FinancialInstitution>;
+    getFinancialInstitution(institutionId: string, options?: any): AxiosPromise<GetFinancialInstitutionResponse>;
     /**
      *
      * @summary Get investment holdings
@@ -2600,7 +2644,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<FinancialInstitution, any>>;
+    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialInstitutionResponse, any>>;
     /**
      *
      * @summary Get investment holdings
