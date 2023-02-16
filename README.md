@@ -18,26 +18,23 @@ Documentation for each method, request param, and response field are available i
 import {Environment, FuseApi} from "fuse-node";
 
 const fuseApi = new FuseApi({
-    basePath: Environment.SANDBOX,
-    fuse: {
-        apiKey: "my-fuse-api-key",
-        clientId: "my-fuse-client-id"
+    basePath: "https://sandbox-api.letsfuse.com"
+    baseOptions: {
+        headers: {
+            "Fuse-Client-Id": "my-fuse-client",
+            "Fuse-Api-Key": "my-fuse-api-key",
+            "Content-Type": "application/json",
+            "Plaid-Client-Id": "my-plaid-client-id0",
+            "Plaid-Secret": "my-plaid-secret",
+            "Teller-Application-Id": "my-teller-application-id",
+            "Teller-Certificate": "my-teller-certificate",
+            "Teller-Private-Key": "my-teller-private-key",
+            "Teller-Token-Signing-Key": "my-teller-token-signing-key",
+            "Teller-Signing-Secret": "my-teller-signing-secret",
+            "Mx-Api-Key": "my-mx-api-key",
+            "Mx-Client-Id": "my-mx-client-id"
+        },
     },
-    plaid: {
-        clientId: "my-plaid-client-id",
-        secret: "my-plaid-secret"
-    },
-    teller: {
-        applicationId: "my-application-id",
-        certificate: "my-certificate",
-        privateKey: "my-private-key",
-        tokenSigningKey: "my-token-signing-key",
-        signingSecret: "my-signing-secret"
-    },
-    mx: {
-        apiKey: "my-api-key",
-        clientId: "my-client-id"
-    }
 });
 ```
 <br/>
@@ -45,57 +42,41 @@ const fuseApi = new FuseApi({
 ### Creating a session
 ```typescript
 const response = await fuseApi.createSession({
-    supported_financial_institution_aggregators: ["PLAID", "TELLER", "MX"],
-    plaid: {
-      products: ["transactions"],
-    },
-    mx: {
-      supports_transaction_history: true,
-      supports_account_identification: false,
-      supports_account_statement: true,
-      supports_account_verification: false
-    }
-  } as CreateSessionRequest);
-  
-  const session = response.data as CreateSessionResponse;
+    supported_financial_institution_aggregators: ["plaid", "teller", "mx"],
+    products: ["account_details", "transactions"]
+} as CreateSessionRequest);
 
-  console.log(session.client_secret)
+const session = response.data as CreateSessionResponse;
+
+console.log(session.client_secret)
 ```
 <br/>
 
 ### Creating a link token
 ```typescript
-  const response = await fuseApi.createSessionLinkToken({
+const response = await fuseApi.createLinkToken({
     institution_id: "fuse-institution-id-from-frontend",
     session_client_secret: "session-client-secret",
-    user_id: "my-unique-user-id",
-    webhook_url: "https://www.my-domain.com/webhook",
-    plaid: {
-      config: {
-        client_name: "my-company-name"
-      }
+    entity: {
+        id: "12345"
     },
-    mx: {
-      config: {
-        color_scheme: "light"
-      }
-    }
-  } as CreateSessionLinkTokenRequest);
+    client_name: "my-company-name"
+} as CreateLinkTokenRequest);
 
-  const linkTokenData = response.data as CreateSessionLinkTokenResponse;
+const linkTokenData = response.data as CreateLinkTokenResponse;
 
-  console.log(linkTokenData.link_token);
+console.log(linkTokenData.link_token);
 ```
 
 <br/>
 
 ### Exchanging a public token
 ```typescript
-const response = await fuseApi.exchangeSessionPublicToken({
+const response = await fuseApi.exchangeFinancialConnectionsPublicToken({
     public_token: "public-token-from-frontend"
-} as ExchangeSessionPublicTokenRequest);
+} as ExchangeFinancialConnectionsPublicTokenRequest);
 
-const responseData = response.data as ExchangeSessionPublicTokenResponse;
+const responseData = response.data as ExchangeFinancialConnectionsPublicTokenResponse;
 
 console.log(responseData.access_token);
 console.log(responseData.financial_connection_id);
