@@ -1479,11 +1479,99 @@ export interface GetEntityResponse {
      */
     'institution_ids'?: Array<string>;
     /**
+     *
+     * @type {GetEntityResponseAggregatorAccessTokens}
+     * @memberof GetEntityResponse
+     */
+    'aggregator_access_tokens'?: GetEntityResponseAggregatorAccessTokens;
+    /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetEntityResponse
      */
     'request_id'?: string;
+}
+/**
+ * Data needed to query data from the various aggregators
+ * @export
+ * @interface GetEntityResponseAggregatorAccessTokens
+ */
+export interface GetEntityResponseAggregatorAccessTokens {
+    /**
+     *
+     * @type {GetEntityResponseAggregatorAccessTokensPlaid}
+     * @memberof GetEntityResponseAggregatorAccessTokens
+     */
+    'plaid'?: GetEntityResponseAggregatorAccessTokensPlaid;
+    /**
+     *
+     * @type {GetEntityResponseAggregatorAccessTokensTeller}
+     * @memberof GetEntityResponseAggregatorAccessTokens
+     */
+    'teller'?: GetEntityResponseAggregatorAccessTokensTeller;
+    /**
+     *
+     * @type {GetEntityResponseAggregatorAccessTokensMx}
+     * @memberof GetEntityResponseAggregatorAccessTokens
+     */
+    'mx'?: GetEntityResponseAggregatorAccessTokensMx;
+}
+/**
+ * Data needed to query data from MX
+ * @export
+ * @interface GetEntityResponseAggregatorAccessTokensMx
+ */
+export interface GetEntityResponseAggregatorAccessTokensMx {
+    /**
+     * User GUID for MX
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensMx
+     */
+    'user_guid'?: string;
+    /**
+     * Member GUID for MX
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensMx
+     */
+    'member_guid'?: string;
+}
+/**
+ * Data needed to query data from Plaid
+ * @export
+ * @interface GetEntityResponseAggregatorAccessTokensPlaid
+ */
+export interface GetEntityResponseAggregatorAccessTokensPlaid {
+    /**
+     * Access token for Plaid
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensPlaid
+     */
+    'access_token'?: string;
+    /**
+     * ID of the item associated with the access token in Plaid
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensPlaid
+     */
+    'item_id'?: string;
+}
+/**
+ * Data needed to query data from Teller
+ * @export
+ * @interface GetEntityResponseAggregatorAccessTokensTeller
+ */
+export interface GetEntityResponseAggregatorAccessTokensTeller {
+    /**
+     * Access token for Teller
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensTeller
+     */
+    'access_token'?: string;
+    /**
+     * Enrollment ID associated with the access token in Teller
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensTeller
+     */
+    'enrollment_id'?: string;
 }
 /**
  *
