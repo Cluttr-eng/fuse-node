@@ -82,6 +82,12 @@ export interface CreateAssetReportResponse {
      * @memberof CreateAssetReportResponse
      */
     'asset_report_id'?: string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof CreateAssetReportResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -144,6 +150,12 @@ export interface CreateEntityResponse {
      * @memberof CreateEntityResponse
      */
     'institution_ids'?: Array<string>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof CreateEntityResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -233,7 +245,7 @@ export interface CreateLinkTokenResponse {
      */
     'link_token'?: string;
     /**
-     * Used for debugging purposes
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof CreateLinkTokenResponse
      */
@@ -277,7 +289,7 @@ export interface CreateSessionResponse {
      */
     'client_secret'?: string;
     /**
-     * Used for debugging purposes
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof CreateSessionResponse
      */
@@ -340,7 +352,7 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
      */
     'financial_connection_id'?: string;
     /**
-     * Used for debugging purposes
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
@@ -1338,6 +1350,12 @@ export interface GetAssetReportResponse {
      * @memberof GetAssetReportResponse
      */
     'report'?: GetAssetReportResponseReport;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetAssetReportResponse
+     */
+    'request_id'?: string;
 }
 /**
  * The Asset Report in JSON format.
@@ -1493,6 +1511,12 @@ export interface GetEntityResponse {
      * @memberof GetEntityResponse
      */
     'institution_ids'?: Array<string>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetEntityResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1506,6 +1530,12 @@ export interface GetFinancialConnectionsAccountBalanceResponse {
      * @memberof GetFinancialConnectionsAccountBalanceResponse
      */
     'balances'?: Array<FinancialConnectionsAccountBalance>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountBalanceResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1538,6 +1568,12 @@ export interface GetFinancialConnectionsAccountDetailsResponse {
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
     'financial_connection'?: FinancialConnectionData;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountDetailsResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1570,6 +1606,12 @@ export interface GetFinancialConnectionsAccountsResponse {
      * @memberof GetFinancialConnectionsAccountsResponse
      */
     'financial_connection'?: FinancialConnectionData;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountsResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1628,6 +1670,12 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
     'owners'?: Array<FinancialConnectionsOwner>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1641,6 +1689,12 @@ export interface GetFinancialInstitutionResponse {
      * @memberof GetFinancialInstitutionResponse
      */
     'financial_institution'?: FinancialInstitution;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialInstitutionResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1685,6 +1739,12 @@ export interface GetInvestmentHoldingsResponse {
      * @memberof GetInvestmentHoldingsResponse
      */
     'securities'?: Array<FinancialConnectionsInvestmentSecurity>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetInvestmentHoldingsResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1723,6 +1783,12 @@ export interface GetInvestmentTransactionsResponse {
      * @memberof GetInvestmentTransactionsResponse
      */
     'securities'?: Array<FinancialConnectionsInvestmentSecurity>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetInvestmentTransactionsResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1749,6 +1815,12 @@ export interface GetLiabilitiesResponse {
      * @memberof GetLiabilitiesResponse
      */
     'liabilities'?: Array<FinancialConnectionsAccountLiability>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetLiabilitiesResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1799,6 +1871,12 @@ export interface GetTransactionsResponse {
      * @memberof GetTransactionsResponse
      */
     'has_next'?: boolean;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetTransactionsResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1935,6 +2013,12 @@ export interface SyncFinancialConnectionsDataResponse {
      * @memberof SyncFinancialConnectionsDataResponse
      */
     'message'?: string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof SyncFinancialConnectionsDataResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -1997,6 +2081,12 @@ export interface SyncTransactionsResponse {
      * @memberof SyncTransactionsResponse
      */
     'has_next'?: boolean;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof SyncTransactionsResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -2079,6 +2169,12 @@ export interface UpdateEntityResponse {
      * @memberof UpdateEntityResponse
      */
     'institution_ids'?: Array<string>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof UpdateEntityResponse
+     */
+    'request_id'?: string;
 }
 
 /**
