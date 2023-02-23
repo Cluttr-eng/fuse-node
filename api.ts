@@ -24,6 +24,177 @@ import type { RequestArgs } from './base';
 import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 
 /**
+ * The account\'s subtype
+ * @export
+ * @enum {string}
+ */
+
+export const AccountSubType = {
+    Checking: 'checking',
+    Savings: 'savings',
+    MoneyMarket: 'money_market',
+    CertificateOfDeposit: 'certificate_of_deposit',
+    Treasury: 'treasury',
+    CreditCard: 'credit_card',
+    Hsa: 'hsa',
+    Paypal: 'paypal',
+    Prepaid: 'prepaid',
+    CashManagement: 'cash_management',
+    Ebt: 'ebt',
+    Auto: 'auto',
+    Business: 'business',
+    Commercial: 'commercial',
+    Construction: 'construction',
+    Consumer: 'consumer',
+    HomeEquity: 'home_equity',
+    Loan: 'loan',
+    Mortgage: 'mortgage',
+    Overdraft: 'overdraft',
+    LineOfCredit: 'line_of_credit',
+    Student: 'student',
+    _529: '529',
+    _401A: '401_a',
+    _401K: '401_k',
+    _403B: '403_b',
+    _457B: '457_b',
+    Brokerage: 'brokerage',
+    CashIsa: 'cash_isa',
+    CryptoExchange: 'crypto_exchange',
+    EducationSavingAccount: 'education_saving_account',
+    FixedAnnuity: 'fixed_annuity',
+    Gic: 'gic',
+    HealthReimbursementArrangement: 'health_reimbursement_arrangement',
+    Ira: 'ira',
+    Isa: 'isa',
+    Keogh: 'keogh',
+    Lif: 'lif',
+    LifeInsurance: 'life_insurance',
+    Lira: 'lira',
+    Lrif: 'lrif',
+    Lrsp: 'lrsp',
+    MutualFund: 'mutual_fund',
+    NonCustodialWallet: 'non_custodial_wallet',
+    NonTaxableBrokerageAccount: 'non_taxable_brokerage_account',
+    OtherAnnuity: 'other_annuity',
+    OtherInsurance: 'other_insurance',
+    Pension: 'pension',
+    Prif: 'prif',
+    ProfitSharingPlan: 'profit_sharing_plan',
+    Qshr: 'qshr',
+    Rdsp: 'rdsp',
+    Resp: 'resp',
+    Retirement: 'retirement',
+    Rlif: 'rlif',
+    RothIra: 'roth_ira',
+    Roth401K: 'roth_401_k',
+    Rrif: 'rrif',
+    Rrsp: 'rrsp',
+    Sarsep: 'sarsep',
+    SepIra: 'sep_ira',
+    SimpleIra: 'simple_ira',
+    Sipp: 'sipp',
+    StockPlan: 'stock_plan',
+    Tfsa: 'tfsa',
+    Trust: 'trust',
+    Ugma: 'ugma',
+    Utma: 'utma',
+    VariableAnnuity: 'variable_annuity',
+    SmallBusiness: 'small_business',
+    Personal: 'personal',
+    PersonalWithCollateral: 'personal_with_collateral',
+    _457: '457',
+    RolloverIra: 'rollover_ira',
+    Taxable: 'taxable',
+    NonTaxable: 'non_taxable',
+    EmployeeStockOwnershipPlan: 'employee_stock_ownership_plan',
+    Individual: 'individual',
+    CashManagementAccount: 'cash_management_account',
+    EmployeeStockPurchasePlan: 'employee_stock_purchase_plan',
+    RegisteredEducationSavingsPlan: 'registered_education_savings_plan',
+    FixedAnnuityTraditionalIra: 'fixed_annuity_traditional_ira',
+    InheritedTraditionalIra: 'inherited_traditional_ira',
+    FixedAnnuityRothIra: 'fixed_annuity_roth_ira',
+    VariableAnnuityRothIra: 'variable_annuity_roth_ira',
+    InheritedRothIra: 'inherited_roth_ira',
+    AdvisoryAccount: 'advisory_account',
+    BrokerageMargin: 'brokerage_margin',
+    CharitableGiftAccount: 'charitable_gift_account',
+    ChurchAccount: 'church_account',
+    Conservatorship: 'conservatorship',
+    Custodial: 'custodial',
+    DefinedBenefitPlan: 'defined_benefit_plan',
+    DefinedContributionPlan: 'defined_contribution_plan',
+    Educational: 'educational',
+    Estate: 'estate',
+    Executor: 'executor',
+    GroupRetirementSavingsPlan: 'group_retirement_savings_plan',
+    GuaranteedInvestmentCertificate: 'guaranteed_investment_certificate',
+    IndexedAnnuity: 'indexed_annuity',
+    InvestmentClub: 'investment_club',
+    IrrevocableTrust: 'irrevocable_trust',
+    JointTenantsByEntirety: 'joint_tenants_by_entirety',
+    JointTenantsCommunityProperty: 'joint_tenants_community_property',
+    JointTenantsInCommon: 'joint_tenants_in_common',
+    JointTenantsWithRightsOfSurvivorship: 'joint_tenants_with_rights_of_survivorship',
+    KeoughPlan: 'keough_plan',
+    LivingTrust: 'living_trust',
+    LockedInRetirementAccount: 'locked_in_retirement_account',
+    LockedInRetirementInvestmentFund: 'locked_in_retirement_investment_fund',
+    LockedInRetirementSavingsAccount: 'locked_in_retirement_savings_account',
+    MoneyPurchasePlan: 'money_purchase_plan',
+    Partnership: 'partnership',
+    _409A: '409_a',
+    Rpp: 'rpp',
+    RevocableTrust: 'revocable_trust',
+    RothConversion: 'roth_conversion',
+    SoleProprietorship: 'sole_proprietorship',
+    SpousalIra: 'spousal_ira',
+    SpousalRothIra: 'spousal_roth_ira',
+    TestamentaryTrust: 'testamentary_trust',
+    ThriftSavingsPlan: 'thrift_savings_plan',
+    InheritedAnnuity: 'inherited_annuity',
+    CorporateAccount: 'corporate_account',
+    LimitedLiabilityAccount: 'limited_liability_account',
+    Boat: 'boat',
+    Powersports: 'powersports',
+    Rv: 'rv',
+    Heloc: 'heloc',
+    VehicleInsurance: 'vehicle_insurance',
+    Disability: 'disability',
+    Health: 'health',
+    LongTermCare: 'long_term_care',
+    PropertyAndCasualty: 'property_and_casualty',
+    UniversalLife: 'universal_life',
+    TermLife: 'term_life',
+    WholeLife: 'whole_life',
+    AccidentalDeathAndDismemberment: 'accidental_death_and_dismemberment',
+    VariableUniversalLife: 'variable_universal_life',
+    Other: 'other'
+} as const;
+
+export type AccountSubType = typeof AccountSubType[keyof typeof AccountSubType];
+
+
+/**
+ * The account\'s type
+ * @export
+ * @enum {string}
+ */
+
+export const AccountType = {
+    Depository: 'depository',
+    Credit: 'credit',
+    Loan: 'loan',
+    Investment: 'investment',
+    Insurance: 'insurance',
+    Property: 'property',
+    Other: 'other'
+} as const;
+
+export type AccountType = typeof AccountType[keyof typeof AccountType];
+
+
+/**
  * 
  * @export
  * @enum {string}
@@ -414,17 +585,17 @@ export interface FinancialConnectionsAccount {
      */
     'name'?: string;
     /**
-     * The account\'s type e.g depository.
-     * @type {string}
+     * 
+     * @type {AccountType}
      * @memberof FinancialConnectionsAccount
      */
-    'type'?: string;
+    'type'?: AccountType;
     /**
-     * The account\'s subtype
-     * @type {string}
+     * 
+     * @type {AccountSubType}
      * @memberof FinancialConnectionsAccount
      */
-    'subtype'?: string;
+    'subtype'?: AccountSubType;
     /**
      * 
      * @type {FinancialConnectionsAccountBalance}
@@ -432,6 +603,8 @@ export interface FinancialConnectionsAccount {
      */
     'balance'?: FinancialConnectionsAccountBalance;
 }
+
+
 /**
  * 
  * @export
@@ -563,17 +736,17 @@ export interface FinancialConnectionsAccountLiability {
      */
     'name'?: string;
     /**
-     * The account\'s type e.g depository.
-     * @type {string}
+     * 
+     * @type {AccountType}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'type'?: string;
+    'type'?: AccountType;
     /**
-     * The account\'s subtype
-     * @type {string}
+     * 
+     * @type {AccountSubType}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'subtype'?: string;
+    'subtype'?: AccountSubType;
     /**
      * 
      * @type {FinancialConnectionsAccountBalance}
@@ -623,6 +796,8 @@ export interface FinancialConnectionsAccountLiability {
      */
     'minimum_payment_amount'?: number;
 }
+
+
 /**
  * 
  * @export

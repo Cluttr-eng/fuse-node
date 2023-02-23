@@ -14,6 +14,169 @@ import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import type { RequestArgs } from './base';
 import { BaseAPI } from './base';
 /**
+ * The account\'s subtype
+ * @export
+ * @enum {string}
+ */
+export declare const AccountSubType: {
+    readonly Checking: "checking";
+    readonly Savings: "savings";
+    readonly MoneyMarket: "money_market";
+    readonly CertificateOfDeposit: "certificate_of_deposit";
+    readonly Treasury: "treasury";
+    readonly CreditCard: "credit_card";
+    readonly Hsa: "hsa";
+    readonly Paypal: "paypal";
+    readonly Prepaid: "prepaid";
+    readonly CashManagement: "cash_management";
+    readonly Ebt: "ebt";
+    readonly Auto: "auto";
+    readonly Business: "business";
+    readonly Commercial: "commercial";
+    readonly Construction: "construction";
+    readonly Consumer: "consumer";
+    readonly HomeEquity: "home_equity";
+    readonly Loan: "loan";
+    readonly Mortgage: "mortgage";
+    readonly Overdraft: "overdraft";
+    readonly LineOfCredit: "line_of_credit";
+    readonly Student: "student";
+    readonly _529: "529";
+    readonly _401A: "401_a";
+    readonly _401K: "401_k";
+    readonly _403B: "403_b";
+    readonly _457B: "457_b";
+    readonly Brokerage: "brokerage";
+    readonly CashIsa: "cash_isa";
+    readonly CryptoExchange: "crypto_exchange";
+    readonly EducationSavingAccount: "education_saving_account";
+    readonly FixedAnnuity: "fixed_annuity";
+    readonly Gic: "gic";
+    readonly HealthReimbursementArrangement: "health_reimbursement_arrangement";
+    readonly Ira: "ira";
+    readonly Isa: "isa";
+    readonly Keogh: "keogh";
+    readonly Lif: "lif";
+    readonly LifeInsurance: "life_insurance";
+    readonly Lira: "lira";
+    readonly Lrif: "lrif";
+    readonly Lrsp: "lrsp";
+    readonly MutualFund: "mutual_fund";
+    readonly NonCustodialWallet: "non_custodial_wallet";
+    readonly NonTaxableBrokerageAccount: "non_taxable_brokerage_account";
+    readonly OtherAnnuity: "other_annuity";
+    readonly OtherInsurance: "other_insurance";
+    readonly Pension: "pension";
+    readonly Prif: "prif";
+    readonly ProfitSharingPlan: "profit_sharing_plan";
+    readonly Qshr: "qshr";
+    readonly Rdsp: "rdsp";
+    readonly Resp: "resp";
+    readonly Retirement: "retirement";
+    readonly Rlif: "rlif";
+    readonly RothIra: "roth_ira";
+    readonly Roth401K: "roth_401_k";
+    readonly Rrif: "rrif";
+    readonly Rrsp: "rrsp";
+    readonly Sarsep: "sarsep";
+    readonly SepIra: "sep_ira";
+    readonly SimpleIra: "simple_ira";
+    readonly Sipp: "sipp";
+    readonly StockPlan: "stock_plan";
+    readonly Tfsa: "tfsa";
+    readonly Trust: "trust";
+    readonly Ugma: "ugma";
+    readonly Utma: "utma";
+    readonly VariableAnnuity: "variable_annuity";
+    readonly SmallBusiness: "small_business";
+    readonly Personal: "personal";
+    readonly PersonalWithCollateral: "personal_with_collateral";
+    readonly _457: "457";
+    readonly RolloverIra: "rollover_ira";
+    readonly Taxable: "taxable";
+    readonly NonTaxable: "non_taxable";
+    readonly EmployeeStockOwnershipPlan: "employee_stock_ownership_plan";
+    readonly Individual: "individual";
+    readonly CashManagementAccount: "cash_management_account";
+    readonly EmployeeStockPurchasePlan: "employee_stock_purchase_plan";
+    readonly RegisteredEducationSavingsPlan: "registered_education_savings_plan";
+    readonly FixedAnnuityTraditionalIra: "fixed_annuity_traditional_ira";
+    readonly InheritedTraditionalIra: "inherited_traditional_ira";
+    readonly FixedAnnuityRothIra: "fixed_annuity_roth_ira";
+    readonly VariableAnnuityRothIra: "variable_annuity_roth_ira";
+    readonly InheritedRothIra: "inherited_roth_ira";
+    readonly AdvisoryAccount: "advisory_account";
+    readonly BrokerageMargin: "brokerage_margin";
+    readonly CharitableGiftAccount: "charitable_gift_account";
+    readonly ChurchAccount: "church_account";
+    readonly Conservatorship: "conservatorship";
+    readonly Custodial: "custodial";
+    readonly DefinedBenefitPlan: "defined_benefit_plan";
+    readonly DefinedContributionPlan: "defined_contribution_plan";
+    readonly Educational: "educational";
+    readonly Estate: "estate";
+    readonly Executor: "executor";
+    readonly GroupRetirementSavingsPlan: "group_retirement_savings_plan";
+    readonly GuaranteedInvestmentCertificate: "guaranteed_investment_certificate";
+    readonly IndexedAnnuity: "indexed_annuity";
+    readonly InvestmentClub: "investment_club";
+    readonly IrrevocableTrust: "irrevocable_trust";
+    readonly JointTenantsByEntirety: "joint_tenants_by_entirety";
+    readonly JointTenantsCommunityProperty: "joint_tenants_community_property";
+    readonly JointTenantsInCommon: "joint_tenants_in_common";
+    readonly JointTenantsWithRightsOfSurvivorship: "joint_tenants_with_rights_of_survivorship";
+    readonly KeoughPlan: "keough_plan";
+    readonly LivingTrust: "living_trust";
+    readonly LockedInRetirementAccount: "locked_in_retirement_account";
+    readonly LockedInRetirementInvestmentFund: "locked_in_retirement_investment_fund";
+    readonly LockedInRetirementSavingsAccount: "locked_in_retirement_savings_account";
+    readonly MoneyPurchasePlan: "money_purchase_plan";
+    readonly Partnership: "partnership";
+    readonly _409A: "409_a";
+    readonly Rpp: "rpp";
+    readonly RevocableTrust: "revocable_trust";
+    readonly RothConversion: "roth_conversion";
+    readonly SoleProprietorship: "sole_proprietorship";
+    readonly SpousalIra: "spousal_ira";
+    readonly SpousalRothIra: "spousal_roth_ira";
+    readonly TestamentaryTrust: "testamentary_trust";
+    readonly ThriftSavingsPlan: "thrift_savings_plan";
+    readonly InheritedAnnuity: "inherited_annuity";
+    readonly CorporateAccount: "corporate_account";
+    readonly LimitedLiabilityAccount: "limited_liability_account";
+    readonly Boat: "boat";
+    readonly Powersports: "powersports";
+    readonly Rv: "rv";
+    readonly Heloc: "heloc";
+    readonly VehicleInsurance: "vehicle_insurance";
+    readonly Disability: "disability";
+    readonly Health: "health";
+    readonly LongTermCare: "long_term_care";
+    readonly PropertyAndCasualty: "property_and_casualty";
+    readonly UniversalLife: "universal_life";
+    readonly TermLife: "term_life";
+    readonly WholeLife: "whole_life";
+    readonly AccidentalDeathAndDismemberment: "accidental_death_and_dismemberment";
+    readonly VariableUniversalLife: "variable_universal_life";
+    readonly Other: "other";
+};
+export type AccountSubType = typeof AccountSubType[keyof typeof AccountSubType];
+/**
+ * The account\'s type
+ * @export
+ * @enum {string}
+ */
+export declare const AccountType: {
+    readonly Depository: "depository";
+    readonly Credit: "credit";
+    readonly Loan: "loan";
+    readonly Investment: "investment";
+    readonly Insurance: "insurance";
+    readonly Property: "property";
+    readonly Other: "other";
+};
+export type AccountType = typeof AccountType[keyof typeof AccountType];
+/**
  *
  * @export
  * @enum {string}
@@ -400,17 +563,17 @@ export interface FinancialConnectionsAccount {
      */
     'name'?: string;
     /**
-     * The account\'s type e.g depository.
-     * @type {string}
+     *
+     * @type {AccountType}
      * @memberof FinancialConnectionsAccount
      */
-    'type'?: string;
+    'type'?: AccountType;
     /**
-     * The account\'s subtype
-     * @type {string}
+     *
+     * @type {AccountSubType}
      * @memberof FinancialConnectionsAccount
      */
-    'subtype'?: string;
+    'subtype'?: AccountSubType;
     /**
      *
      * @type {FinancialConnectionsAccountBalance}
@@ -549,17 +712,17 @@ export interface FinancialConnectionsAccountLiability {
      */
     'name'?: string;
     /**
-     * The account\'s type e.g depository.
-     * @type {string}
+     *
+     * @type {AccountType}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'type'?: string;
+    'type'?: AccountType;
     /**
-     * The account\'s subtype
-     * @type {string}
+     *
+     * @type {AccountSubType}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'subtype'?: string;
+    'subtype'?: AccountSubType;
     /**
      *
      * @type {FinancialConnectionsAccountBalance}
