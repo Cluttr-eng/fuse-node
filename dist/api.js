@@ -22,7 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.Product = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = exports.AccountType = exports.AccountSubType = void 0;
+exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.Product = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -34,7 +34,7 @@ const base_1 = require("./base");
  * @export
  * @enum {string}
  */
-exports.AccountSubType = {
+exports.AccountSubtype = {
     Checking: 'checking',
     Savings: 'savings',
     MoneyMarket: 'money_market',

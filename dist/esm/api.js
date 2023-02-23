@@ -31,7 +31,7 @@ import { BASE_PATH, BaseAPI } from './base';
  * @export
  * @enum {string}
  */
-export const AccountSubType = {
+export const AccountSubtype = {
     Checking: 'checking',
     Savings: 'savings',
     MoneyMarket: 'money_market',

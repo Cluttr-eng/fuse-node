@@ -18,7 +18,7 @@ import { BaseAPI } from './base';
  * @export
  * @enum {string}
  */
-export declare const AccountSubType: {
+export declare const AccountSubtype: {
     readonly Checking: "checking";
     readonly Savings: "savings";
     readonly MoneyMarket: "money_market";
@@ -160,7 +160,7 @@ export declare const AccountSubType: {
     readonly VariableUniversalLife: "variable_universal_life";
     readonly Other: "other";
 };
-export type AccountSubType = typeof AccountSubType[keyof typeof AccountSubType];
+export type AccountSubtype = typeof AccountSubtype[keyof typeof AccountSubtype];
 /**
  * The account\'s type
  * @export
@@ -570,16 +570,16 @@ export interface FinancialConnectionsAccount {
     'type'?: AccountType;
     /**
      *
-     * @type {AccountSubType}
+     * @type {AccountSubtype}
      * @memberof FinancialConnectionsAccount
      */
-    'subtype'?: AccountSubType;
+    'subtype'?: AccountSubtype;
     /**
      *
-     * @type {FinancialConnectionsAccountBalance}
+     * @type {FinancialConnectionsAccountCachedBalance}
      * @memberof FinancialConnectionsAccount
      */
-    'balance'?: FinancialConnectionsAccountBalance;
+    'balance'?: FinancialConnectionsAccountCachedBalance;
 }
 /**
  *
@@ -588,11 +588,17 @@ export interface FinancialConnectionsAccount {
  */
 export interface FinancialConnectionsAccountBalance {
     /**
-     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
+     * Remote Account Id of the transaction, ie Plaid Account Id
      * @type {string}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'available'?: string;
+    'remote_account_id'?: string;
+    /**
+     * Amount after factoring in pending balances
+     * @type {number}
+     * @memberof FinancialConnectionsAccountBalance
+     */
+    'available'?: number;
     /**
      * Amount without factoring in pending balances
      * @type {number}
@@ -605,10 +611,35 @@ export interface FinancialConnectionsAccountBalance {
      * @memberof FinancialConnectionsAccountBalance
      */
     'iso_currency_code'?: string;
+}
+/**
+ *
+ * @export
+ * @interface FinancialConnectionsAccountCachedBalance
+ */
+export interface FinancialConnectionsAccountCachedBalance {
+    /**
+     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountCachedBalance
+     */
+    'available'?: string;
+    /**
+     * Amount without factoring in pending balances
+     * @type {number}
+     * @memberof FinancialConnectionsAccountCachedBalance
+     */
+    'current'?: number;
+    /**
+     * The ISO-4217 currency code of the balance.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountCachedBalance
+     */
+    'iso_currency_code'?: string;
     /**
      * The date of the last update to the balance.
      * @type {string}
-     * @memberof FinancialConnectionsAccountBalance
+     * @memberof FinancialConnectionsAccountCachedBalance
      */
     'last_updated_date'?: string;
 }
@@ -719,16 +750,16 @@ export interface FinancialConnectionsAccountLiability {
     'type'?: AccountType;
     /**
      *
-     * @type {AccountSubType}
+     * @type {AccountSubtype}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'subtype'?: AccountSubType;
+    'subtype'?: AccountSubtype;
     /**
      *
-     * @type {FinancialConnectionsAccountBalance}
+     * @type {FinancialConnectionsAccountCachedBalance}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'balance'?: FinancialConnectionsAccountBalance;
+    'balance'?: FinancialConnectionsAccountCachedBalance;
     /**
      * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
      * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
@@ -933,10 +964,41 @@ export interface FinancialConnectionsInvestmentAccount {
     'subtype'?: string;
     /**
      *
-     * @type {FinancialConnectionsAccountBalance}
+     * @type {FinancialConnectionsInvestmentAccountBalance}
      * @memberof FinancialConnectionsInvestmentAccount
      */
-    'balance'?: FinancialConnectionsAccountBalance;
+    'balance'?: FinancialConnectionsInvestmentAccountBalance;
+}
+/**
+ *
+ * @export
+ * @interface FinancialConnectionsInvestmentAccountBalance
+ */
+export interface FinancialConnectionsInvestmentAccountBalance {
+    /**
+     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentAccountBalance
+     */
+    'available'?: string;
+    /**
+     * Amount without factoring in pending balances
+     * @type {number}
+     * @memberof FinancialConnectionsInvestmentAccountBalance
+     */
+    'current'?: number;
+    /**
+     * The ISO-4217 currency code of the balance.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentAccountBalance
+     */
+    'iso_currency_code'?: string;
+    /**
+     * The date of the last update to the balance.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentAccountBalance
+     */
+    'last_updated_date'?: string;
 }
 /**
  *
