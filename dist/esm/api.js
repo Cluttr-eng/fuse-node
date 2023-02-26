@@ -230,6 +230,9 @@ export const FuseApiWarningDataWarningsInnerSourceEnum = {
     Internal: 'internal',
     Aggregator: 'aggregator'
 };
+export const MigrateFinancialConnectionsTokenRequestAggregatorEnum = {
+    Plaid: 'plaid'
+};
 /**
  *
  * @export
@@ -743,6 +746,40 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         *
+         * @summary Migrate financial connections token
+         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        migrateFinancialConnectionsToken: (migrateFinancialConnectionsTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'migrateFinancialConnectionsTokenRequest' is not null or undefined
+            assertParamExists('migrateFinancialConnectionsToken', 'migrateFinancialConnectionsTokenRequest', migrateFinancialConnectionsTokenRequest);
+            const localVarPath = `/v1/financial_connections/migrate_token`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = serializeDataIfNeeded(migrateFinancialConnectionsTokenRequest, localVarRequestOptions, configuration);
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -1113,6 +1150,19 @@ export const FuseApiFp = function (configuration) {
             });
         },
         /**
+         *
+         * @summary Migrate financial connections token
+         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options);
+                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            });
+        },
+        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -1332,6 +1382,16 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         *
+         * @summary Migrate financial connections token
+         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options) {
+            return localVarFp.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -1549,6 +1609,17 @@ export class FuseApi extends BaseAPI {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest, options) {
         return FuseApiFp(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Migrate financial connections token
+     * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options) {
+        return FuseApiFp(this.configuration).migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Refreshes the Asset Report in JSON format.
