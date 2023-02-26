@@ -440,6 +440,12 @@ export interface CreateSessionRequest {
      * @memberof CreateSessionRequest
      */
     'products'?: Array<Product>;
+    /**
+     * The fuse access token for an existing account integration. This will perform the process to reconnect an existing disconnected account.
+     * @type {string}
+     * @memberof CreateSessionRequest
+     */
+    'access_token'?: string;
 }
 /**
  * 
@@ -2286,6 +2292,88 @@ export interface GetTransactionsResponseDataInnerMerchant {
 /**
  * 
  * @export
+ * @interface MigrateFinancialConnectionsTokenRequest
+ */
+export interface MigrateFinancialConnectionsTokenRequest {
+    /**
+     * Token for existing connection
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenRequest
+     */
+    'token': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenRequest
+     */
+    'aggregator': MigrateFinancialConnectionsTokenRequestAggregatorEnum;
+    /**
+     * 
+     * @type {MigrateFinancialConnectionsTokenRequestEntity}
+     * @memberof MigrateFinancialConnectionsTokenRequest
+     */
+    'entity': MigrateFinancialConnectionsTokenRequestEntity;
+    /**
+     * 
+     * @type {Array<Product>}
+     * @memberof MigrateFinancialConnectionsTokenRequest
+     */
+    'fuse_products': Array<Product>;
+}
+
+export const MigrateFinancialConnectionsTokenRequestAggregatorEnum = {
+    Plaid: 'plaid'
+} as const;
+
+export type MigrateFinancialConnectionsTokenRequestAggregatorEnum = typeof MigrateFinancialConnectionsTokenRequestAggregatorEnum[keyof typeof MigrateFinancialConnectionsTokenRequestAggregatorEnum];
+
+/**
+ * 
+ * @export
+ * @interface MigrateFinancialConnectionsTokenRequestEntity
+ */
+export interface MigrateFinancialConnectionsTokenRequestEntity {
+    /**
+     * Id of the entity
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenRequestEntity
+     */
+    'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface MigrateFinancialConnectionsTokenResponse
+ */
+export interface MigrateFinancialConnectionsTokenResponse {
+    /**
+     * Input token for the existing connection
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenResponse
+     */
+    'input_token': string;
+    /**
+     * Fuse access token for the fuse connection
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenResponse
+     */
+    'fuse_access_token': string;
+    /**
+     * Financial connection id for the fuse connection
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenResponse
+     */
+    'fuse_financial_connection_id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsTokenResponse
+     */
+    'request_id'?: string;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -3120,6 +3208,48 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * 
+         * @summary Migrate financial connections token
+         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        migrateFinancialConnectionsToken: async (migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'migrateFinancialConnectionsTokenRequest' is not null or undefined
+            assertParamExists('migrateFinancialConnectionsToken', 'migrateFinancialConnectionsTokenRequest', migrateFinancialConnectionsTokenRequest)
+            const localVarPath = `/v1/financial_connections/migrate_token`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(migrateFinancialConnectionsTokenRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
          * @param {*} [options] Override http request option.
@@ -3501,6 +3631,17 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * 
+         * @summary Migrate financial connections token
+         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
          * @param {*} [options] Override http request option.
@@ -3709,6 +3850,16 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse> {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Migrate financial connections token
+         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options?: any): AxiosPromise<MigrateFinancialConnectionsTokenResponse> {
+            return localVarFp.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Refreshes the Asset Report in JSON format.
@@ -3943,6 +4094,18 @@ export class FuseApi extends BaseAPI {
      */
     public getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Migrate financial connections token
+     * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
