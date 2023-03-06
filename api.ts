@@ -624,13 +624,13 @@ export interface FinancialConnectionsAccountBalance {
      */
     'remote_account_id'?: string;
     /**
-     * Amount after factoring in pending balances
+     * Amount in cents after factoring in pending balances
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
     'available'?: number;
     /**
-     * Amount without factoring in pending balances
+     * Amount in cents without factoring in pending balances
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
@@ -1755,11 +1755,11 @@ export interface GetEntityResponse {
      */
     'institution_ids'?: Array<string>;
     /**
-     * 
-     * @type {GetEntityResponseAggregatorAccessTokens}
+     * Data needed to query data from the various aggregators
+     * @type {Array<GetEntityResponseAggregatorAccessTokensInner>}
      * @memberof GetEntityResponse
      */
-    'aggregator_access_tokens'?: GetEntityResponseAggregatorAccessTokens;
+    'aggregator_access_tokens'?: Array<GetEntityResponseAggregatorAccessTokensInner>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -1768,84 +1768,90 @@ export interface GetEntityResponse {
     'request_id'?: string;
 }
 /**
- * Data needed to query data from the various aggregators
+ * 
  * @export
- * @interface GetEntityResponseAggregatorAccessTokens
+ * @interface GetEntityResponseAggregatorAccessTokensInner
  */
-export interface GetEntityResponseAggregatorAccessTokens {
+export interface GetEntityResponseAggregatorAccessTokensInner {
+    /**
+     * The fuse financial connection id associated with the aggregator access token
+     * @type {string}
+     * @memberof GetEntityResponseAggregatorAccessTokensInner
+     */
+    'financial_connection_id'?: string;
     /**
      * 
-     * @type {GetEntityResponseAggregatorAccessTokensPlaid}
-     * @memberof GetEntityResponseAggregatorAccessTokens
+     * @type {GetEntityResponseAggregatorAccessTokensInnerPlaid}
+     * @memberof GetEntityResponseAggregatorAccessTokensInner
      */
-    'plaid'?: GetEntityResponseAggregatorAccessTokensPlaid;
+    'plaid'?: GetEntityResponseAggregatorAccessTokensInnerPlaid;
     /**
      * 
-     * @type {GetEntityResponseAggregatorAccessTokensTeller}
-     * @memberof GetEntityResponseAggregatorAccessTokens
+     * @type {GetEntityResponseAggregatorAccessTokensInnerTeller}
+     * @memberof GetEntityResponseAggregatorAccessTokensInner
      */
-    'teller'?: GetEntityResponseAggregatorAccessTokensTeller;
+    'teller'?: GetEntityResponseAggregatorAccessTokensInnerTeller;
     /**
      * 
-     * @type {GetEntityResponseAggregatorAccessTokensMx}
-     * @memberof GetEntityResponseAggregatorAccessTokens
+     * @type {GetEntityResponseAggregatorAccessTokensInnerMx}
+     * @memberof GetEntityResponseAggregatorAccessTokensInner
      */
-    'mx'?: GetEntityResponseAggregatorAccessTokensMx;
+    'mx'?: GetEntityResponseAggregatorAccessTokensInnerMx;
 }
 /**
  * Data needed to query data from MX
  * @export
- * @interface GetEntityResponseAggregatorAccessTokensMx
+ * @interface GetEntityResponseAggregatorAccessTokensInnerMx
  */
-export interface GetEntityResponseAggregatorAccessTokensMx {
+export interface GetEntityResponseAggregatorAccessTokensInnerMx {
     /**
      * User GUID for MX
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensMx
+     * @memberof GetEntityResponseAggregatorAccessTokensInnerMx
      */
     'user_guid'?: string;
     /**
      * Member GUID for MX
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensMx
+     * @memberof GetEntityResponseAggregatorAccessTokensInnerMx
      */
     'member_guid'?: string;
 }
 /**
  * Data needed to query data from Plaid
  * @export
- * @interface GetEntityResponseAggregatorAccessTokensPlaid
+ * @interface GetEntityResponseAggregatorAccessTokensInnerPlaid
  */
-export interface GetEntityResponseAggregatorAccessTokensPlaid {
+export interface GetEntityResponseAggregatorAccessTokensInnerPlaid {
     /**
      * Access token for Plaid
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensPlaid
+     * @memberof GetEntityResponseAggregatorAccessTokensInnerPlaid
      */
     'access_token'?: string;
     /**
      * ID of the item associated with the access token in Plaid
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensPlaid
+     * @memberof GetEntityResponseAggregatorAccessTokensInnerPlaid
      */
     'item_id'?: string;
 }
 /**
  * Data needed to query data from Teller
  * @export
- * @interface GetEntityResponseAggregatorAccessTokensTeller
+ * @interface GetEntityResponseAggregatorAccessTokensInnerTeller
  */
-export interface GetEntityResponseAggregatorAccessTokensTeller {
+export interface GetEntityResponseAggregatorAccessTokensInnerTeller {
     /**
      * Access token for Teller
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensTeller
+     * @memberof GetEntityResponseAggregatorAccessTokensInnerTeller
      */
     'access_token'?: string;
     /**
      * Enrollment ID associated with the access token in Teller
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensTeller
+     * @memberof GetEntityResponseAggregatorAccessTokensInnerTeller
      */
     'enrollment_id'?: string;
 }
