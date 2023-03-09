@@ -414,13 +414,13 @@ export interface CreateLinkTokenResponse {
      * @type {string}
      * @memberof CreateLinkTokenResponse
      */
-    'link_token'?: string;
+    'link_token': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof CreateLinkTokenResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -458,19 +458,19 @@ export interface CreateSessionResponse {
      * @type {string}
      * @memberof CreateSessionResponse
      */
-    'expiration'?: string;
+    'expiration': string;
     /**
      * Token needed by the frontend sdk to start the process
      * @type {string}
      * @memberof CreateSessionResponse
      */
-    'client_secret'?: string;
+    'client_secret': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof CreateSessionResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -521,19 +521,19 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
-    'access_token'?: string;
+    'access_token': string;
     /**
      * The id of the new financial connection. Every webhook will be sent with this id.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
-    'financial_connection_id'?: string;
+    'financial_connection_id': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -546,13 +546,13 @@ export interface FinancialConnectionData {
      * @type {string}
      * @memberof FinancialConnectionData
      */
-    'id'?: string;
+    'id': string;
     /**
      * The Fuse Institution ID associated with the financial connection
      * @type {string}
      * @memberof FinancialConnectionData
      */
-    'institution_id'?: string;
+    'institution_id': string;
 }
 /**
  * 
@@ -684,13 +684,13 @@ export interface FinancialConnectionsAccountDetails {
      * @type {string}
      * @memberof FinancialConnectionsAccountDetails
      */
-    'remote_id'?: string;
+    'remote_id': string;
     /**
      * 
      * @type {FinancialConnectionsAccountDetailsAch}
      * @memberof FinancialConnectionsAccountDetails
      */
-    'ach'?: FinancialConnectionsAccountDetailsAch;
+    'ach': FinancialConnectionsAccountDetailsAch;
 }
 /**
  * 
@@ -1148,25 +1148,25 @@ export interface FinancialConnectionsOwner {
      * @type {Array<FinancialConnectionsOwnerAddressesInner>}
      * @memberof FinancialConnectionsOwner
      */
-    'addresses'?: Array<FinancialConnectionsOwnerAddressesInner>;
+    'addresses': Array<FinancialConnectionsOwnerAddressesInner>;
     /**
      * 
      * @type {Array<FinancialConnectionsOwnerEmailsInner>}
      * @memberof FinancialConnectionsOwner
      */
-    'emails'?: Array<FinancialConnectionsOwnerEmailsInner>;
+    'emails': Array<FinancialConnectionsOwnerEmailsInner>;
     /**
      * List of names associated with the owner
      * @type {Array<FinancialConnectionsOwnerNamesInner>}
      * @memberof FinancialConnectionsOwner
      */
-    'names'?: Array<FinancialConnectionsOwnerNamesInner>;
+    'names': Array<FinancialConnectionsOwnerNamesInner>;
     /**
      * 
      * @type {Array<FinancialConnectionsOwnerPhoneNumbersInner>}
      * @memberof FinancialConnectionsOwner
      */
-    'phone_numbers'?: Array<FinancialConnectionsOwnerPhoneNumbersInner>;
+    'phone_numbers': Array<FinancialConnectionsOwnerPhoneNumbersInner>;
 }
 /**
  * 
@@ -1235,7 +1235,7 @@ export interface FinancialConnectionsOwnerEmailsInner {
      * @type {string}
      * @memberof FinancialConnectionsOwnerEmailsInner
      */
-    'data'?: string;
+    'data': string;
     /**
      * Indicating if it is the primary email
      * @type {boolean}
@@ -1269,7 +1269,7 @@ export interface FinancialConnectionsOwnerNamesInner {
      * @type {string}
      * @memberof FinancialConnectionsOwnerNamesInner
      */
-    'data'?: string;
+    'data': string;
     /**
      * Type of name. Possible values are \"name\" or \"alias\"
      * @type {string}
@@ -1288,7 +1288,7 @@ export interface FinancialConnectionsOwnerPhoneNumbersInner {
      * @type {string}
      * @memberof FinancialConnectionsOwnerPhoneNumbersInner
      */
-    'data'?: string;
+    'data': string;
     /**
      * Indicating if it is the primary phone number
      * @type {boolean}
@@ -1735,7 +1735,7 @@ export interface GetEntityResponse {
      * @type {string}
      * @memberof GetEntityResponse
      */
-    'id'?: string;
+    'id': string;
     /**
      * Email of the entity
      * @type {string}
@@ -1759,13 +1759,13 @@ export interface GetEntityResponse {
      * @type {Array<GetEntityResponseAggregatorAccessTokensInner>}
      * @memberof GetEntityResponse
      */
-    'aggregator_access_tokens'?: Array<GetEntityResponseAggregatorAccessTokensInner>;
+    'aggregator_access_tokens': Array<GetEntityResponseAggregatorAccessTokensInner>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetEntityResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -1866,13 +1866,13 @@ export interface GetFinancialConnectionsAccountBalanceResponse {
      * @type {Array<FinancialConnectionsAccountBalance>}
      * @memberof GetFinancialConnectionsAccountBalanceResponse
      */
-    'balances'?: Array<FinancialConnectionsAccountBalance>;
+    'balances': Array<FinancialConnectionsAccountBalance>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetFinancialConnectionsAccountBalanceResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -1898,19 +1898,19 @@ export interface GetFinancialConnectionsAccountDetailsResponse {
      * @type {Array<FinancialConnectionsAccountDetails>}
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
-    'account_details'?: Array<FinancialConnectionsAccountDetails>;
+    'account_details': Array<FinancialConnectionsAccountDetails>;
     /**
      * 
      * @type {FinancialConnectionData}
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
-    'financial_connection'?: FinancialConnectionData;
+    'financial_connection': FinancialConnectionData;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -1936,19 +1936,19 @@ export interface GetFinancialConnectionsAccountsResponse {
      * @type {Array<FinancialConnectionsAccount>}
      * @memberof GetFinancialConnectionsAccountsResponse
      */
-    'accounts'?: Array<FinancialConnectionsAccount>;
+    'accounts': Array<FinancialConnectionsAccount>;
     /**
      * 
      * @type {FinancialConnectionData}
      * @memberof GetFinancialConnectionsAccountsResponse
      */
-    'financial_connection'?: FinancialConnectionData;
+    'financial_connection': FinancialConnectionData;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetFinancialConnectionsAccountsResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -1987,7 +1987,7 @@ export interface GetFinancialConnectionsOwnersResponse {
      * @type {Array<GetFinancialConnectionsOwnersResponseAccountsInner>}
      * @memberof GetFinancialConnectionsOwnersResponse
      */
-    'accounts'?: Array<GetFinancialConnectionsOwnersResponseAccountsInner>;
+    'accounts': Array<GetFinancialConnectionsOwnersResponseAccountsInner>;
 }
 /**
  * 
@@ -2000,19 +2000,19 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
      * @type {string}
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
-    'remote_account_id'?: string;
+    'remote_account_id': string;
     /**
      * 
      * @type {Array<FinancialConnectionsOwner>}
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
-    'owners'?: Array<FinancialConnectionsOwner>;
+    'owners': Array<FinancialConnectionsOwner>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
