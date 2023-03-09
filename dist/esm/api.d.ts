@@ -543,13 +543,13 @@ export interface FinancialConnectionsAccount {
      * @type {string}
      * @memberof FinancialConnectionsAccount
      */
-    'remote_id'?: string;
+    'remote_id': string;
     /**
      * Uniquely identifies this account across all accounts associated with your organization. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof FinancialConnectionsAccount
      */
-    'fingerprint'?: string;
+    'fingerprint': string;
     /**
      *
      * @type {FinancialConnectionsAccountInstitution}
@@ -567,13 +567,13 @@ export interface FinancialConnectionsAccount {
      * @type {string}
      * @memberof FinancialConnectionsAccount
      */
-    'name'?: string;
+    'name': string;
     /**
      *
      * @type {AccountType}
      * @memberof FinancialConnectionsAccount
      */
-    'type'?: AccountType;
+    'type': AccountType;
     /**
      *
      * @type {AccountSubtype}
@@ -723,13 +723,13 @@ export interface FinancialConnectionsAccountLiability {
      * @type {string}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'remote_id'?: string;
+    'remote_id': string;
     /**
      * Uniquely identifies this account across all accounts associated with your organization. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'fingerprint'?: string;
+    'fingerprint': string;
     /**
      *
      * @type {FinancialConnectionsAccountInstitution}
@@ -747,13 +747,13 @@ export interface FinancialConnectionsAccountLiability {
      * @type {string}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'name'?: string;
+    'name': string;
     /**
      *
      * @type {AccountType}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'type'?: AccountType;
+    'type': AccountType;
     /**
      *
      * @type {AccountSubtype}
