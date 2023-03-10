@@ -1406,13 +1406,13 @@ export interface FuseApiError {
      * @type {string}
      * @memberof FuseApiError
      */
-    'code'?: string;
+    'code'?: FuseApiErrorCodeEnum;
     /**
      * 
      * @type {string}
      * @memberof FuseApiError
      */
-    'type'?: string;
+    'type'?: FuseApiErrorTypeEnum;
     /**
      * 
      * @type {string}
@@ -1427,6 +1427,38 @@ export interface FuseApiError {
     'data'?: FuseApiErrorData;
 }
 
+export const FuseApiErrorCodeEnum = {
+    ClientError: 'client_error',
+    InvalidHeaders: 'invalid_headers',
+    InvalidRequestBody: 'invalid_request_body',
+    InternalServerError: 'internal_server_error',
+    OrganizationNotFound: 'organization_not_found',
+    EntityNotFound: 'entity_not_found',
+    SessionNotFound: 'session_not_found',
+    FinancialInstitutionNotFound: 'financial_institution_not_found',
+    MissingAccessToken: 'missing_access_token',
+    MissingPlaidClientIdHeader: 'missing_plaid_client_id_header',
+    MissingPlaidSecretHeader: 'missing_plaid_secret_header',
+    MissingMxClientIdHeader: 'missing_mx_client_id_header',
+    MissingMxApiKeyHeader: 'missing_mx_api_key_header',
+    MissingTellerPrivateKeyHeader: 'missing_teller_private_key_header',
+    MissingTellerCertificateHeader: 'missing_teller_certificate_header',
+    MissingTellerApplicationIdHeader: 'missing_teller_application_id_header',
+    AggregatorError: 'aggregator_error',
+    AggregatorDisconnectedError: 'aggregator_disconnected_error',
+    AggregatorConnectionFinishedError: 'aggregator_connection_finished_error',
+    RequestBodyMissing: 'request_body_missing'
+} as const;
+
+export type FuseApiErrorCodeEnum = typeof FuseApiErrorCodeEnum[keyof typeof FuseApiErrorCodeEnum];
+export const FuseApiErrorTypeEnum = {
+    AuthError: 'auth_error',
+    NotFound: 'not_found',
+    BadRequest: 'bad_request',
+    ServerError: 'server_error'
+} as const;
+
+export type FuseApiErrorTypeEnum = typeof FuseApiErrorTypeEnum[keyof typeof FuseApiErrorTypeEnum];
 export const FuseApiErrorSourceEnum = {
     Internal: 'internal',
     Aggregator: 'aggregator'
@@ -2025,13 +2057,13 @@ export interface GetFinancialInstitutionResponse {
      * @type {FinancialInstitution}
      * @memberof GetFinancialInstitutionResponse
      */
-    'financial_institution'?: FinancialInstitution;
+    'financial_institution': FinancialInstitution;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetFinancialInstitutionResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -2595,6 +2627,38 @@ export interface UpdateEntityResponse {
      */
     'request_id'?: string;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const WebhookSource = {
+    Plaid: 'plaid',
+    Teller: 'teller',
+    Mx: 'mx',
+    Fuse: 'fuse'
+} as const;
+
+export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const WebhookType = {
+    SyncUpdatesAvailable: 'sync_updates_available',
+    BalanceUpdate: 'balance.update',
+    FinancialConnectionDisconnected: 'financial_connection.disconnected',
+    FinancialConnectionFinished: 'financial_connection.finished'
+} as const;
+
+export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
+
+
 
 /**
  * FuseApi - axios parameter creator

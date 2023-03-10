@@ -1370,13 +1370,13 @@ export interface FuseApiError {
      * @type {string}
      * @memberof FuseApiError
      */
-    'code'?: string;
+    'code'?: FuseApiErrorCodeEnum;
     /**
      *
      * @type {string}
      * @memberof FuseApiError
      */
-    'type'?: string;
+    'type'?: FuseApiErrorTypeEnum;
     /**
      *
      * @type {string}
@@ -1390,6 +1390,36 @@ export interface FuseApiError {
      */
     'data'?: FuseApiErrorData;
 }
+export declare const FuseApiErrorCodeEnum: {
+    readonly ClientError: "client_error";
+    readonly InvalidHeaders: "invalid_headers";
+    readonly InvalidRequestBody: "invalid_request_body";
+    readonly InternalServerError: "internal_server_error";
+    readonly OrganizationNotFound: "organization_not_found";
+    readonly EntityNotFound: "entity_not_found";
+    readonly SessionNotFound: "session_not_found";
+    readonly FinancialInstitutionNotFound: "financial_institution_not_found";
+    readonly MissingAccessToken: "missing_access_token";
+    readonly MissingPlaidClientIdHeader: "missing_plaid_client_id_header";
+    readonly MissingPlaidSecretHeader: "missing_plaid_secret_header";
+    readonly MissingMxClientIdHeader: "missing_mx_client_id_header";
+    readonly MissingMxApiKeyHeader: "missing_mx_api_key_header";
+    readonly MissingTellerPrivateKeyHeader: "missing_teller_private_key_header";
+    readonly MissingTellerCertificateHeader: "missing_teller_certificate_header";
+    readonly MissingTellerApplicationIdHeader: "missing_teller_application_id_header";
+    readonly AggregatorError: "aggregator_error";
+    readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
+    readonly AggregatorConnectionFinishedError: "aggregator_connection_finished_error";
+    readonly RequestBodyMissing: "request_body_missing";
+};
+export type FuseApiErrorCodeEnum = typeof FuseApiErrorCodeEnum[keyof typeof FuseApiErrorCodeEnum];
+export declare const FuseApiErrorTypeEnum: {
+    readonly AuthError: "auth_error";
+    readonly NotFound: "not_found";
+    readonly BadRequest: "bad_request";
+    readonly ServerError: "server_error";
+};
+export type FuseApiErrorTypeEnum = typeof FuseApiErrorTypeEnum[keyof typeof FuseApiErrorTypeEnum];
 export declare const FuseApiErrorSourceEnum: {
     readonly Internal: "internal";
     readonly Aggregator: "aggregator";
@@ -1980,13 +2010,13 @@ export interface GetFinancialInstitutionResponse {
      * @type {FinancialInstitution}
      * @memberof GetFinancialInstitutionResponse
      */
-    'financial_institution'?: FinancialInstitution;
+    'financial_institution': FinancialInstitution;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetFinancialInstitutionResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  *
@@ -2543,6 +2573,30 @@ export interface UpdateEntityResponse {
      */
     'request_id'?: string;
 }
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const WebhookSource: {
+    readonly Plaid: "plaid";
+    readonly Teller: "teller";
+    readonly Mx: "mx";
+    readonly Fuse: "fuse";
+};
+export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const WebhookType: {
+    readonly SyncUpdatesAvailable: "sync_updates_available";
+    readonly BalanceUpdate: "balance.update";
+    readonly FinancialConnectionDisconnected: "financial_connection.disconnected";
+    readonly FinancialConnectionFinished: "financial_connection.finished";
+};
+export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
 /**
  * FuseApi - axios parameter creator
  * @export

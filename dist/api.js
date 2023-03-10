@@ -22,7 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
+exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FuseApiErrorTypeEnum = exports.FuseApiErrorCodeEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -221,6 +221,34 @@ exports.FinancialInstitutionLogoFormatEnum = {
     Gif: 'gif',
     Svgxml: 'svg+xml'
 };
+exports.FuseApiErrorCodeEnum = {
+    ClientError: 'client_error',
+    InvalidHeaders: 'invalid_headers',
+    InvalidRequestBody: 'invalid_request_body',
+    InternalServerError: 'internal_server_error',
+    OrganizationNotFound: 'organization_not_found',
+    EntityNotFound: 'entity_not_found',
+    SessionNotFound: 'session_not_found',
+    FinancialInstitutionNotFound: 'financial_institution_not_found',
+    MissingAccessToken: 'missing_access_token',
+    MissingPlaidClientIdHeader: 'missing_plaid_client_id_header',
+    MissingPlaidSecretHeader: 'missing_plaid_secret_header',
+    MissingMxClientIdHeader: 'missing_mx_client_id_header',
+    MissingMxApiKeyHeader: 'missing_mx_api_key_header',
+    MissingTellerPrivateKeyHeader: 'missing_teller_private_key_header',
+    MissingTellerCertificateHeader: 'missing_teller_certificate_header',
+    MissingTellerApplicationIdHeader: 'missing_teller_application_id_header',
+    AggregatorError: 'aggregator_error',
+    AggregatorDisconnectedError: 'aggregator_disconnected_error',
+    AggregatorConnectionFinishedError: 'aggregator_connection_finished_error',
+    RequestBodyMissing: 'request_body_missing'
+};
+exports.FuseApiErrorTypeEnum = {
+    AuthError: 'auth_error',
+    NotFound: 'not_found',
+    BadRequest: 'bad_request',
+    ServerError: 'server_error'
+};
 exports.FuseApiErrorSourceEnum = {
     Internal: 'internal',
     Aggregator: 'aggregator'
@@ -248,6 +276,28 @@ exports.Product = {
     Transactions: 'transactions',
     Liabilities: 'liabilities',
     Investments: 'investments'
+};
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+exports.WebhookSource = {
+    Plaid: 'plaid',
+    Teller: 'teller',
+    Mx: 'mx',
+    Fuse: 'fuse'
+};
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+exports.WebhookType = {
+    SyncUpdatesAvailable: 'sync_updates_available',
+    BalanceUpdate: 'balance.update',
+    FinancialConnectionDisconnected: 'financial_connection.disconnected',
+    FinancialConnectionFinished: 'financial_connection.finished'
 };
 /**
  * FuseApi - axios parameter creator
