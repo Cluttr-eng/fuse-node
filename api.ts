@@ -475,6 +475,31 @@ export interface CreateSessionResponse {
 /**
  * 
  * @export
+ * @interface DeleteFinancialConnectionResponse
+ */
+export interface DeleteFinancialConnectionResponse {
+    /**
+     * Id of the deleted financial connection
+     * @type {string}
+     * @memberof DeleteFinancialConnectionResponse
+     */
+    'financial_connection_id': string;
+    /**
+     * Access token of the deleted financial connection
+     * @type {string}
+     * @memberof DeleteFinancialConnectionResponse
+     */
+    'access_token': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof DeleteFinancialConnectionResponse
+     */
+    'request_id': string;
+}
+/**
+ * 
+ * @export
  * @interface Entity
  */
 export interface Entity {
@@ -553,6 +578,127 @@ export interface FinancialConnectionData {
      * @memberof FinancialConnectionData
      */
     'institution_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface FinancialConnectionDetails
+ */
+export interface FinancialConnectionDetails {
+    /**
+     * The fuse financial connection id.
+     * @type {string}
+     * @memberof FinancialConnectionDetails
+     */
+    'id': string;
+    /**
+     * Connection status of the current financial connection
+     * @type {string}
+     * @memberof FinancialConnectionDetails
+     */
+    'connection_status': FinancialConnectionDetailsConnectionStatusEnum;
+    /**
+     * Last time the connection status was updated in ISO-8601 format.
+     * @type {string}
+     * @memberof FinancialConnectionDetails
+     */
+    'connection_status_updated_at': string;
+    /**
+     * Whether this is an oauth connection
+     * @type {boolean}
+     * @memberof FinancialConnectionDetails
+     */
+    'is_oauth': boolean;
+    /**
+     * 
+     * @type {Aggregator}
+     * @memberof FinancialConnectionDetails
+     */
+    'aggregator': Aggregator;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsPlaid}
+     * @memberof FinancialConnectionDetails
+     */
+    'plaid'?: FinancialConnectionDetailsPlaid;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsTeller}
+     * @memberof FinancialConnectionDetails
+     */
+    'teller'?: FinancialConnectionDetailsTeller;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsMx}
+     * @memberof FinancialConnectionDetails
+     */
+    'mx'?: FinancialConnectionDetailsMx;
+}
+
+export const FinancialConnectionDetailsConnectionStatusEnum = {
+    Connected: 'connected',
+    Disconnected: 'disconnected',
+    Finished: 'finished'
+} as const;
+
+export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
+
+/**
+ * Data needed to query data from MX
+ * @export
+ * @interface FinancialConnectionDetailsMx
+ */
+export interface FinancialConnectionDetailsMx {
+    /**
+     * User GUID for MX
+     * @type {string}
+     * @memberof FinancialConnectionDetailsMx
+     */
+    'user_guid': string;
+    /**
+     * Member GUID for MX
+     * @type {string}
+     * @memberof FinancialConnectionDetailsMx
+     */
+    'member_guid': string;
+}
+/**
+ * Data needed to query data from Plaid
+ * @export
+ * @interface FinancialConnectionDetailsPlaid
+ */
+export interface FinancialConnectionDetailsPlaid {
+    /**
+     * Access token for Plaid
+     * @type {string}
+     * @memberof FinancialConnectionDetailsPlaid
+     */
+    'access_token': string;
+    /**
+     * ID of the item associated with the access token in Plaid
+     * @type {string}
+     * @memberof FinancialConnectionDetailsPlaid
+     */
+    'item_id': string;
+}
+/**
+ * Data needed to query data from Teller
+ * @export
+ * @interface FinancialConnectionDetailsTeller
+ */
+export interface FinancialConnectionDetailsTeller {
+    /**
+     * Access token for Teller
+     * @type {string}
+     * @memberof FinancialConnectionDetailsTeller
+     */
+    'access_token': string;
+    /**
+     * Enrollment ID associated with the access token in Teller
+     * @type {string}
+     * @memberof FinancialConnectionDetailsTeller
+     */
+    'enrollment_id': string;
 }
 /**
  * 
@@ -1474,10 +1620,10 @@ export type FuseApiErrorSourceEnum = typeof FuseApiErrorSourceEnum[keyof typeof 
 export interface FuseApiErrorData {
     /**
      * 
-     * @type {string}
+     * @type {Aggregator}
      * @memberof FuseApiErrorData
      */
-    'aggregator'?: string;
+    'aggregator'?: Aggregator;
     /**
      * 
      * @type {Array<FuseApiError>}
@@ -1485,6 +1631,8 @@ export interface FuseApiErrorData {
      */
     'errors'?: Array<FuseApiError>;
 }
+
+
 /**
  * 
  * @export
@@ -1544,10 +1692,10 @@ export type FuseApiWarningSourceEnum = typeof FuseApiWarningSourceEnum[keyof typ
 export interface FuseApiWarningData {
     /**
      * 
-     * @type {string}
+     * @type {Aggregator}
      * @memberof FuseApiWarningData
      */
-    'aggregator'?: string;
+    'aggregator'?: Aggregator;
     /**
      * 
      * @type {Array<FuseApiWarningDataWarningsInner>}
@@ -1555,6 +1703,8 @@ export interface FuseApiWarningData {
      */
     'warnings'?: Array<FuseApiWarningDataWarningsInner>;
 }
+
+
 /**
  * 
  * @export
@@ -1788,10 +1938,10 @@ export interface GetEntityResponse {
     'institution_ids'?: Array<string>;
     /**
      * Data needed to query data from the various aggregators
-     * @type {Array<GetEntityResponseAggregatorAccessTokensInner>}
+     * @type {Array<FinancialConnectionDetails>}
      * @memberof GetEntityResponse
      */
-    'aggregator_access_tokens': Array<GetEntityResponseAggregatorAccessTokensInner>;
+    'financial_connections'?: Array<FinancialConnectionDetails>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -1802,90 +1952,21 @@ export interface GetEntityResponse {
 /**
  * 
  * @export
- * @interface GetEntityResponseAggregatorAccessTokensInner
+ * @interface GetFinancialConnectionResponse
  */
-export interface GetEntityResponseAggregatorAccessTokensInner {
-    /**
-     * The fuse financial connection id associated with the aggregator access token
-     * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInner
-     */
-    'financial_connection_id'?: string;
+export interface GetFinancialConnectionResponse {
     /**
      * 
-     * @type {GetEntityResponseAggregatorAccessTokensInnerPlaid}
-     * @memberof GetEntityResponseAggregatorAccessTokensInner
+     * @type {FinancialConnectionDetails}
+     * @memberof GetFinancialConnectionResponse
      */
-    'plaid'?: GetEntityResponseAggregatorAccessTokensInnerPlaid;
+    'financial_connection': FinancialConnectionDetails;
     /**
-     * 
-     * @type {GetEntityResponseAggregatorAccessTokensInnerTeller}
-     * @memberof GetEntityResponseAggregatorAccessTokensInner
-     */
-    'teller'?: GetEntityResponseAggregatorAccessTokensInnerTeller;
-    /**
-     * 
-     * @type {GetEntityResponseAggregatorAccessTokensInnerMx}
-     * @memberof GetEntityResponseAggregatorAccessTokensInner
-     */
-    'mx'?: GetEntityResponseAggregatorAccessTokensInnerMx;
-}
-/**
- * Data needed to query data from MX
- * @export
- * @interface GetEntityResponseAggregatorAccessTokensInnerMx
- */
-export interface GetEntityResponseAggregatorAccessTokensInnerMx {
-    /**
-     * User GUID for MX
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInnerMx
+     * @memberof GetFinancialConnectionResponse
      */
-    'user_guid'?: string;
-    /**
-     * Member GUID for MX
-     * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInnerMx
-     */
-    'member_guid'?: string;
-}
-/**
- * Data needed to query data from Plaid
- * @export
- * @interface GetEntityResponseAggregatorAccessTokensInnerPlaid
- */
-export interface GetEntityResponseAggregatorAccessTokensInnerPlaid {
-    /**
-     * Access token for Plaid
-     * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInnerPlaid
-     */
-    'access_token'?: string;
-    /**
-     * ID of the item associated with the access token in Plaid
-     * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInnerPlaid
-     */
-    'item_id'?: string;
-}
-/**
- * Data needed to query data from Teller
- * @export
- * @interface GetEntityResponseAggregatorAccessTokensInnerTeller
- */
-export interface GetEntityResponseAggregatorAccessTokensInnerTeller {
-    /**
-     * Access token for Teller
-     * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInnerTeller
-     */
-    'access_token'?: string;
-    /**
-     * Enrollment ID associated with the access token in Teller
-     * @type {string}
-     * @memberof GetEntityResponseAggregatorAccessTokensInnerTeller
-     */
-    'enrollment_id'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -2198,23 +2279,35 @@ export interface GetLiabilitiesResponse {
  */
 export interface GetTransactionsRequest {
     /**
-     * Access token for authentication
+     * Access token for authentication.
      * @type {string}
      * @memberof GetTransactionsRequest
      */
     'access_token': string;
     /**
-     * Cursor for pagination
+     * The earliest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
      * @type {string}
      * @memberof GetTransactionsRequest
      */
-    'cursor'?: string;
+    'start_date': string;
     /**
-     * Number of items per page
+     * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetTransactionsRequest
+     */
+    'end_date': string;
+    /**
+     * Specify current page.
      * @type {number}
      * @memberof GetTransactionsRequest
      */
-    'count'?: number;
+    'page': number;
+    /**
+     * Number of items per page.
+     * @type {number}
+     * @memberof GetTransactionsRequest
+     */
+    'records_per_page': number;
 }
 /**
  * 
@@ -2224,108 +2317,22 @@ export interface GetTransactionsRequest {
 export interface GetTransactionsResponse {
     /**
      * 
-     * @type {Array<GetTransactionsResponseDataInner>}
+     * @type {Array<Transaction>}
      * @memberof GetTransactionsResponse
      */
-    'data'?: Array<GetTransactionsResponseDataInner>;
+    'transactions': Array<Transaction>;
     /**
-     * The cursor of the last item returned
-     * @type {string}
+     * The total number of transactions.
+     * @type {number}
      * @memberof GetTransactionsResponse
      */
-    'cursor'?: string;
-    /**
-     * Indicates if there are more pages to navigate through
-     * @type {boolean}
-     * @memberof GetTransactionsResponse
-     */
-    'has_next'?: boolean;
+    'total_transactions': number;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetTransactionsResponse
      */
-    'request_id'?: string;
-}
-/**
- * 
- * @export
- * @interface GetTransactionsResponseDataInner
- */
-export interface GetTransactionsResponseDataInner {
-    /**
-     * Fuse Id of the transaction
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'id'?: string;
-    /**
-     * Remote Id of the transaction, ie Plaid or Teller Id
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'remote_id'?: string;
-    /**
-     * Remote Account Id of the transaction, ie Plaid Account Id
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'remote_account_id'?: string;
-    /**
-     * Amount in cents associated with the transaction
-     * @type {number}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'amount'?: number;
-    /**
-     * Date of the transaction
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'date'?: string;
-    /**
-     * Description of the transaction
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'description'?: string;
-    /**
-     * Categories of the transaction, ie Computers and Electronics
-     * @type {Array<string>}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'category'?: Array<string>;
-    /**
-     * 
-     * @type {GetTransactionsResponseDataInnerMerchant}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'merchant'?: GetTransactionsResponseDataInnerMerchant;
-    /**
-     * The status of the transaction. This will be either POSTED or PENDING.
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'status'?: string;
-    /**
-     * Type of the transaction, ie adjustment
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInner
-     */
-    'type'?: string;
-}
-/**
- * 
- * @export
- * @interface GetTransactionsResponseDataInnerMerchant
- */
-export interface GetTransactionsResponseDataInnerMerchant {
-    /**
-     * Merchant name
-     * @type {string}
-     * @memberof GetTransactionsResponseDataInnerMerchant
-     */
-    'name'?: string;
+    'request_id': string;
 }
 /**
  * 
@@ -2504,16 +2511,16 @@ export interface SyncTransactionsRequest {
 export interface SyncTransactionsResponse {
     /**
      * Transactions that have been added to the item since `cursor` ordered by ascending last modified time.
-     * @type {Array<TransactionCommonModel>}
+     * @type {Array<Transaction>}
      * @memberof SyncTransactionsResponse
      */
-    'added'?: Array<TransactionCommonModel>;
+    'added'?: Array<Transaction>;
     /**
      * Transactions that have been modified on the item since `cursor` ordered by ascending last modified time.
-     * @type {Array<TransactionCommonModel>}
+     * @type {Array<Transaction>}
      * @memberof SyncTransactionsResponse
      */
-    'modified'?: Array<TransactionCommonModel>;
+    'modified'?: Array<Transaction>;
     /**
      * Transactions that have been removed from the item since `cursor` ordered by ascending last modified time.
      * @type {Array<SyncTransactionsResponseRemovedInner>}
@@ -2555,15 +2562,90 @@ export interface SyncTransactionsResponseRemovedInner {
 /**
  * 
  * @export
- * @interface TransactionCommonModel
+ * @interface Transaction
  */
-export interface TransactionCommonModel {
+export interface Transaction {
+    /**
+     * Remote Id of the transaction, ie Plaid or Teller Id
+     * @type {string}
+     * @memberof Transaction
+     */
+    'remote_id': string;
+    /**
+     * Remote Account Id of the transaction, ie Plaid Account Id
+     * @type {string}
+     * @memberof Transaction
+     */
+    'remote_account_id': string;
+    /**
+     * Amount in cents associated with the transaction
+     * @type {number}
+     * @memberof Transaction
+     */
+    'amount': number;
+    /**
+     * Date of the transaction
+     * @type {string}
+     * @memberof Transaction
+     */
+    'date': string;
+    /**
+     * Description of the transaction
+     * @type {string}
+     * @memberof Transaction
+     */
+    'description': string;
+    /**
+     * Categories of the transaction, ie Computers and Electronics
+     * @type {Array<string>}
+     * @memberof Transaction
+     */
+    'category': Array<string>;
     /**
      * 
-     * @type {Array<GetTransactionsResponseDataInner>}
-     * @memberof TransactionCommonModel
+     * @type {TransactionMerchant}
+     * @memberof Transaction
      */
-    'data'?: Array<GetTransactionsResponseDataInner>;
+    'merchant': TransactionMerchant;
+    /**
+     * The status of the transaction. This will be either posted or pending.
+     * @type {string}
+     * @memberof Transaction
+     */
+    'status': TransactionStatusEnum;
+    /**
+     * Type of the transaction, ie adjustment
+     * @type {string}
+     * @memberof Transaction
+     */
+    'type': string;
+    /**
+     * The ISO-4217 currency code of the transaction
+     * @type {string}
+     * @memberof Transaction
+     */
+    'iso_currency_code'?: string;
+}
+
+export const TransactionStatusEnum = {
+    Pending: 'pending',
+    Posted: 'posted'
+} as const;
+
+export type TransactionStatusEnum = typeof TransactionStatusEnum[keyof typeof TransactionStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface TransactionMerchant
+ */
+export interface TransactionMerchant {
+    /**
+     * Merchant name
+     * @type {string}
+     * @memberof TransactionMerchant
+     */
+    'name'?: string;
 }
 /**
  * 
@@ -2630,6 +2712,51 @@ export interface UpdateEntityResponse {
 /**
  * 
  * @export
+ * @interface WebhookEvent
+ */
+export interface WebhookEvent {
+    /**
+     * 
+     * @type {WebhookType}
+     * @memberof WebhookEvent
+     */
+    'type': WebhookType;
+    /**
+     * Financial connection id associated with the webhook
+     * @type {string}
+     * @memberof WebhookEvent
+     */
+    'financial_connection_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WebhookEvent
+     */
+    'environment': WebhookEventEnvironmentEnum;
+    /**
+     * 
+     * @type {WebhookSource}
+     * @memberof WebhookEvent
+     */
+    'source': WebhookSource;
+    /**
+     * 
+     * @type {any}
+     * @memberof WebhookEvent
+     */
+    'remote_data': any;
+}
+
+export const WebhookEventEnvironmentEnum = {
+    Sandbox: 'sandbox',
+    Production: 'production'
+} as const;
+
+export type WebhookEventEnvironmentEnum = typeof WebhookEventEnvironmentEnum[keyof typeof WebhookEventEnvironmentEnum];
+
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -2651,7 +2778,6 @@ export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
 
 export const WebhookType = {
     SyncUpdatesAvailable: 'sync_updates_available',
-    BalanceUpdate: 'balance.update',
     FinancialConnectionDisconnected: 'financial_connection.disconnected',
     FinancialConnectionFinished: 'financial_connection.finished'
 } as const;
@@ -2826,6 +2952,46 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * 
+         * @summary Delete a financial connection
+         * @param {string} financialConnectionIdToDelete 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFinancialConnection: async (financialConnectionIdToDelete: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'financialConnectionIdToDelete' is not null or undefined
+            assertParamExists('deleteFinancialConnection', 'financialConnectionIdToDelete', financialConnectionIdToDelete)
+            const localVarPath = `/v1/financial_connections/{financial_connection_id_to_delete}`
+                .replace(`{${"financial_connection_id_to_delete"}}`, encodeURIComponent(String(financialConnectionIdToDelete)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * API to exchange a public token for an access token and financial connection id
          * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest] 
          * @param {*} [options] Override http request option.
@@ -2915,6 +3081,46 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             assertParamExists('getEntity', 'entityId', entityId)
             const localVarPath = `/v1/entities/{entity_id}`
                 .replace(`{${"entity_id"}}`, encodeURIComponent(String(entityId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get financial connection details
+         * @param {string} financialConnectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnection: async (financialConnectionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'financialConnectionId' is not null or undefined
+            assertParamExists('getFinancialConnection', 'financialConnectionId', financialConnectionId)
+            const localVarPath = `/v1/financial_connections/{financial_connection_id}`
+                .replace(`{${"financial_connection_id"}}`, encodeURIComponent(String(financialConnectionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3278,48 +3484,6 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * 
-         * @summary Migrate financial connections token
-         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        migrateFinancialConnectionsToken: async (migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'migrateFinancialConnectionsTokenRequest' is not null or undefined
-            assertParamExists('migrateFinancialConnectionsToken', 'migrateFinancialConnectionsTokenRequest', migrateFinancialConnectionsTokenRequest)
-            const localVarPath = `/v1/financial_connections/migrate_token`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication fuseApiKey required
-            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
-
-            // authentication fuseClientId required
-            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(migrateFinancialConnectionsTokenRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
          * @param {*} [options] Override http request option.
@@ -3582,6 +3746,17 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
+         * 
+         * @summary Delete a financial connection
+         * @param {string} financialConnectionIdToDelete 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFinancialConnection(financialConnectionIdToDelete, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
          * API to exchange a public token for an access token and financial connection id
          * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest] 
          * @param {*} [options] Override http request option.
@@ -3610,6 +3785,17 @@ export const FuseApiFp = function(configuration?: Configuration) {
          */
         async getEntity(entityId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getEntity(entityId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get financial connection details
+         * @param {string} financialConnectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFinancialConnection(financialConnectionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnection(financialConnectionId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3698,17 +3884,6 @@ export const FuseApiFp = function(configuration?: Configuration) {
          */
         async getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getInvestmentTransactions(getInvestmentTransactionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @summary Migrate financial connections token
-         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3814,6 +3989,16 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.createSession(createSessionRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary Delete a financial connection
+         * @param {string} financialConnectionIdToDelete 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFinancialConnection(financialConnectionIdToDelete: string, options?: any): AxiosPromise<DeleteFinancialConnectionResponse> {
+            return localVarFp.deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(axios, basePath));
+        },
+        /**
          * API to exchange a public token for an access token and financial connection id
          * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest] 
          * @param {*} [options] Override http request option.
@@ -3840,6 +4025,16 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         getEntity(entityId: string, options?: any): AxiosPromise<GetEntityResponse> {
             return localVarFp.getEntity(entityId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get financial connection details
+         * @param {string} financialConnectionId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnection(financialConnectionId: string, options?: any): AxiosPromise<GetFinancialConnectionResponse> {
+            return localVarFp.getFinancialConnection(financialConnectionId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3920,16 +4115,6 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse> {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary Migrate financial connections token
-         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options?: any): AxiosPromise<MigrateFinancialConnectionsTokenResponse> {
-            return localVarFp.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Refreshes the Asset Report in JSON format.
@@ -4037,6 +4222,18 @@ export class FuseApi extends BaseAPI {
     }
 
     /**
+     * 
+     * @summary Delete a financial connection
+     * @param {string} financialConnectionIdToDelete 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest] 
      * @param {*} [options] Override http request option.
@@ -4068,6 +4265,18 @@ export class FuseApi extends BaseAPI {
      */
     public getEntity(entityId: string, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).getEntity(entityId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get financial connection details
+     * @param {string} financialConnectionId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public getFinancialConnection(financialConnectionId: string, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getFinancialConnection(financialConnectionId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -4164,18 +4373,6 @@ export class FuseApi extends BaseAPI {
      */
     public getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary Migrate financial connections token
-     * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    public migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

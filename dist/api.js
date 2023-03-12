@@ -22,7 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FuseApiErrorTypeEnum = exports.FuseApiErrorCodeEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
+exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.TransactionStatusEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FuseApiErrorTypeEnum = exports.FuseApiErrorCodeEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -201,6 +201,11 @@ exports.Aggregator = {
     Mx: 'mx',
     Finicity: 'finicity'
 };
+exports.FinancialConnectionDetailsConnectionStatusEnum = {
+    Connected: 'connected',
+    Disconnected: 'disconnected',
+    Finished: 'finished'
+};
 exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = {
     Primary: 'primary',
     Secondary: 'secondary',
@@ -277,6 +282,14 @@ exports.Product = {
     Liabilities: 'liabilities',
     Investments: 'investments'
 };
+exports.TransactionStatusEnum = {
+    Pending: 'pending',
+    Posted: 'posted'
+};
+exports.WebhookEventEnvironmentEnum = {
+    Sandbox: 'sandbox',
+    Production: 'production'
+};
 /**
  *
  * @export
@@ -295,7 +308,6 @@ exports.WebhookSource = {
  */
 exports.WebhookType = {
     SyncUpdatesAvailable: 'sync_updates_available',
-    BalanceUpdate: 'balance.update',
     FinancialConnectionDisconnected: 'financial_connection.disconnected',
     FinancialConnectionFinished: 'financial_connection.finished'
 };
@@ -433,6 +445,39 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         *
+         * @summary Delete a financial connection
+         * @param {string} financialConnectionIdToDelete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFinancialConnection: (financialConnectionIdToDelete, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'financialConnectionIdToDelete' is not null or undefined
+            (0, common_1.assertParamExists)('deleteFinancialConnection', 'financialConnectionIdToDelete', financialConnectionIdToDelete);
+            const localVarPath = `/v1/financial_connections/{financial_connection_id_to_delete}`
+                .replace(`{${"financial_connection_id_to_delete"}}`, encodeURIComponent(String(financialConnectionIdToDelete)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'DELETE' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * API to exchange a public token for an access token and financial connection id
          * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
          * @param {*} [options] Override http request option.
@@ -506,6 +551,39 @@ const FuseApiAxiosParamCreator = function (configuration) {
             (0, common_1.assertParamExists)('getEntity', 'entityId', entityId);
             const localVarPath = `/v1/entities/{entity_id}`
                 .replace(`{${"entity_id"}}`, encodeURIComponent(String(entityId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Get financial connection details
+         * @param {string} financialConnectionId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnection: (financialConnectionId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'financialConnectionId' is not null or undefined
+            (0, common_1.assertParamExists)('getFinancialConnection', 'financialConnectionId', financialConnectionId);
+            const localVarPath = `/v1/financial_connections/{financial_connection_id}`
+                .replace(`{${"financial_connection_id"}}`, encodeURIComponent(String(financialConnectionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
             let baseOptions;
@@ -799,40 +877,6 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
-         *
-         * @summary Migrate financial connections token
-         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        migrateFinancialConnectionsToken: (migrateFinancialConnectionsTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'migrateFinancialConnectionsTokenRequest' is not null or undefined
-            (0, common_1.assertParamExists)('migrateFinancialConnectionsToken', 'migrateFinancialConnectionsTokenRequest', migrateFinancialConnectionsTokenRequest);
-            const localVarPath = `/v1/financial_connections/migrate_token`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            // authentication fuseApiKey required
-            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
-            // authentication fuseClientId required
-            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(migrateFinancialConnectionsTokenRequest, localVarRequestOptions, configuration);
-            return {
-                url: (0, common_1.toPathString)(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
          * Refreshes the Asset Report in JSON format.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -1063,6 +1107,19 @@ const FuseApiFp = function (configuration) {
             });
         },
         /**
+         *
+         * @summary Delete a financial connection
+         * @param {string} financialConnectionIdToDelete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFinancialConnection(financialConnectionIdToDelete, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.deleteFinancialConnection(financialConnectionIdToDelete, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
          * API to exchange a public token for an access token and financial connection id
          * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
          * @param {*} [options] Override http request option.
@@ -1096,6 +1153,19 @@ const FuseApiFp = function (configuration) {
         getEntity(entityId, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getEntity(entityId, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Get financial connection details
+         * @param {string} financialConnectionId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnection(financialConnectionId, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnection(financialConnectionId, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -1200,19 +1270,6 @@ const FuseApiFp = function (configuration) {
         getInvestmentTransactions(getInvestmentTransactionsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getInvestmentTransactions(getInvestmentTransactionsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
-            });
-        },
-        /**
-         *
-         * @summary Migrate financial connections token
-         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -1329,6 +1386,16 @@ const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.createSession(createSessionRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         *
+         * @summary Delete a financial connection
+         * @param {string} financialConnectionIdToDelete
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteFinancialConnection(financialConnectionIdToDelete, options) {
+            return localVarFp.deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(axios, basePath));
+        },
+        /**
          * API to exchange a public token for an access token and financial connection id
          * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
          * @param {*} [options] Override http request option.
@@ -1355,6 +1422,16 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         getEntity(entityId, options) {
             return localVarFp.getEntity(entityId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Get financial connection details
+         * @param {string} financialConnectionId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnection(financialConnectionId, options) {
+            return localVarFp.getFinancialConnection(financialConnectionId, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -1435,16 +1512,6 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         getInvestmentTransactions(getInvestmentTransactionsRequest, options) {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         *
-         * @summary Migrate financial connections token
-         * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options) {
-            return localVarFp.migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Refreshes the Asset Report in JSON format.
@@ -1548,6 +1615,17 @@ class FuseApi extends base_1.BaseAPI {
         return (0, exports.FuseApiFp)(this.configuration).createSession(createSessionRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
+     *
+     * @summary Delete a financial connection
+     * @param {string} financialConnectionIdToDelete
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    deleteFinancialConnection(financialConnectionIdToDelete, options) {
+        return (0, exports.FuseApiFp)(this.configuration).deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
      * @param {*} [options] Override http request option.
@@ -1577,6 +1655,17 @@ class FuseApi extends base_1.BaseAPI {
      */
     getEntity(entityId, options) {
         return (0, exports.FuseApiFp)(this.configuration).getEntity(entityId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Get financial connection details
+     * @param {string} financialConnectionId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getFinancialConnection(financialConnectionId, options) {
+        return (0, exports.FuseApiFp)(this.configuration).getFinancialConnection(financialConnectionId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -1665,17 +1754,6 @@ class FuseApi extends base_1.BaseAPI {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     *
-     * @summary Migrate financial connections token
-     * @param {MigrateFinancialConnectionsTokenRequest} migrateFinancialConnectionsTokenRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options) {
-        return (0, exports.FuseApiFp)(this.configuration).migrateFinancialConnectionsToken(migrateFinancialConnectionsTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Refreshes the Asset Report in JSON format.
