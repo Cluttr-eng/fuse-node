@@ -741,7 +741,7 @@ export interface FinancialConnectionsAccountBalance {
      * @type {string}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'remote_account_id'?: string;
+    'remote_account_id': string;
     /**
      * Amount in cents after factoring in pending balances
      * @type {number}
@@ -769,10 +769,10 @@ export interface FinancialConnectionsAccountBalance {
 export interface FinancialConnectionsAccountCachedBalance {
     /**
      * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
-     * @type {string}
+     * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'available'?: string;
+    'available'?: number;
     /**
      * Amount without factoring in pending balances
      * @type {number}
