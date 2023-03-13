@@ -1887,7 +1887,7 @@ export interface GetEntityResponse {
      * @type {Array<FinancialConnectionDetails>}
      * @memberof GetEntityResponse
      */
-    'financial_connections'?: Array<FinancialConnectionDetails>;
+    'financial_connections': Array<FinancialConnectionDetails>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -2076,6 +2076,68 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
 /**
  *
  * @export
+ * @interface GetFinancialConnectionsTransactionsRequest
+ */
+export interface GetFinancialConnectionsTransactionsRequest {
+    /**
+     * Access token for authentication.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'access_token': string;
+    /**
+     * The earliest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'start_date': string;
+    /**
+     * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'end_date': string;
+    /**
+     * Specify current page.
+     * @type {number}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'page': number;
+    /**
+     * Number of items per page.
+     * @type {number}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'records_per_page': number;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialConnectionsTransactionsResponse
+ */
+export interface GetFinancialConnectionsTransactionsResponse {
+    /**
+     *
+     * @type {Array<Transaction>}
+     * @memberof GetFinancialConnectionsTransactionsResponse
+     */
+    'transactions': Array<Transaction>;
+    /**
+     * The total number of transactions.
+     * @type {number}
+     * @memberof GetFinancialConnectionsTransactionsResponse
+     */
+    'total_transactions': number;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
  * @interface GetFinancialInstitutionResponse
  */
 export interface GetFinancialInstitutionResponse {
@@ -2217,68 +2279,6 @@ export interface GetLiabilitiesResponse {
      * @memberof GetLiabilitiesResponse
      */
     'request_id'?: string;
-}
-/**
- *
- * @export
- * @interface GetTransactionsRequest
- */
-export interface GetTransactionsRequest {
-    /**
-     * Access token for authentication.
-     * @type {string}
-     * @memberof GetTransactionsRequest
-     */
-    'access_token': string;
-    /**
-     * The earliest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
-     * @type {string}
-     * @memberof GetTransactionsRequest
-     */
-    'start_date': string;
-    /**
-     * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
-     * @type {string}
-     * @memberof GetTransactionsRequest
-     */
-    'end_date': string;
-    /**
-     * Specify current page.
-     * @type {number}
-     * @memberof GetTransactionsRequest
-     */
-    'page': number;
-    /**
-     * Number of items per page.
-     * @type {number}
-     * @memberof GetTransactionsRequest
-     */
-    'records_per_page': number;
-}
-/**
- *
- * @export
- * @interface GetTransactionsResponse
- */
-export interface GetTransactionsResponse {
-    /**
-     *
-     * @type {Array<Transaction>}
-     * @memberof GetTransactionsResponse
-     */
-    'transactions': Array<Transaction>;
-    /**
-     * The total number of transactions.
-     * @type {number}
-     * @memberof GetTransactionsResponse
-     */
-    'total_transactions': number;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetTransactionsResponse
-     */
-    'request_id': string;
 }
 /**
  *
@@ -2817,11 +2817,11 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     /**
      *
      * @summary Get transactions
-     * @param {GetTransactionsRequest} getTransactionsRequest
+     * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsTransactions: (getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsTransactions: (getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
@@ -2994,11 +2994,11 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     /**
      *
      * @summary Get transactions
-     * @param {GetTransactionsRequest} getTransactionsRequest
+     * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTransactionsResponse>>;
+    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsTransactionsResponse>>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
@@ -3171,11 +3171,11 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     /**
      *
      * @summary Get transactions
-     * @param {GetTransactionsRequest} getTransactionsRequest
+     * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: any): AxiosPromise<GetTransactionsResponse>;
+    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: any): AxiosPromise<GetFinancialConnectionsTransactionsResponse>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
@@ -3363,12 +3363,12 @@ export declare class FuseApi extends BaseAPI {
     /**
      *
      * @summary Get transactions
-     * @param {GetTransactionsRequest} getTransactionsRequest
+     * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetTransactionsResponse, any>>;
+    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsTransactionsResponse, any>>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
