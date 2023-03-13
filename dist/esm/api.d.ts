@@ -728,7 +728,7 @@ export interface FinancialConnectionsAccount {
      * @type {FinancialConnectionsAccountCachedBalance}
      * @memberof FinancialConnectionsAccount
      */
-    'balance'?: FinancialConnectionsAccountCachedBalance;
+    'balance': FinancialConnectionsAccountCachedBalance;
 }
 /**
  *
@@ -908,7 +908,7 @@ export interface FinancialConnectionsAccountLiability {
      * @type {FinancialConnectionsAccountCachedBalance}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'balance'?: FinancialConnectionsAccountCachedBalance;
+    'balance': FinancialConnectionsAccountCachedBalance;
     /**
      * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
      * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
