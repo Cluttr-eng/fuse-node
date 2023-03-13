@@ -1941,7 +1941,7 @@ export interface GetEntityResponse {
      * @type {Array<FinancialConnectionDetails>}
      * @memberof GetEntityResponse
      */
-    'financial_connections'?: Array<FinancialConnectionDetails>;
+    'financial_connections': Array<FinancialConnectionDetails>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -2130,6 +2130,68 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
 /**
  * 
  * @export
+ * @interface GetFinancialConnectionsTransactionsRequest
+ */
+export interface GetFinancialConnectionsTransactionsRequest {
+    /**
+     * Access token for authentication.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'access_token': string;
+    /**
+     * The earliest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'start_date': string;
+    /**
+     * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'end_date': string;
+    /**
+     * Specify current page.
+     * @type {number}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'page': number;
+    /**
+     * Number of items per page.
+     * @type {number}
+     * @memberof GetFinancialConnectionsTransactionsRequest
+     */
+    'records_per_page': number;
+}
+/**
+ * 
+ * @export
+ * @interface GetFinancialConnectionsTransactionsResponse
+ */
+export interface GetFinancialConnectionsTransactionsResponse {
+    /**
+     * 
+     * @type {Array<Transaction>}
+     * @memberof GetFinancialConnectionsTransactionsResponse
+     */
+    'transactions': Array<Transaction>;
+    /**
+     * The total number of transactions.
+     * @type {number}
+     * @memberof GetFinancialConnectionsTransactionsResponse
+     */
+    'total_transactions': number;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsTransactionsResponse
+     */
+    'request_id': string;
+}
+/**
+ * 
+ * @export
  * @interface GetFinancialInstitutionResponse
  */
 export interface GetFinancialInstitutionResponse {
@@ -2271,68 +2333,6 @@ export interface GetLiabilitiesResponse {
      * @memberof GetLiabilitiesResponse
      */
     'request_id'?: string;
-}
-/**
- * 
- * @export
- * @interface GetTransactionsRequest
- */
-export interface GetTransactionsRequest {
-    /**
-     * Access token for authentication.
-     * @type {string}
-     * @memberof GetTransactionsRequest
-     */
-    'access_token': string;
-    /**
-     * The earliest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
-     * @type {string}
-     * @memberof GetTransactionsRequest
-     */
-    'start_date': string;
-    /**
-     * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
-     * @type {string}
-     * @memberof GetTransactionsRequest
-     */
-    'end_date': string;
-    /**
-     * Specify current page.
-     * @type {number}
-     * @memberof GetTransactionsRequest
-     */
-    'page': number;
-    /**
-     * Number of items per page.
-     * @type {number}
-     * @memberof GetTransactionsRequest
-     */
-    'records_per_page': number;
-}
-/**
- * 
- * @export
- * @interface GetTransactionsResponse
- */
-export interface GetTransactionsResponse {
-    /**
-     * 
-     * @type {Array<Transaction>}
-     * @memberof GetTransactionsResponse
-     */
-    'transactions': Array<Transaction>;
-    /**
-     * The total number of transactions.
-     * @type {number}
-     * @memberof GetTransactionsResponse
-     */
-    'total_transactions': number;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetTransactionsResponse
-     */
-    'request_id': string;
 }
 /**
  * 
@@ -3320,13 +3320,13 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @summary Get transactions
-         * @param {GetTransactionsRequest} getTransactionsRequest 
+         * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions: async (getTransactionsRequest: GetTransactionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'getTransactionsRequest' is not null or undefined
-            assertParamExists('getFinancialConnectionsTransactions', 'getTransactionsRequest', getTransactionsRequest)
+        getFinancialConnectionsTransactions: async (getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'getFinancialConnectionsTransactionsRequest' is not null or undefined
+            assertParamExists('getFinancialConnectionsTransactions', 'getFinancialConnectionsTransactionsRequest', getFinancialConnectionsTransactionsRequest)
             const localVarPath = `/v1/financial_connections/transactions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3352,7 +3352,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(getTransactionsRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(getFinancialConnectionsTransactionsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3845,12 +3845,12 @@ export const FuseApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Get transactions
-         * @param {GetTransactionsRequest} getTransactionsRequest 
+         * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetTransactionsResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsTransactions(getTransactionsRequest, options);
+        async getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsTransactionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -4079,12 +4079,12 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         /**
          * 
          * @summary Get transactions
-         * @param {GetTransactionsRequest} getTransactionsRequest 
+         * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: any): AxiosPromise<GetTransactionsResponse> {
-            return localVarFp.getFinancialConnectionsTransactions(getTransactionsRequest, options).then((request) => request(axios, basePath));
+        getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: any): AxiosPromise<GetFinancialConnectionsTransactionsResponse> {
+            return localVarFp.getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Receive metadata for a financial institution
@@ -4330,13 +4330,13 @@ export class FuseApi extends BaseAPI {
     /**
      * 
      * @summary Get transactions
-     * @param {GetTransactionsRequest} getTransactionsRequest 
+     * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsTransactions(getTransactionsRequest: GetTransactionsRequest, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).getFinancialConnectionsTransactions(getTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    public getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

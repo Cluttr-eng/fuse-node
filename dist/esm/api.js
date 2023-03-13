@@ -741,13 +741,13 @@ export const FuseApiAxiosParamCreator = function (configuration) {
         /**
          *
          * @summary Get transactions
-         * @param {GetTransactionsRequest} getTransactionsRequest
+         * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions: (getTransactionsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'getTransactionsRequest' is not null or undefined
-            assertParamExists('getFinancialConnectionsTransactions', 'getTransactionsRequest', getTransactionsRequest);
+        getFinancialConnectionsTransactions: (getFinancialConnectionsTransactionsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'getFinancialConnectionsTransactionsRequest' is not null or undefined
+            assertParamExists('getFinancialConnectionsTransactions', 'getFinancialConnectionsTransactionsRequest', getFinancialConnectionsTransactionsRequest);
             const localVarPath = `/v1/financial_connections/transactions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -766,7 +766,7 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = serializeDataIfNeeded(getTransactionsRequest, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = serializeDataIfNeeded(getFinancialConnectionsTransactionsRequest, localVarRequestOptions, configuration);
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -1220,13 +1220,13 @@ export const FuseApiFp = function (configuration) {
         /**
          *
          * @summary Get transactions
-         * @param {GetTransactionsRequest} getTransactionsRequest
+         * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions(getTransactionsRequest, options) {
+        getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsTransactions(getTransactionsRequest, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
@@ -1471,12 +1471,12 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
         /**
          *
          * @summary Get transactions
-         * @param {GetTransactionsRequest} getTransactionsRequest
+         * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions(getTransactionsRequest, options) {
-            return localVarFp.getFinancialConnectionsTransactions(getTransactionsRequest, options).then((request) => request(axios, basePath));
+        getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options) {
+            return localVarFp.getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Receive metadata for a financial institution
@@ -1708,13 +1708,13 @@ export class FuseApi extends BaseAPI {
     /**
      *
      * @summary Get transactions
-     * @param {GetTransactionsRequest} getTransactionsRequest
+     * @param {GetFinancialConnectionsTransactionsRequest} getFinancialConnectionsTransactionsRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsTransactions(getTransactionsRequest, options) {
-        return FuseApiFp(this.configuration).getFinancialConnectionsTransactions(getTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options) {
+        return FuseApiFp(this.configuration).getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Receive metadata for a financial institution
