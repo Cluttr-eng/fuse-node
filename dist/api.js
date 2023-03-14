@@ -198,8 +198,7 @@ exports.AccountType = {
 exports.Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
-    Mx: 'mx',
-    Finicity: 'finicity'
+    Mx: 'mx'
 };
 exports.FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',

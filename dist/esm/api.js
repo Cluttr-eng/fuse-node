@@ -195,8 +195,7 @@ export const AccountType = {
 export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
-    Mx: 'mx',
-    Finicity: 'finicity'
+    Mx: 'mx'
 };
 export const FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
