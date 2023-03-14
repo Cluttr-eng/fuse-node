@@ -203,8 +203,7 @@ export type AccountType = typeof AccountType[keyof typeof AccountType];
 export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
-    Mx: 'mx',
-    Finicity: 'finicity'
+    Mx: 'mx'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -1971,25 +1970,6 @@ export interface GetFinancialConnectionResponse {
 /**
  * 
  * @export
- * @interface GetFinancialConnectionsAccountBalanceResponse
- */
-export interface GetFinancialConnectionsAccountBalanceResponse {
-    /**
-     * 
-     * @type {Array<FinancialConnectionsAccountBalance>}
-     * @memberof GetFinancialConnectionsAccountBalanceResponse
-     */
-    'balances': Array<FinancialConnectionsAccountBalance>;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetFinancialConnectionsAccountBalanceResponse
-     */
-    'request_id': string;
-}
-/**
- * 
- * @export
  * @interface GetFinancialConnectionsAccountDetailsRequest
  */
 export interface GetFinancialConnectionsAccountDetailsRequest {
@@ -2075,6 +2055,25 @@ export interface GetFinancialConnectionsBalanceRequest {
      * @memberof GetFinancialConnectionsBalanceRequest
      */
     'access_token': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetFinancialConnectionsBalanceResponse
+ */
+export interface GetFinancialConnectionsBalanceResponse {
+    /**
+     * 
+     * @type {Array<FinancialConnectionsAccountBalance>}
+     * @memberof GetFinancialConnectionsBalanceResponse
+     */
+    'balances': Array<FinancialConnectionsAccountBalance>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsBalanceResponse
+     */
+    'request_id': string;
 }
 /**
  * 
@@ -2625,6 +2624,12 @@ export interface Transaction {
      * @memberof Transaction
      */
     'iso_currency_code'?: string;
+    /**
+     * 
+     * @type {any}
+     * @memberof Transaction
+     */
+    'remote_data': any;
 }
 
 export const TransactionStatusEnum = {
@@ -3827,7 +3832,7 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountBalanceResponse>> {
+        async getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsBalanceResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -4063,7 +4068,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: any): AxiosPromise<GetFinancialConnectionsAccountBalanceResponse> {
+        getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: any): AxiosPromise<GetFinancialConnectionsBalanceResponse> {
             return localVarFp.getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest, options).then((request) => request(axios, basePath));
         },
         /**

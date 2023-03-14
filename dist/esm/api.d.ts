@@ -185,7 +185,6 @@ export declare const Aggregator: {
     readonly Plaid: "plaid";
     readonly Teller: "teller";
     readonly Mx: "mx";
-    readonly Finicity: "finicity";
 };
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 /**
@@ -1917,25 +1916,6 @@ export interface GetFinancialConnectionResponse {
 /**
  *
  * @export
- * @interface GetFinancialConnectionsAccountBalanceResponse
- */
-export interface GetFinancialConnectionsAccountBalanceResponse {
-    /**
-     *
-     * @type {Array<FinancialConnectionsAccountBalance>}
-     * @memberof GetFinancialConnectionsAccountBalanceResponse
-     */
-    'balances': Array<FinancialConnectionsAccountBalance>;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetFinancialConnectionsAccountBalanceResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
  * @interface GetFinancialConnectionsAccountDetailsRequest
  */
 export interface GetFinancialConnectionsAccountDetailsRequest {
@@ -2021,6 +2001,25 @@ export interface GetFinancialConnectionsBalanceRequest {
      * @memberof GetFinancialConnectionsBalanceRequest
      */
     'access_token': string;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialConnectionsBalanceResponse
+ */
+export interface GetFinancialConnectionsBalanceResponse {
+    /**
+     *
+     * @type {Array<FinancialConnectionsAccountBalance>}
+     * @memberof GetFinancialConnectionsBalanceResponse
+     */
+    'balances': Array<FinancialConnectionsAccountBalance>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsBalanceResponse
+     */
+    'request_id': string;
 }
 /**
  *
@@ -2564,6 +2563,12 @@ export interface Transaction {
      * @memberof Transaction
      */
     'iso_currency_code'?: string;
+    /**
+     *
+     * @type {any}
+     * @memberof Transaction
+     */
+    'remote_data': any;
 }
 export declare const TransactionStatusEnum: {
     readonly Pending: "pending";
@@ -2982,7 +2987,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountBalanceResponse>>;
+    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsBalanceResponse>>;
     /**
      *
      * @summary Get account owners
@@ -3159,7 +3164,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: any): AxiosPromise<GetFinancialConnectionsAccountBalanceResponse>;
+    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: any): AxiosPromise<GetFinancialConnectionsBalanceResponse>;
     /**
      *
      * @summary Get account owners
@@ -3350,7 +3355,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountBalanceResponse, any>>;
+    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsBalanceResponse, any>>;
     /**
      *
      * @summary Get account owners
