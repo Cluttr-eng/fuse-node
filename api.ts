@@ -2782,9 +2782,10 @@ export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
  */
 
 export const WebhookType = {
-    SyncUpdatesAvailable: 'sync_updates_available',
+    FinancialConnectionSyncData: 'financial_connection.sync_data',
     FinancialConnectionDisconnected: 'financial_connection.disconnected',
-    FinancialConnectionFinished: 'financial_connection.finished'
+    FinancialConnectionFinished: 'financial_connection.finished',
+    TransactionUpdates: 'transaction.updates'
 } as const;
 
 export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
