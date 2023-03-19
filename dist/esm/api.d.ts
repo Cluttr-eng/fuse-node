@@ -2710,9 +2710,10 @@ export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
  * @enum {string}
  */
 export declare const WebhookType: {
-    readonly SyncUpdatesAvailable: "sync_updates_available";
+    readonly FinancialConnectionSyncData: "financial_connection.sync_data";
     readonly FinancialConnectionDisconnected: "financial_connection.disconnected";
     readonly FinancialConnectionFinished: "financial_connection.finished";
+    readonly TransactionUpdates: "transaction.updates";
 };
 export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
 /**
