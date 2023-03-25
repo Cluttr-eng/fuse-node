@@ -2745,6 +2745,12 @@ export interface WebhookEvent {
      */
     'source': WebhookSource;
     /**
+     * Aggregator verification data needed to verify the webhook
+     * @type {string}
+     * @memberof WebhookEvent
+     */
+    'verification_token'?: string;
+    /**
      * 
      * @type {any}
      * @memberof WebhookEvent
