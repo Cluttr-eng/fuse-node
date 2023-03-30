@@ -198,6 +198,15 @@ export const Aggregator = {
     Mx: 'mx',
     Snaptrade: 'snaptrade'
 };
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export const CountryCode = {
+    Us: 'US',
+    Ca: 'CA'
+};
 export const FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
     Disconnected: 'disconnected',
