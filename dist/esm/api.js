@@ -195,7 +195,8 @@ export const AccountType = {
 export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
-    Mx: 'mx'
+    Mx: 'mx',
+    Snaptrade: 'snaptrade'
 };
 export const FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
@@ -295,7 +296,8 @@ export const WebhookSource = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Fuse: 'fuse'
+    Fuse: 'fuse',
+    Snaptrade: 'snaptrade'
 };
 /**
  *

@@ -198,7 +198,8 @@ exports.AccountType = {
 exports.Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
-    Mx: 'mx'
+    Mx: 'mx',
+    Snaptrade: 'snaptrade'
 };
 exports.FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
@@ -298,7 +299,8 @@ exports.WebhookSource = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Fuse: 'fuse'
+    Fuse: 'fuse',
+    Snaptrade: 'snaptrade'
 };
 /**
  *

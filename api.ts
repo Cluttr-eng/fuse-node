@@ -203,7 +203,8 @@ export type AccountType = typeof AccountType[keyof typeof AccountType];
 export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
-    Mx: 'mx'
+    Mx: 'mx',
+    Snaptrade: 'snaptrade'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -786,6 +787,12 @@ export interface FinancialConnectionsAccountBalance {
      * @memberof FinancialConnectionsAccountBalance
      */
     'iso_currency_code'?: string;
+    /**
+     * The last time the account balance was updated, represented as an ISO 8601 timestamp (YYYY-MM-DDTHH:mm:ssZ). This value may not be available for some accounts.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountBalance
+     */
+    'last_updated_date'?: string;
 }
 /**
  * 
@@ -2583,7 +2590,7 @@ export interface Transaction {
      */
     'amount': number;
     /**
-     * Date of the transaction
+     * Date of the transaction (YYYY-MM-DD)
      * @type {string}
      * @memberof Transaction
      */
@@ -2775,7 +2782,8 @@ export const WebhookSource = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Fuse: 'fuse'
+    Fuse: 'fuse',
+    Snaptrade: 'snaptrade'
 } as const;
 
 export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
