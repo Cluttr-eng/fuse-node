@@ -1073,12 +1073,6 @@ export interface FinancialConnectionsHolding {
      */
     'quantity': number;
     /**
-     * The closing price of the security at the end of the most recent trading day.
-     * @type {number}
-     * @memberof FinancialConnectionsHolding
-     */
-    'close_price': number;
-    /**
      * The price of the security as provided by the financial institution managing the holding.
      * @type {number}
      * @memberof FinancialConnectionsHolding
@@ -1213,6 +1207,12 @@ export interface FinancialConnectionsInvestmentSecurity {
      * @memberof FinancialConnectionsInvestmentSecurity
      */
     'cusip'?: string;
+    /**
+     * The closing price of the security at the end of the most recent trading day.
+     * @type {number}
+     * @memberof FinancialConnectionsInvestmentSecurity
+     */
+    'close_price': number;
     /**
      *
      * @type {FinancialConnectionsInvestmentSecurityCurrency}
