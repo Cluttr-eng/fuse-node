@@ -22,7 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.TransactionStatusEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FuseApiErrorTypeEnum = exports.FuseApiErrorCodeEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
+exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.TransactionStatusEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorSourceEnum = exports.FuseApiErrorTypeEnum = exports.FuseApiErrorCodeEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.CountryCode = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -200,6 +200,15 @@ exports.Aggregator = {
     Teller: 'teller',
     Mx: 'mx',
     Snaptrade: 'snaptrade'
+};
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+exports.CountryCode = {
+    Us: 'US',
+    Ca: 'CA'
 };
 exports.FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',

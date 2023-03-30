@@ -191,6 +191,16 @@ export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 /**
  *
  * @export
+ * @enum {string}
+ */
+export declare const CountryCode: {
+    readonly Us: "US";
+    readonly Ca: "CA";
+};
+export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
+/**
+ *
+ * @export
  * @interface CreateAssetReportRequest
  */
 export interface CreateAssetReportRequest {
@@ -418,6 +428,12 @@ export interface CreateSessionRequest {
      * @memberof CreateSessionRequest
      */
     'products'?: Array<Product>;
+    /**
+     * List of country codes that you would like the institutions to support
+     * @type {Array<CountryCode>}
+     * @memberof CreateSessionRequest
+     */
+    'country_codes'?: Array<CountryCode>;
     /**
      * The fuse access token for an existing account integration. This will perform the process to reconnect an existing disconnected account.
      * @type {string}
@@ -1458,6 +1474,12 @@ export interface FinancialInstitution {
      * @memberof FinancialInstitution
      */
     'website'?: string;
+    /**
+     * List of country codes supported by this institution
+     * @type {Array<CountryCode>}
+     * @memberof FinancialInstitution
+     */
+    'country_codes': Array<CountryCode>;
 }
 /**
  *
