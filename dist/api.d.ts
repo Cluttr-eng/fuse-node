@@ -1265,107 +1265,94 @@ export interface FinancialConnectionsInvestmentSecurityExchange {
  */
 export interface FinancialConnectionsInvestmentTransaction {
     /**
-     *
-     * @type {Array<FinancialConnectionsInvestmentTransactionDataInner>}
-     * @memberof FinancialConnectionsInvestmentTransaction
-     */
-    'data'?: Array<FinancialConnectionsInvestmentTransactionDataInner>;
-}
-/**
- *
- * @export
- * @interface FinancialConnectionsInvestmentTransactionDataInner
- */
-export interface FinancialConnectionsInvestmentTransactionDataInner {
-    /**
      * The remote ID of the Investment transaction
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'remote_id': string;
     /**
      * Remote Account Id of the transaction, ie Plaid Account Id
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'remote_account_id': string;
     /**
      * The name of the account associated with the investment transaction
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'account_name'?: string;
     /**
      * The amount of the investment transaction
      * @type {number}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'amount': number;
     /**
      *
-     * @type {FinancialConnectionsInvestmentTransactionDataInnerCurrency}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @type {FinancialConnectionsInvestmentTransactionCurrency}
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
-    'currency': FinancialConnectionsInvestmentTransactionDataInnerCurrency;
+    'currency': FinancialConnectionsInvestmentTransactionCurrency;
     /**
      * A description of the investment transaction
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'description': string;
     /**
      * The fees associated with the investment transaction
      * @type {number}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'fees': number;
     /**
      * The date and time of the investment transaction
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'date': string;
     /**
      * The type of the investment transaction (e.g., \'buy\', \'sell\', \'dividend\')
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'type'?: string;
     /**
      * The number of units of the security involved in this transaction
      * @type {number}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'quantity': number;
     /**
      * The price of the security involved in this transaction
      * @type {number}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'price': number;
     /**
      *
      * @type {FinancialConnectionsInvestmentSecurity}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     * @memberof FinancialConnectionsInvestmentTransaction
      */
     'security': FinancialConnectionsInvestmentSecurity;
 }
 /**
  *
  * @export
- * @interface FinancialConnectionsInvestmentTransactionDataInnerCurrency
+ * @interface FinancialConnectionsInvestmentTransactionCurrency
  */
-export interface FinancialConnectionsInvestmentTransactionDataInnerCurrency {
+export interface FinancialConnectionsInvestmentTransactionCurrency {
     /**
      * The ISO-4217 currency code of the investment transaction
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInnerCurrency
+     * @memberof FinancialConnectionsInvestmentTransactionCurrency
      */
     'code': string;
     /**
      * The name of the currency
      * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInnerCurrency
+     * @memberof FinancialConnectionsInvestmentTransactionCurrency
      */
     'name'?: string;
 }
