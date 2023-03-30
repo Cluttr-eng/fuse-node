@@ -1317,7 +1317,7 @@ export interface FinancialConnectionsInvestmentTransaction {
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
-    'type'?: string;
+    'type': string;
     /**
      * The number of units of the security involved in this transaction
      * @type {number}
@@ -2302,16 +2302,28 @@ export interface GetInvestmentHoldingsRequestOptions {
 export interface GetInvestmentHoldingsResponse {
     /**
      *
+     * @type {Array<FinancialConnectionsInvestmentAccount>}
+     * @memberof GetInvestmentHoldingsResponse
+     */
+    'accounts': Array<FinancialConnectionsInvestmentAccount>;
+    /**
+     *
      * @type {Array<FinancialConnectionsHolding>}
      * @memberof GetInvestmentHoldingsResponse
      */
-    'holdings'?: Array<FinancialConnectionsHolding>;
+    'holdings': Array<FinancialConnectionsHolding>;
+    /**
+     *
+     * @type {Array<FinancialConnectionsInvestmentSecurity>}
+     * @memberof GetInvestmentHoldingsResponse
+     */
+    'securities': Array<FinancialConnectionsInvestmentSecurity>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetInvestmentHoldingsResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  *
@@ -2380,25 +2392,25 @@ export interface GetInvestmentTransactionsResponse {
      * @type {Array<FinancialConnectionsInvestmentAccount>}
      * @memberof GetInvestmentTransactionsResponse
      */
-    'accounts'?: Array<FinancialConnectionsInvestmentAccount>;
+    'accounts': Array<FinancialConnectionsInvestmentAccount>;
     /**
      *
      * @type {Array<FinancialConnectionsInvestmentTransaction>}
      * @memberof GetInvestmentTransactionsResponse
      */
-    'investment_transactions'?: Array<FinancialConnectionsInvestmentTransaction>;
+    'investment_transactions': Array<FinancialConnectionsInvestmentTransaction>;
     /**
      *
      * @type {Array<FinancialConnectionsInvestmentSecurity>}
      * @memberof GetInvestmentTransactionsResponse
      */
-    'securities'?: Array<FinancialConnectionsInvestmentSecurity>;
+    'securities': Array<FinancialConnectionsInvestmentSecurity>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetInvestmentTransactionsResponse
      */
-    'request_id'?: string;
+    'request_id': string;
 }
 /**
  *
