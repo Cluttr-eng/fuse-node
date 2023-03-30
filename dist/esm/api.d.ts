@@ -1102,13 +1102,13 @@ export interface FinancialConnectionsInvestmentAccount {
      * @type {string}
      * @memberof FinancialConnectionsInvestmentAccount
      */
-    'remote_id'?: string;
+    'remote_id': string;
     /**
      * Uniquely identifies this account across all accounts associated with your organization. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof FinancialConnectionsInvestmentAccount
      */
-    'fingerprint'?: string;
+    'fingerprint': string;
     /**
      *
      * @type {FinancialConnectionsAccountInstitution}
@@ -1126,13 +1126,13 @@ export interface FinancialConnectionsInvestmentAccount {
      * @type {string}
      * @memberof FinancialConnectionsInvestmentAccount
      */
-    'name'?: string;
+    'name': string;
     /**
      * The account\'s type e.g depository.
      * @type {string}
      * @memberof FinancialConnectionsInvestmentAccount
      */
-    'type'?: string;
+    'type': string;
     /**
      * The account\'s subtype e.g checking
      * @type {string}
@@ -1144,7 +1144,7 @@ export interface FinancialConnectionsInvestmentAccount {
      * @type {FinancialConnectionsInvestmentAccountBalance}
      * @memberof FinancialConnectionsInvestmentAccount
      */
-    'balance'?: FinancialConnectionsInvestmentAccountBalance;
+    'balance': FinancialConnectionsInvestmentAccountBalance;
 }
 /**
  *
@@ -1154,10 +1154,10 @@ export interface FinancialConnectionsInvestmentAccount {
 export interface FinancialConnectionsInvestmentAccountBalance {
     /**
      * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
-     * @type {string}
+     * @type {number}
      * @memberof FinancialConnectionsInvestmentAccountBalance
      */
-    'available'?: string;
+    'available'?: number;
     /**
      * Amount without factoring in pending balances
      * @type {number}
@@ -1183,6 +1183,12 @@ export interface FinancialConnectionsInvestmentAccountBalance {
  * @interface FinancialConnectionsInvestmentSecurity
  */
 export interface FinancialConnectionsInvestmentSecurity {
+    /**
+     * Remote Id of the security, ie Plaid or Snaptrade security id
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentSecurity
+     */
+    'remote_id': string;
     /**
      * The trading symbol for publicly traded securities, or a short identifier if available.
      * @type {string}
