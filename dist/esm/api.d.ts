@@ -1049,41 +1049,47 @@ export interface FinancialConnectionsAccountLiabilityAllOfAprs {
  */
 export interface FinancialConnectionsHolding {
     /**
-     * Remote account id associated with this holding
+     * The remote account ID associated with this holding.
      * @type {string}
      * @memberof FinancialConnectionsHolding
      */
-    'remote_account_id'?: string;
+    'remote_account_id': string;
     /**
-     * The original total value of the holding.
+     * The original total value of the holding when it was purchased.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
-    'cost_basis'?: number;
+    'cost_basis': number;
     /**
-     * The value of the holding
+     * The current market value of the holding.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
-    'value'?: number;
+    'value': number;
     /**
-     * The ISO-4217 currency code of the holding.
-     * @type {string}
-     * @memberof FinancialConnectionsHolding
-     */
-    'iso_currency_code'?: string;
-    /**
-     * The number of units of the security involved in this transaction.
+     * The number of units of the security held in this holding.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
-    'quantity'?: number;
+    'quantity': number;
     /**
-     * The security_id associated with the holding.
-     * @type {string}
+     * The closing price of the security at the end of the most recent trading day.
+     * @type {number}
      * @memberof FinancialConnectionsHolding
      */
-    'security_id'?: string;
+    'close_price': number;
+    /**
+     * The price of the security as provided by the financial institution managing the holding.
+     * @type {number}
+     * @memberof FinancialConnectionsHolding
+     */
+    'institution_price': number;
+    /**
+     *
+     * @type {FinancialConnectionsInvestmentSecurity}
+     * @memberof FinancialConnectionsHolding
+     */
+    'security': FinancialConnectionsInvestmentSecurity;
 }
 /**
  *
@@ -1178,17 +1184,35 @@ export interface FinancialConnectionsInvestmentAccountBalance {
  */
 export interface FinancialConnectionsInvestmentSecurity {
     /**
-     * The security type of the holding.
+     * The trading symbol for publicly traded securities, or a short identifier if available.
      * @type {string}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'type'?: string;
+    'symbol': string;
     /**
-     * 9-character CUSIP, an identifier assigned to North American securities.
+     * The International Securities Identification Number (ISIN) uniquely identifies the security.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentSecurity
+     */
+    'isin'?: string;
+    /**
+     * The Stock Exchange Daily Official List (SEDOL) code uniquely identifies the security, primarily used in the United Kingdom and Ireland.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentSecurity
+     */
+    'sedol'?: string;
+    /**
+     * The Committee on Uniform Securities Identification Procedures (CUSIP) number uniquely identifies the security, primarily used in the United States and Canada.
      * @type {string}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
     'cusip'?: string;
+    /**
+     *
+     * @type {FinancialConnectionsInvestmentSecurityCurrency}
+     * @memberof FinancialConnectionsInvestmentSecurity
+     */
+    'currency': FinancialConnectionsInvestmentSecurityCurrency;
     /**
      * A descriptive name for the security, suitable for display.
      * @type {string}
@@ -1196,17 +1220,43 @@ export interface FinancialConnectionsInvestmentSecurity {
      */
     'name'?: string;
     /**
-     * The security’s trading symbol for publicly traded securities, and otherwise a short identifier if available.
+     * The type of security (e.g., equity, mutual fund)
      * @type {string}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'ticker_symbol'?: string;
+    'type'?: string;
     /**
-     * A unique identity for the security
-     * @type {string}
+     *
+     * @type {FinancialConnectionsInvestmentSecurityExchange}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'id'?: string;
+    'exchange'?: FinancialConnectionsInvestmentSecurityExchange;
+}
+/**
+ * The currency in which the holding is denominated.
+ * @export
+ * @interface FinancialConnectionsInvestmentSecurityCurrency
+ */
+export interface FinancialConnectionsInvestmentSecurityCurrency {
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentSecurityCurrency
+     */
+    'code'?: string;
+}
+/**
+ *
+ * @export
+ * @interface FinancialConnectionsInvestmentSecurityExchange
+ */
+export interface FinancialConnectionsInvestmentSecurityExchange {
+    /**
+     * The Market Identifier Code (MIC) associated with the specific financial market or exchange where the security is traded.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentSecurityExchange
+     */
+    'mic_code'?: string;
 }
 /**
  *
@@ -1228,53 +1278,96 @@ export interface FinancialConnectionsInvestmentTransaction {
  */
 export interface FinancialConnectionsInvestmentTransactionDataInner {
     /**
-     * Fuse Id of the investment transaction
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionDataInner
-     */
-    'id'?: string;
-    /**
      * The remote ID of the Investment transaction
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
-    'remote_investment_transaction_id'?: string;
+    'remote_id': string;
     /**
      * Remote Account Id of the transaction, ie Plaid Account Id
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
-    'remote_account_id'?: string;
+    'remote_account_id': string;
     /**
-     * The complete value of the transaction. Positive values when cash is debited, e.g. purchases of stock; negative values when cash is credited, e.g. sales of stock.
+     * The name of the account associated with the investment transaction
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     */
+    'account_name'?: string;
+    /**
+     * The amount of the investment transaction
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
-    'amount'?: number;
+    'amount': number;
     /**
-     * The number of units of the security involved in this transaction. Positive for buy transactions; negative for sell transactions.
+     *
+     * @type {FinancialConnectionsInvestmentTransactionDataInnerCurrency}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     */
+    'currency': FinancialConnectionsInvestmentTransactionDataInnerCurrency;
+    /**
+     * A description of the investment transaction
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
-    'quantity'?: string;
+    'description': string;
     /**
-     * The institution’s description of the transaction.
+     * The fees associated with the investment transaction
+     * @type {number}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     */
+    'fees': number;
+    /**
+     * The date and time of the investment transaction
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
-    'name'?: string;
+    'date': string;
     /**
-     * Type of the transaction, ie buy, sell
+     * The type of the investment transaction (e.g., \'buy\', \'sell\', \'dividend\')
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
     'type'?: string;
     /**
-     * Date of the transaction
-     * @type {string}
+     * The number of units of the security involved in this transaction
+     * @type {number}
      * @memberof FinancialConnectionsInvestmentTransactionDataInner
      */
-    'date'?: string;
+    'quantity': number;
+    /**
+     * The price of the security involved in this transaction
+     * @type {number}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     */
+    'price': number;
+    /**
+     *
+     * @type {FinancialConnectionsInvestmentSecurity}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInner
+     */
+    'security': FinancialConnectionsInvestmentSecurity;
+}
+/**
+ *
+ * @export
+ * @interface FinancialConnectionsInvestmentTransactionDataInnerCurrency
+ */
+export interface FinancialConnectionsInvestmentTransactionDataInnerCurrency {
+    /**
+     * The ISO-4217 currency code of the investment transaction
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInnerCurrency
+     */
+    'code': string;
+    /**
+     * The name of the currency
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentTransactionDataInnerCurrency
+     */
+    'name'?: string;
 }
 /**
  *
@@ -2189,17 +2282,30 @@ export interface GetFinancialInstitutionResponse {
  */
 export interface GetInvestmentHoldingsRequest {
     /**
-     * Access token for authentication
+     * The access token of the financial institution connection
      * @type {string}
      * @memberof GetInvestmentHoldingsRequest
      */
     'access_token': string;
     /**
-     * The ISO-4217 currency code to convert the holding to.
-     * @type {string}
+     *
+     * @type {GetInvestmentHoldingsRequestOptions}
      * @memberof GetInvestmentHoldingsRequest
      */
-    'iso_currency_code'?: string;
+    'options'?: GetInvestmentHoldingsRequestOptions;
+}
+/**
+ *
+ * @export
+ * @interface GetInvestmentHoldingsRequestOptions
+ */
+export interface GetInvestmentHoldingsRequestOptions {
+    /**
+     * An array of account_ids to retrieve holdings for.
+     * @type {Array<string>}
+     * @memberof GetInvestmentHoldingsRequestOptions
+     */
+    'remote_account_ids'?: Array<string>;
 }
 /**
  *
@@ -2209,22 +2315,10 @@ export interface GetInvestmentHoldingsRequest {
 export interface GetInvestmentHoldingsResponse {
     /**
      *
-     * @type {Array<FinancialConnectionsInvestmentAccount>}
-     * @memberof GetInvestmentHoldingsResponse
-     */
-    'accounts'?: Array<FinancialConnectionsInvestmentAccount>;
-    /**
-     *
      * @type {Array<FinancialConnectionsHolding>}
      * @memberof GetInvestmentHoldingsResponse
      */
     'holdings'?: Array<FinancialConnectionsHolding>;
-    /**
-     *
-     * @type {Array<FinancialConnectionsInvestmentSecurity>}
-     * @memberof GetInvestmentHoldingsResponse
-     */
-    'securities'?: Array<FinancialConnectionsInvestmentSecurity>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -2244,6 +2338,49 @@ export interface GetInvestmentTransactionsRequest {
      * @memberof GetInvestmentTransactionsRequest
      */
     'access_token': string;
+    /**
+     * The earliest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetInvestmentTransactionsRequest
+     */
+    'start_date'?: string;
+    /**
+     * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
+     * @type {string}
+     * @memberof GetInvestmentTransactionsRequest
+     */
+    'end_date'?: string;
+    /**
+     * Specify current page.
+     * @type {number}
+     * @memberof GetInvestmentTransactionsRequest
+     */
+    'page'?: number;
+    /**
+     * Number of items per page.
+     * @type {number}
+     * @memberof GetInvestmentTransactionsRequest
+     */
+    'records_per_page'?: number;
+    /**
+     *
+     * @type {GetInvestmentTransactionsRequestOptions}
+     * @memberof GetInvestmentTransactionsRequest
+     */
+    'options'?: GetInvestmentTransactionsRequestOptions;
+}
+/**
+ *
+ * @export
+ * @interface GetInvestmentTransactionsRequestOptions
+ */
+export interface GetInvestmentTransactionsRequestOptions {
+    /**
+     * An array of account_ids to retrieve transactions for.
+     * @type {Array<string>}
+     * @memberof GetInvestmentTransactionsRequestOptions
+     */
+    'remote_account_ids'?: Array<string>;
 }
 /**
  *
