@@ -2366,22 +2366,16 @@ export interface GetInvestmentHoldingsRequestOptions {
 export interface GetInvestmentHoldingsResponse {
     /**
      * 
-     * @type {Array<FinancialConnectionsInvestmentAccount>}
+     * @type {Array<FinancialConnectionsAccount>}
      * @memberof GetInvestmentHoldingsResponse
      */
-    'accounts': Array<FinancialConnectionsInvestmentAccount>;
+    'accounts': Array<FinancialConnectionsAccount>;
     /**
      * 
      * @type {Array<FinancialConnectionsHolding>}
      * @memberof GetInvestmentHoldingsResponse
      */
     'holdings': Array<FinancialConnectionsHolding>;
-    /**
-     * 
-     * @type {Array<FinancialConnectionsInvestmentSecurity>}
-     * @memberof GetInvestmentHoldingsResponse
-     */
-    'securities': Array<FinancialConnectionsInvestmentSecurity>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
