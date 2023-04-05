@@ -461,6 +461,12 @@ export interface CreateSessionRequest {
      */
     'country_codes'?: Array<CountryCode>;
     /**
+     * 
+     * @type {Entity}
+     * @memberof CreateSessionRequest
+     */
+    'entity'?: Entity;
+    /**
      * The fuse access token for an existing account integration. This will perform the process to reconnect an existing disconnected account.
      * @type {string}
      * @memberof CreateSessionRequest
@@ -2503,19 +2509,70 @@ export interface GetLiabilitiesResponse {
     'request_id'?: string;
 }
 /**
+ * The input data for the financial connections to be migrated into the unified Fuse API.
+ * @export
+ * @interface MigrateFinancialConnectionsAggregatorConnectionData
+ */
+export interface MigrateFinancialConnectionsAggregatorConnectionData {
+    /**
+     * 
+     * @type {MigrateFinancialConnectionsAggregatorConnectionDataPlaid}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionData
+     */
+    'plaid'?: MigrateFinancialConnectionsAggregatorConnectionDataPlaid;
+    /**
+     * 
+     * @type {MigrateFinancialConnectionsAggregatorConnectionDataMx}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionData
+     */
+    'mx'?: MigrateFinancialConnectionsAggregatorConnectionDataMx;
+}
+/**
+ * Details of the MX connection to migrate into the unified Fuse API.
+ * @export
+ * @interface MigrateFinancialConnectionsAggregatorConnectionDataMx
+ */
+export interface MigrateFinancialConnectionsAggregatorConnectionDataMx {
+    /**
+     * The unique identifier (GUID) of the user within the MX platform.
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionDataMx
+     */
+    'user_guid': string;
+    /**
+     * The unique identifier (GUID) of the member (connection) associated with the user within the MX platform.
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionDataMx
+     */
+    'member_guid'?: string;
+}
+/**
+ * Details of the Plaid connection to migrate into the unified Fuse API.
+ * @export
+ * @interface MigrateFinancialConnectionsAggregatorConnectionDataPlaid
+ */
+export interface MigrateFinancialConnectionsAggregatorConnectionDataPlaid {
+    /**
+     * The Plaid access token associated with the user\'s financial accounts.
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionDataPlaid
+     */
+    'access_token': string;
+}
+/**
  * 
  * @export
  * @interface MigrateFinancialConnectionsTokenRequest
  */
 export interface MigrateFinancialConnectionsTokenRequest {
     /**
-     * Token for existing connection
-     * @type {string}
+     * 
+     * @type {MigrateFinancialConnectionsAggregatorConnectionData}
      * @memberof MigrateFinancialConnectionsTokenRequest
      */
-    'token': string;
+    'connection_data': MigrateFinancialConnectionsAggregatorConnectionData;
     /**
-     * 
+     * The aggregator being migrated (either \'plaid\' or \'mx\').
      * @type {string}
      * @memberof MigrateFinancialConnectionsTokenRequest
      */
@@ -2527,7 +2584,7 @@ export interface MigrateFinancialConnectionsTokenRequest {
      */
     'entity': MigrateFinancialConnectionsTokenRequestEntity;
     /**
-     * 
+     * A list of Fuse products that the migrated connection will have access to.
      * @type {Array<Product>}
      * @memberof MigrateFinancialConnectionsTokenRequest
      */
@@ -2535,7 +2592,8 @@ export interface MigrateFinancialConnectionsTokenRequest {
 }
 
 export const MigrateFinancialConnectionsTokenRequestAggregatorEnum = {
-    Plaid: 'plaid'
+    Plaid: 'plaid',
+    Mx: 'mx'
 } as const;
 
 export type MigrateFinancialConnectionsTokenRequestAggregatorEnum = typeof MigrateFinancialConnectionsTokenRequestAggregatorEnum[keyof typeof MigrateFinancialConnectionsTokenRequestAggregatorEnum];
@@ -2547,7 +2605,7 @@ export type MigrateFinancialConnectionsTokenRequestAggregatorEnum = typeof Migra
  */
 export interface MigrateFinancialConnectionsTokenRequestEntity {
     /**
-     * Id of the entity
+     * The unique identifier of the entity (user or business) associated with the financial connections.
      * @type {string}
      * @memberof MigrateFinancialConnectionsTokenRequestEntity
      */
@@ -2560,11 +2618,11 @@ export interface MigrateFinancialConnectionsTokenRequestEntity {
  */
 export interface MigrateFinancialConnectionsTokenResponse {
     /**
-     * Input token for the existing connection
-     * @type {string}
+     * 
+     * @type {MigrateFinancialConnectionsAggregatorConnectionData}
      * @memberof MigrateFinancialConnectionsTokenResponse
      */
-    'input_token': string;
+    'connection_data': MigrateFinancialConnectionsAggregatorConnectionData;
     /**
      * Fuse access token for the fuse connection
      * @type {string}

@@ -276,7 +276,8 @@ exports.FuseApiWarningDataWarningsInnerSourceEnum = {
     Aggregator: 'aggregator'
 };
 exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = {
-    Plaid: 'plaid'
+    Plaid: 'plaid',
+    Mx: 'mx'
 };
 /**
  *

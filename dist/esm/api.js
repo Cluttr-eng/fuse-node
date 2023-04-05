@@ -273,7 +273,8 @@ export const FuseApiWarningDataWarningsInnerSourceEnum = {
     Aggregator: 'aggregator'
 };
 export const MigrateFinancialConnectionsTokenRequestAggregatorEnum = {
-    Plaid: 'plaid'
+    Plaid: 'plaid',
+    Mx: 'mx'
 };
 /**
  *
