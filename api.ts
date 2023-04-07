@@ -472,6 +472,12 @@ export interface CreateSessionRequest {
      * @memberof CreateSessionRequest
      */
     'access_token'?: string;
+    /**
+     * True if the fuse sdk is using a web view. Defaults to true.
+     * @type {boolean}
+     * @memberof CreateSessionRequest
+     */
+    'is_web_view'?: boolean;
 }
 /**
  * 
@@ -497,6 +503,25 @@ export interface CreateSessionResponse {
      * @memberof CreateSessionResponse
      */
     'request_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface Currency
+ */
+export interface Currency {
+    /**
+     * The ISO-4217 currency code
+     * @type {string}
+     * @memberof Currency
+     */
+    'code': string;
+    /**
+     * The name of the currency
+     * @type {string}
+     * @memberof Currency
+     */
+    'name'?: string;
 }
 /**
  * 
@@ -1127,92 +1152,6 @@ export interface FinancialConnectionsHolding {
 /**
  * 
  * @export
- * @interface FinancialConnectionsInvestmentAccount
- */
-export interface FinancialConnectionsInvestmentAccount {
-    /**
-     * Remote Id of the account, ie Plaid or Teller account id
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'remote_id': string;
-    /**
-     * Uniquely identifies this account across all accounts associated with your organization. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'fingerprint': string;
-    /**
-     * 
-     * @type {FinancialConnectionsAccountInstitution}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'institution'?: FinancialConnectionsAccountInstitution;
-    /**
-     * The last four digits of the account number.
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'last_four'?: string;
-    /**
-     * The account\'s name, ie \'My Checking\'
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'name': string;
-    /**
-     * The account\'s type e.g depository.
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'type': string;
-    /**
-     * The account\'s subtype e.g checking
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'subtype'?: string;
-    /**
-     * 
-     * @type {FinancialConnectionsInvestmentAccountBalance}
-     * @memberof FinancialConnectionsInvestmentAccount
-     */
-    'balance': FinancialConnectionsInvestmentAccountBalance;
-}
-/**
- * 
- * @export
- * @interface FinancialConnectionsInvestmentAccountBalance
- */
-export interface FinancialConnectionsInvestmentAccountBalance {
-    /**
-     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
-     * @type {number}
-     * @memberof FinancialConnectionsInvestmentAccountBalance
-     */
-    'available'?: number;
-    /**
-     * Amount without factoring in pending balances
-     * @type {number}
-     * @memberof FinancialConnectionsInvestmentAccountBalance
-     */
-    'current'?: number;
-    /**
-     * The ISO-4217 currency code of the balance.
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccountBalance
-     */
-    'iso_currency_code'?: string;
-    /**
-     * The date of the last update to the balance.
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentAccountBalance
-     */
-    'last_updated_date'?: string;
-}
-/**
- * 
- * @export
  * @interface FinancialConnectionsInvestmentSecurity
  */
 export interface FinancialConnectionsInvestmentSecurity {
@@ -1254,10 +1193,10 @@ export interface FinancialConnectionsInvestmentSecurity {
     'close_price': number;
     /**
      * 
-     * @type {FinancialConnectionsInvestmentSecurityCurrency}
+     * @type {Currency}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'currency': FinancialConnectionsInvestmentSecurityCurrency;
+    'currency': Currency;
     /**
      * A descriptive name for the security, suitable for display.
      * @type {string}
@@ -1276,19 +1215,6 @@ export interface FinancialConnectionsInvestmentSecurity {
      * @memberof FinancialConnectionsInvestmentSecurity
      */
     'exchange'?: FinancialConnectionsInvestmentSecurityExchange;
-}
-/**
- * The currency in which the holding is denominated.
- * @export
- * @interface FinancialConnectionsInvestmentSecurityCurrency
- */
-export interface FinancialConnectionsInvestmentSecurityCurrency {
-    /**
-     * The ISO-4217 currency code.
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentSecurityCurrency
-     */
-    'code'?: string;
 }
 /**
  * 
@@ -1334,12 +1260,6 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'amount': number;
     /**
-     * 
-     * @type {FinancialConnectionsInvestmentTransactionCurrency}
-     * @memberof FinancialConnectionsInvestmentTransaction
-     */
-    'currency': FinancialConnectionsInvestmentTransactionCurrency;
-    /**
      * A description of the investment transaction
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransaction
@@ -1381,25 +1301,6 @@ export interface FinancialConnectionsInvestmentTransaction {
      * @memberof FinancialConnectionsInvestmentTransaction
      */
     'security': FinancialConnectionsInvestmentSecurity;
-}
-/**
- * 
- * @export
- * @interface FinancialConnectionsInvestmentTransactionCurrency
- */
-export interface FinancialConnectionsInvestmentTransactionCurrency {
-    /**
-     * The ISO-4217 currency code of the investment transaction
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionCurrency
-     */
-    'code': string;
-    /**
-     * The name of the currency
-     * @type {string}
-     * @memberof FinancialConnectionsInvestmentTransactionCurrency
-     */
-    'name'?: string;
 }
 /**
  * 
@@ -2453,22 +2354,16 @@ export interface GetInvestmentTransactionsRequestOptions {
 export interface GetInvestmentTransactionsResponse {
     /**
      * 
-     * @type {Array<FinancialConnectionsInvestmentAccount>}
+     * @type {Array<FinancialConnectionsAccount>}
      * @memberof GetInvestmentTransactionsResponse
      */
-    'accounts': Array<FinancialConnectionsInvestmentAccount>;
+    'accounts': Array<FinancialConnectionsAccount>;
     /**
      * 
      * @type {Array<FinancialConnectionsInvestmentTransaction>}
      * @memberof GetInvestmentTransactionsResponse
      */
     'investment_transactions': Array<FinancialConnectionsInvestmentTransaction>;
-    /**
-     * 
-     * @type {Array<FinancialConnectionsInvestmentSecurity>}
-     * @memberof GetInvestmentTransactionsResponse
-     */
-    'securities': Array<FinancialConnectionsInvestmentSecurity>;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
