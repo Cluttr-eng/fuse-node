@@ -2023,6 +2023,25 @@ export interface GetFinancialConnectionsBalanceRequest {
      * @memberof GetFinancialConnectionsBalanceRequest
      */
     'access_token': string;
+    /**
+     *
+     * @type {GetFinancialConnectionsBalanceRequestOptions}
+     * @memberof GetFinancialConnectionsBalanceRequest
+     */
+    'options'?: GetFinancialConnectionsBalanceRequestOptions;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialConnectionsBalanceRequestOptions
+ */
+export interface GetFinancialConnectionsBalanceRequestOptions {
+    /**
+     * An array of remote account ids to retrieve balances for.
+     * @type {Array<string>}
+     * @memberof GetFinancialConnectionsBalanceRequestOptions
+     */
+    'remote_account_ids'?: Array<string>;
 }
 /**
  *
