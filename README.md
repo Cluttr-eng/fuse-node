@@ -18,7 +18,7 @@ Documentation for each method, request param, and response field are available i
 import {Environment, FuseApi} from "fuse-node";
 
 const fuseApi = new FuseApi({
-    basePath: "https://sandbox-api.letsfuse.com"
+    basePath: "https://sandbox-api.letsfuse.com",
     baseOptions: {
         headers: {
             "Fuse-Client-Id": "my-fuse-client",
@@ -29,7 +29,6 @@ const fuseApi = new FuseApi({
             "Teller-Application-Id": "my-teller-application-id",
             "Teller-Certificate": "my-teller-certificate",
             "Teller-Private-Key": "my-teller-private-key",
-            "Teller-Token-Signing-Key": "my-teller-token-signing-key",
             "Teller-Signing-Secret": "my-teller-signing-secret",
             "Mx-Api-Key": "my-mx-api-key",
             "Mx-Client-Id": "my-mx-client-id"
@@ -43,6 +42,9 @@ const fuseApi = new FuseApi({
 ```typescript
 const response = await fuseApi.createSession({
     supported_financial_institution_aggregators: ["plaid", "teller", "mx"],
+    entity: {
+        id: "12345"
+    },
     products: ["account_details", "transactions"]
 } as CreateSessionRequest);
 
@@ -83,43 +85,6 @@ console.log(responseData.financial_connection_id);
 ```
 <br/>
 
-### Verifying a webhook
-#### Example using express
-```typescript
-app.post("/webhook", async (req: any, response: any) => {
-    const isVerified = await fuseApi.verify(req.body, req.headers);
-    if (isVerified) {
-        //do something
-    }
-});
-```
-
-### Getting transactions
-```typescript
-const response = await fuseApi.getFinancialConnectionsTransactions({
-    access_token: "my-access-token",
-    cursor: "my-cursor",
-    count: 200
-} as GetFinancialConnectionsTransactionsRequest);
-
-const responseData = response.data as PaginationResponse<TransactionCommonModel>;
-
-console.log(responseData.data[0].id);
-```
-<br/>
-
-### Getting balances
-```typescript
-const response = await fuseApi.getFinancialConnectionsBalances({
-    access_token: "my-access-token"
-} as GetFinancialConnectionsBalancesRequest);
-
-const responseData = response.data as GetFinancialConnectionsBalancesResponse;
-
-console.log(responseData.balances[0].current);
-```
-<br/>
-
 ### Getting accounts
 ```typescript
 const response = await fuseApi.getFinancialConnectionsAccounts({
@@ -132,59 +97,15 @@ console.log(responseData.accounts[0].name);
 ```
 <br/>
 
-### Getting financial connections owners
-```typescript
-const response = await fuseApi.getFinancialConnectionsOwners({
-    access_token: "my-access-token"
-} as GetFinancialConnectionsOwnersRequest);
-
-const responseData = response.data as GetFinancialConnectionsOwnersResponse;
-
-console.log(responseData.owners[0].names[0]);
-```
-<br/>
-
-### Getting account details
-```typescript
-const response = await fuseApi.getFinancialConnectionsAccountDetails({
-    access_token: "my-access-token"
-} as GetFinancialConnectionsAccountsDetailsRequest);
-
-const responseData = response.data as GetFinancialConnectionsAccountDetailsResponse;
-
-console.log(responseData.account_details[0].remote_id);
-```
-<br/>
-
-### Sync transactions
-```typescript
-const response = await fuseApi.syncFinancialConnectionsTransactions({
-    access_token: "my-access-token",
-    cursor: "my-cursor",
-    count: 200
-} as SyncTransactionsRequest);
-
-const responseData = response.data as SyncTransactionsResponse;
-
-console.log(responseData.added.length);
-```
-<br/>
-
 ### Sync financial connections data
 ```typescript
-const response = await fuseApi.syncFinancialConnectionsData({
-    webhook_data: {
-        webhook_type: "SYNC_REQUIRED",
-        webhook_code: 'TRANSACTIONS',
-        financial_connection_id: "the-financial-connection-id",
-        environment: "PRODUCTION",
-        aggregator: "plaid",
-        remote_data: {}
+const fuseVerificationHeader = headers[
+    'fuse-verification'
+] as string;
+const response = await fuseApi.syncFinancialConnectionsData(webhookEvent, {
+    headers: {
+        'fuse-verification': fuseVerificationHeader
     }
-} as SyncFinancialConnectionsDataRequest);
-
-const responseData = response.data as SyncFinancialConnectionsDataResponse;
-
-console.log(responseData.message);
+});
 ```
 <br/>
