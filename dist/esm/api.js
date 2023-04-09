@@ -515,8 +515,8 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
-         *
-         * @summary Get an entity - an entity is automatically created after a successful institution connection
+         * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+         * @summary Get entity
          * @param {string} entityId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1065,8 +1065,8 @@ export const FuseApiFp = function (configuration) {
             });
         },
         /**
-         *
-         * @summary Get an entity - an entity is automatically created after a successful institution connection
+         * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+         * @summary Get entity
          * @param {string} entityId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1310,8 +1310,8 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.getAssetReport(getAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         *
-         * @summary Get an entity - an entity is automatically created after a successful institution connection
+         * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+         * @summary Get entity
          * @param {string} entityId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1519,8 +1519,8 @@ export class FuseApi extends BaseAPI {
         return FuseApiFp(this.configuration).getAssetReport(getAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     *
-     * @summary Get an entity - an entity is automatically created after a successful institution connection
+     * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+     * @summary Get entity
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
