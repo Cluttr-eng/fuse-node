@@ -2163,7 +2163,7 @@ export interface GetFinancialConnectionsTransactionsResponse {
      */
     'transactions': Array<Transaction>;
     /**
-     * The total number of transactions.
+     * The total number of transactions available within the date range specified. If total_transactions is larger than the size of the transactions array, more transactions are available and can be fetched
      * @type {number}
      * @memberof GetFinancialConnectionsTransactionsResponse
      */
@@ -2505,8 +2505,8 @@ export declare const Product: {
     readonly Balance: "balance";
     readonly Ownership: "ownership";
     readonly Transactions: "transactions";
-    readonly Liabilities: "liabilities";
     readonly Investments: "investments";
+    readonly AssetReport: "asset_report";
 };
 export type Product = typeof Product[keyof typeof Product];
 /**
@@ -2873,14 +2873,6 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     createAssetReport: (createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
-     *
-     * @summary Create entity
-     * @param {CreateEntityRequest} createEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createEntity: (createEntityRequest: CreateEntityRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
@@ -2918,7 +2910,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     getAssetReport: (getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
-     * @summary Get entity
+     * @summary Get an entity - an entity is automatically created after a successful institution connection
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2997,6 +2989,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
+     * @summary Migrate financial connection
+     * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    migrateFinancialConnection: (migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Refreshes the Asset Report in JSON format.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -3004,30 +3004,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     refreshAssetReport: (refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
-     * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
+     * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     syncFinancialConnectionsData: (body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
-     *
-     * @summary Sync transactions
-     * @param {SyncTransactionsRequest} syncTransactionsRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    syncFinancialConnectionsTransactions: (syncTransactionsRequest: SyncTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
-     *
-     * @summary Update entity
-     * @param {string} entityIdToUpdate
-     * @param {UpdateEntityRequest} updateEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    updateEntity: (entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get liabilities
@@ -3049,14 +3032,6 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
-    /**
-     *
-     * @summary Create entity
-     * @param {CreateEntityRequest} createEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createEntity(createEntityRequest: CreateEntityRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateEntityResponse>>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -3095,7 +3070,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetReportResponse>>;
     /**
      *
-     * @summary Get entity
+     * @summary Get an entity - an entity is automatically created after a successful institution connection
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3174,6 +3149,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
     /**
+     * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
+     * @summary Migrate financial connection
+     * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>>;
+    /**
      * Refreshes the Asset Report in JSON format.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -3181,30 +3164,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
     /**
-     * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
+     * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
-    /**
-     *
-     * @summary Sync transactions
-     * @param {SyncTransactionsRequest} syncTransactionsRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    syncFinancialConnectionsTransactions(syncTransactionsRequest: SyncTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncTransactionsResponse>>;
-    /**
-     *
-     * @summary Update entity
-     * @param {string} entityIdToUpdate
-     * @param {UpdateEntityRequest} updateEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    updateEntity(entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateEntityResponse>>;
     /**
      *
      * @summary Get liabilities
@@ -3226,14 +3192,6 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: any): AxiosPromise<CreateAssetReportResponse>;
-    /**
-     *
-     * @summary Create entity
-     * @param {CreateEntityRequest} createEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createEntity(createEntityRequest: CreateEntityRequest, options?: any): AxiosPromise<CreateEntityResponse>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -3272,7 +3230,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<GetAssetReportResponse>;
     /**
      *
-     * @summary Get entity
+     * @summary Get an entity - an entity is automatically created after a successful institution connection
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3351,6 +3309,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse>;
     /**
+     * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
+     * @summary Migrate financial connection
+     * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: any): AxiosPromise<MigrateFinancialConnectionsTokenResponse>;
+    /**
      * Refreshes the Asset Report in JSON format.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -3358,30 +3324,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<CreateAssetReportResponse>;
     /**
-     * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
+     * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
     syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse>;
-    /**
-     *
-     * @summary Sync transactions
-     * @param {SyncTransactionsRequest} syncTransactionsRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    syncFinancialConnectionsTransactions(syncTransactionsRequest: SyncTransactionsRequest, options?: any): AxiosPromise<SyncTransactionsResponse>;
-    /**
-     *
-     * @summary Update entity
-     * @param {string} entityIdToUpdate
-     * @param {UpdateEntityRequest} updateEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    updateEntity(entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: any): AxiosPromise<UpdateEntityResponse>;
     /**
      *
      * @summary Get liabilities
@@ -3406,15 +3355,6 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
-    /**
-     *
-     * @summary Create entity
-     * @param {CreateEntityRequest} createEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    createEntity(createEntityRequest: CreateEntityRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateEntityResponse, any>>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -3458,7 +3398,7 @@ export declare class FuseApi extends BaseAPI {
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetAssetReportResponse, any>>;
     /**
      *
-     * @summary Get entity
+     * @summary Get an entity - an entity is automatically created after a successful institution connection
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3547,6 +3487,15 @@ export declare class FuseApi extends BaseAPI {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
     /**
+     * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
+     * @summary Migrate financial connection
+     * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<MigrateFinancialConnectionsTokenResponse, any>>;
+    /**
      * Refreshes the Asset Report in JSON format.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -3555,7 +3504,7 @@ export declare class FuseApi extends BaseAPI {
      */
     refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
     /**
-     * Call this endpoint upon receiving a SYNC_REQUIRED webhook. This will keep the financial connections data up to date.
+     * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
      * @param {object} body
      * @param {*} [options] Override http request option.
@@ -3563,25 +3512,6 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
-    /**
-     *
-     * @summary Sync transactions
-     * @param {SyncTransactionsRequest} syncTransactionsRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    syncFinancialConnectionsTransactions(syncTransactionsRequest: SyncTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncTransactionsResponse, any>>;
-    /**
-     *
-     * @summary Update entity
-     * @param {string} entityIdToUpdate
-     * @param {UpdateEntityRequest} updateEntityRequest
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    updateEntity(entityIdToUpdate: string, updateEntityRequest: UpdateEntityRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateEntityResponse, any>>;
     /**
      *
      * @summary Get liabilities
