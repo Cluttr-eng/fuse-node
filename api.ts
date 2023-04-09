@@ -361,12 +361,6 @@ export interface CreateLinkTokenRequest {
      */
     'entity': Entity;
     /**
-     * This field is used to provide the user with a link to reconnect their financial account. It may be included in an automated email sent by Fuse to the entity\'s registered email address. It\'s important to note that the reconnection_url should be a valid URL and can only be used once to reconnect the disconnected account.
-     * @type {string}
-     * @memberof CreateLinkTokenRequest
-     */
-    'reconnection_url'?: string;
-    /**
      * The name of your application.
      * @type {string}
      * @memberof CreateLinkTokenRequest
@@ -3182,8 +3176,8 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * 
-         * @summary Get an entity - an entity is automatically created after a successful institution connection
+         * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+         * @summary Get entity
          * @param {string} entityId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3830,8 +3824,8 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * 
-         * @summary Get an entity - an entity is automatically created after a successful institution connection
+         * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+         * @summary Get entity
          * @param {string} entityId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4048,8 +4042,8 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.getAssetReport(getAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
-         * @summary Get an entity - an entity is automatically created after a successful institution connection
+         * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+         * @summary Get entity
          * @param {string} entityId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4264,8 +4258,8 @@ export class FuseApi extends BaseAPI {
     }
 
     /**
-     * 
-     * @summary Get an entity - an entity is automatically created after a successful institution connection
+     * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+     * @summary Get entity
      * @param {string} entityId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}

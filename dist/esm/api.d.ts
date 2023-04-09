@@ -335,12 +335,6 @@ export interface CreateLinkTokenRequest {
      */
     'entity': Entity;
     /**
-     * This field is used to provide the user with a link to reconnect their financial account. It may be included in an automated email sent by Fuse to the entity\'s registered email address. It\'s important to note that the reconnection_url should be a valid URL and can only be used once to reconnect the disconnected account.
-     * @type {string}
-     * @memberof CreateLinkTokenRequest
-     */
-    'reconnection_url'?: string;
-    /**
      * The name of your application.
      * @type {string}
      * @memberof CreateLinkTokenRequest
@@ -2909,8 +2903,8 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     getAssetReport: (getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
-     *
-     * @summary Get an entity - an entity is automatically created after a successful institution connection
+     * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+     * @summary Get entity
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3069,8 +3063,8 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetReportResponse>>;
     /**
-     *
-     * @summary Get an entity - an entity is automatically created after a successful institution connection
+     * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+     * @summary Get entity
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3229,8 +3223,8 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<GetAssetReportResponse>;
     /**
-     *
-     * @summary Get an entity - an entity is automatically created after a successful institution connection
+     * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+     * @summary Get entity
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -3397,8 +3391,8 @@ export declare class FuseApi extends BaseAPI {
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetAssetReportResponse, any>>;
     /**
-     *
-     * @summary Get an entity - an entity is automatically created after a successful institution connection
+     * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
+     * @summary Get entity
      * @param {string} entityId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
