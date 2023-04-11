@@ -15,26 +15,29 @@ Documentation for each method, request param, and response field are available i
 
 ### Initialising the Fuse Api
 ```typescript
-import {Environment, FuseApi} from "fuse-node";
 
-const fuseApi = new FuseApi({
-    basePath: "https://sandbox-api.letsfuse.com",
+import {FuseApi, Configuration} from "fuse-node";
+
+const configuration = new Configuration({
+    basePath: config.FUSE_BASE_PATH,
     baseOptions: {
         headers: {
-            "Fuse-Client-Id": "my-fuse-client",
-            "Fuse-Api-Key": "my-fuse-api-key",
-            "Content-Type": "application/json",
-            "Plaid-Client-Id": "my-plaid-client-id0",
-            "Plaid-Secret": "my-plaid-secret",
-            "Teller-Application-Id": "my-teller-application-id",
-            "Teller-Certificate": "my-teller-certificate",
-            "Teller-Private-Key": "my-teller-private-key",
-            "Teller-Signing-Secret": "my-teller-signing-secret",
-            "Mx-Api-Key": "my-mx-api-key",
-            "Mx-Client-Id": "my-mx-client-id"
+            'Fuse-Client-Id': 'my-fuse-client-id',
+            'Fuse-Api-Key': 'my-fuse-api-key',
+            'Content-Type': 'application/json',
+            'Plaid-Client-Id': 'my-plaid-client-id',
+            'Plaid-Secret': 'my-plaid-secret-id',
+            'Teller-Application-Id': 'my-teller-application-id',
+            'Teller-Certificate': 'my-teller-certificate',
+            'Teller-Private-Key': 'my-teller-private-key',
+            'Teller-Signing-Secret': 'my-teller-signing-secret',
+            'Mx-Client-Id': 'my-mx-client-id',
+            'Mx-Api-Key': 'my-mx-api-key',
         },
     },
 });
+
+const fuseApi = new FuseApi(configuration);
 ```
 <br/>
 
