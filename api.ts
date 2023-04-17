@@ -211,6 +211,821 @@ export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 
 
 /**
+ * The Asset Report in JSON format.
+ * @export
+ * @interface AssetReport
+ */
+export interface AssetReport {
+    /**
+     * A unique ID identifying an Asset Report.
+     * @type {string}
+     * @memberof AssetReport
+     */
+    'asset_report_id'?: string;
+    /**
+     * A token that can be provided to endpoints such as /asset_report/get or /asset_report/pdf/get to fetch or update an Asset Report.
+     * @type {string}
+     * @memberof AssetReport
+     */
+    'asset_report_token'?: string;
+    /**
+     * The date and time when the Asset Report was created, in ISO 8601 format
+     * @type {string}
+     * @memberof AssetReport
+     */
+    'date_generated'?: string;
+    /**
+     * The duration of transaction history you requested
+     * @type {number}
+     * @memberof AssetReport
+     */
+    'days_requested'?: number;
+    /**
+     * An array of Asset Reports, one for each account in the Asset Report.
+     * @type {Array<AssetReportAccountsInner>}
+     * @memberof AssetReport
+     */
+    'accounts'?: Array<AssetReportAccountsInner>;
+}
+/**
+ * 
+ * @export
+ * @interface AssetReportAccountsInner
+ */
+export interface AssetReportAccountsInner {
+    /**
+     * The remote account ID of the account.
+     * @type {string}
+     * @memberof AssetReportAccountsInner
+     */
+    'remote_id'?: string;
+    /**
+     * 
+     * @type {AssetReportAccountsInnerBalance}
+     * @memberof AssetReportAccountsInner
+     */
+    'balance'?: AssetReportAccountsInnerBalance;
+    /**
+     * An array of historical balances for the account.
+     * @type {Array<AssetReportAccountsInnerHistoricalBalancesInner>}
+     * @memberof AssetReportAccountsInner
+     */
+    'historical_balances'?: Array<AssetReportAccountsInnerHistoricalBalancesInner>;
+    /**
+     * An array of historical transactions for the account.
+     * @type {Array<AssetReportTransaction>}
+     * @memberof AssetReportAccountsInner
+     */
+    'transactions'?: Array<AssetReportTransaction>;
+}
+/**
+ * 
+ * @export
+ * @interface AssetReportAccountsInnerBalance
+ */
+export interface AssetReportAccountsInnerBalance {
+    /**
+     * Amount after factoring in pending balances
+     * @type {number}
+     * @memberof AssetReportAccountsInnerBalance
+     */
+    'available'?: number;
+    /**
+     * Amount without factoring in pending balances
+     * @type {number}
+     * @memberof AssetReportAccountsInnerBalance
+     */
+    'current'?: number;
+    /**
+     * The ISO-4217 currency code of the balance.
+     * @type {string}
+     * @memberof AssetReportAccountsInnerBalance
+     */
+    'iso_currency_code'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetReportAccountsInnerHistoricalBalancesInner
+ */
+export interface AssetReportAccountsInnerHistoricalBalancesInner {
+    /**
+     * The date of the calculated historical balance, in an ISO 8601 format (YYYY-MM-DD)
+     * @type {string}
+     * @memberof AssetReportAccountsInnerHistoricalBalancesInner
+     */
+    'date'?: string;
+    /**
+     * The total amount of funds in the account, calculated from the current balance in the balance object by subtracting inflows and adding back outflows according to the posted date of each transaction.
+     * @type {number}
+     * @memberof AssetReportAccountsInnerHistoricalBalancesInner
+     */
+    'current'?: number;
+    /**
+     * The ISO-4217 currency code of the balance.
+     * @type {string}
+     * @memberof AssetReportAccountsInnerHistoricalBalancesInner
+     */
+    'iso_currency_code'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetReportResponse
+ */
+export interface AssetReportResponse {
+    /**
+     * 
+     * @type {AssetReport}
+     * @memberof AssetReportResponse
+     */
+    'report'?: AssetReport;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof AssetReportResponse
+     */
+    'request_id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface AssetReportTransaction
+ */
+export interface AssetReportTransaction {
+    /**
+     * Remote Id of the transaction, ie Plaid or Teller Id
+     * @type {string}
+     * @memberof AssetReportTransaction
+     */
+    'remote_id': string;
+    /**
+     * Remote Account Id of the transaction, ie Plaid Account Id
+     * @type {string}
+     * @memberof AssetReportTransaction
+     */
+    'remote_account_id': string;
+    /**
+     * Amount in cents associated with the transaction. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
+     * @type {number}
+     * @memberof AssetReportTransaction
+     */
+    'amount': number;
+    /**
+     * Date of the transaction (YYYY-MM-DD)
+     * @type {string}
+     * @memberof AssetReportTransaction
+     */
+    'date': string;
+    /**
+     * Description of the transaction
+     * @type {string}
+     * @memberof AssetReportTransaction
+     */
+    'description': string;
+    /**
+     * Categories of the transaction, ie Computers and Electronics
+     * @type {Array<string>}
+     * @memberof AssetReportTransaction
+     */
+    'category': Array<AssetReportTransactionCategoryEnum>;
+    /**
+     * 
+     * @type {TransactionMerchant}
+     * @memberof AssetReportTransaction
+     */
+    'merchant': TransactionMerchant;
+    /**
+     * The status of the transaction. This will be either posted or pending.
+     * @type {string}
+     * @memberof AssetReportTransaction
+     */
+    'status': AssetReportTransactionStatusEnum;
+    /**
+     * The ISO-4217 currency code of the transaction
+     * @type {string}
+     * @memberof AssetReportTransaction
+     */
+    'iso_currency_code'?: string;
+    /**
+     * 
+     * @type {any}
+     * @memberof AssetReportTransaction
+     */
+    'remote_data': any;
+}
+
+export const AssetReportTransactionCategoryEnum = {
+    AccessoriesStore: 'accessories_store',
+    AccountingAndBookkeeping: 'accounting_and_bookkeeping',
+    Ach: 'ach',
+    Acorns: 'acorns',
+    Acupuncture: 'acupuncture',
+    Adult: 'adult',
+    AdultEducation: 'adult_education',
+    AdultEntertainment: 'adult_entertainment',
+    Advertising: 'advertising',
+    AdvertisingAgenciesAndMediaBuyers: 'advertising_agencies_and_media_buyers',
+    AdvertisingAndMarketing: 'advertising_and_marketing',
+    Afghan: 'afghan',
+    African: 'african',
+    AgricultureAndForestry: 'agriculture_and_forestry',
+    AirlinesAndAviationServices: 'airlines_and_aviation_services',
+    Airports: 'airports',
+    AlcoholAndBars: 'alcohol_and_bars',
+    AlternativeMedicine: 'alternative_medicine',
+    American: 'american',
+    Anesthesiologists: 'anesthesiologists',
+    AnimalShelter: 'animal_shelter',
+    Antiques: 'antiques',
+    ApartmentsCondosAndHouses: 'apartments_condos_and_houses',
+    ApparelAndFabricProducts: 'apparel_and_fabric_products',
+    Aquarium: 'aquarium',
+    ArcadesAndAmusementParks: 'arcades_and_amusement_parks',
+    Architects: 'architects',
+    ArtAndGraphicDesign: 'art_and_graphic_design',
+    ArtDealersAndGalleries: 'art_dealers_and_galleries',
+    ArtRestoration: 'art_restoration',
+    ArtSchool: 'art_school',
+    ArtsAndCrafts: 'arts_and_crafts',
+    ArtsAndEntertainment: 'arts_and_entertainment',
+    Asian: 'asian',
+    AssistedLivingServices: 'assisted_living_services',
+    AthleticFields: 'athletic_fields',
+    Atm: 'atm',
+    Atms: 'atms',
+    Auctions: 'auctions',
+    Audiovisual: 'audiovisual',
+    Australian: 'australian',
+    AutoOilAndLube: 'auto_oil_and_lube',
+    AutoPayment: 'auto_payment',
+    AutoSmogCheck: 'auto_smog_check',
+    AutoTires: 'auto_tires',
+    AutoTransmission: 'auto_transmission',
+    AutomationAndControlSystems: 'automation_and_control_systems',
+    Automotive: 'automotive',
+    BagelShop: 'bagel_shop',
+    Bakery: 'bakery',
+    BankFees: 'bank_fees',
+    BankingAndFinance: 'banking_and_finance',
+    Bar: 'bar',
+    Barbecue: 'barbecue',
+    Baseball: 'baseball',
+    Basketball: 'basketball',
+    BattingCages: 'batting_cages',
+    Beaches: 'beaches',
+    BeautyProducts: 'beauty_products',
+    BedAndBreakfasts: 'bed_and_breakfasts',
+    BeerWineAndSpirits: 'beer_wine_and_spirits',
+    Benefits: 'benefits',
+    Betterment: 'betterment',
+    Bicycles: 'bicycles',
+    Bill: 'bill',
+    BilliardsAndPool: 'billiards_and_pool',
+    Billpay: 'billpay',
+    BloodBanksAndCenters: 'blood_banks_and_centers',
+    BoardingHouses: 'boarding_houses',
+    Boat: 'boat',
+    BoatDealers: 'boat_dealers',
+    Boating: 'boating',
+    Bookstores: 'bookstores',
+    Boutique: 'boutique',
+    Bowling: 'bowling',
+    Brazilian: 'brazilian',
+    BreakfastSpot: 'breakfast_spot',
+    Breweries: 'breweries',
+    BuildingAndLandSurveyors: 'building_and_land_surveyors',
+    BuildingsAndStructures: 'buildings_and_structures',
+    Burgers: 'burgers',
+    Burrito: 'burrito',
+    BusStations: 'bus_stations',
+    Business: 'business',
+    BusinessAndStrategyConsulting: 'business_and_strategy_consulting',
+    BusinessBrokersAndFranchises: 'business_brokers_and_franchises',
+    BusinessServices: 'business_services',
+    Cable: 'cable',
+    Cafe: 'cafe',
+    Cajun: 'cajun',
+    Cameras: 'cameras',
+    CampgroundsAndRvParks: 'campgrounds_and_rv_parks',
+    CanoesAndKayaks: 'canoes_and_kayaks',
+    CarAndTruckRentals: 'car_and_truck_rentals',
+    CarAppraisers: 'car_appraisers',
+    CarDealersAndLeasing: 'car_dealers_and_leasing',
+    CarPartsAndAccessories: 'car_parts_and_accessories',
+    CarService: 'car_service',
+    CarWashAndDetail: 'car_wash_and_detail',
+    Cardiologists: 'cardiologists',
+    CardsAndStationery: 'cards_and_stationery',
+    Caretakers: 'caretakers',
+    Caribbean: 'caribbean',
+    Carpenters: 'carpenters',
+    CarpetAndFlooring: 'carpet_and_flooring',
+    CashAdvance: 'cash_advance',
+    CasinosAndGaming: 'casinos_and_gaming',
+    Catering: 'catering',
+    Cemetery: 'cemetery',
+    CharitiesAndNonProfits: 'charities_and_non-profits',
+    Charity: 'charity',
+    CharterBuses: 'charter_buses',
+    ChaseQuickpay: 'chase_quickpay',
+    Check: 'check',
+    CheckCashing: 'check_cashing',
+    ChemicalsAndGasses: 'chemicals_and_gasses',
+    Childcare: 'childcare',
+    Children: 'children',
+    Chinese: 'chinese',
+    Chiropractors: 'chiropractors',
+    Churches: 'churches',
+    CircusesAndCarnivals: 'circuses_and_carnivals',
+    ClassicAndAntiqueCar: 'classic_and_antique_car',
+    Cleaning: 'cleaning',
+    Clothing: 'clothing',
+    ClothingAndAccessories: 'clothing_and_accessories',
+    Coal: 'coal',
+    CoffeeShop: 'coffee_shop',
+    Coinbase: 'coinbase',
+    Collections: 'collections',
+    CollegesAndUniversities: 'colleges_and_universities',
+    CombatSports: 'combat_sports',
+    CommercialRealEstate: 'commercial_real_estate',
+    Community: 'community',
+    ComputerTraining: 'computer_training',
+    Computers: 'computers',
+    ComputersAndElectronics: 'computers_and_electronics',
+    ComputersAndOfficeMachines: 'computers_and_office_machines',
+    Construction: 'construction',
+    ConstructionSupplies: 'construction_supplies',
+    Contractors: 'contractors',
+    ConvenienceStores: 'convenience_stores',
+    CorporateHousing: 'corporate_housing',
+    CorrectionalInstitutions: 'correctional_institutions',
+    Costumes: 'costumes',
+    CottagesAndCabins: 'cottages_and_cabins',
+    CounselingAndTherapy: 'counseling_and_therapy',
+    Courts: 'courts',
+    CreativeServices: 'creative_services',
+    Credit: 'credit',
+    CreditCard: 'credit_card',
+    CreditCounselingAndBankruptcyServices: 'credit_counseling_and_bankruptcy_services',
+    CreditReporting: 'credit_reporting',
+    CropProduction: 'crop_production',
+    Cruises: 'cruises',
+    Cuban: 'cuban',
+    CulinaryLessonsAndSchools: 'culinary_lessons_and_schools',
+    CupcakeShop: 'cupcake_shop',
+    Cycling: 'cycling',
+    Dance: 'dance',
+    DanceAndMusic: 'dance_and_music',
+    DanceHallsAndSaloons: 'dance_halls_and_saloons',
+    DanceSchools: 'dance_schools',
+    DatingAndEscort: 'dating_and_escort',
+    DayCareAndPreschools: 'day_care_and_preschools',
+    Debit: 'debit',
+    Delis: 'delis',
+    Dentists: 'dentists',
+    DepartmentStores: 'department_stores',
+    Deposit: 'deposit',
+    Dermatologists: 'dermatologists',
+    Dessert: 'dessert',
+    Digit: 'digit',
+    DigitalPurchase: 'digital_purchase',
+    Diners: 'diners',
+    Dining: 'dining',
+    DirectMailAndEmailMarketingServices: 'direct_mail_and_email_marketing_services',
+    DisabledPersonsServices: 'disabled_persons_services',
+    DiscountStores: 'discount_stores',
+    Distillery: 'distillery',
+    Distribution: 'distribution',
+    DoctorsAndDentists: 'doctors_and_dentists',
+    Donuts: 'donuts',
+    DoorsAndWindows: 'doors_and_windows',
+    DrivingSchools: 'driving_schools',
+    DrugAndAlcoholServices: 'drug_and_alcohol_services',
+    Dwolla: 'dwolla',
+    EarNoseAndThroat: 'ear_nose_and_throat',
+    EasternEuropean: 'eastern_european',
+    Education: 'education',
+    Electric: 'electric',
+    ElectricalEquipment: 'electrical_equipment',
+    ElectricalEquipmentAndComponents: 'electrical_equipment_and_components',
+    Electricians: 'electricians',
+    Electronics: 'electronics',
+    EmergencyServices: 'emergency_services',
+    EmploymentAgencies: 'employment_agencies',
+    Engineering: 'engineering',
+    Entertainment: 'entertainment',
+    Environmental: 'environmental',
+    Equestrian: 'equestrian',
+    EquipmentRental: 'equipment_rental',
+    Ethiopian: 'ethiopian',
+    EventsAndEventPlanning: 'events_and_event_planning',
+    ExcessActivity: 'excess_activity',
+    FacilitiesAndNursingHomes: 'facilities_and_nursing_homes',
+    FairgroundsAndRodeos: 'fairgrounds_and_rodeos',
+    Falafel: 'falafel',
+    FamilyMedicine: 'family_medicine',
+    FarmersMarkets: 'farmers_markets',
+    FastFood: 'fast_food',
+    Fee: 'fee',
+    FencesFireplacesAndGarageDoors: 'fences_fireplaces_and_garage_doors',
+    Filipino: 'filipino',
+    Financial: 'financial',
+    FinancialPlanningAndInvestments: 'financial_planning_and_investments',
+    FireStations: 'fire_stations',
+    FishAndChips: 'fish_and_chips',
+    FleaMarkets: 'flea_markets',
+    Florists: 'florists',
+    FoodAndBeverage: 'food_and_beverage',
+    FoodAndBeverageStore: 'food_and_beverage_store',
+    FoodAndDrink: 'food_and_drink',
+    FoodTruck: 'food_truck',
+    Football: 'football',
+    ForeignTransaction: 'foreign_transaction',
+    Forestry: 'forestry',
+    Forests: 'forests',
+    FraternitiesAndSororities: 'fraternities_and_sororities',
+    FraudDispute: 'fraud_dispute',
+    French: 'french',
+    Fuel: 'fuel',
+    FuelDealer: 'fuel_dealer',
+    FundRaising: 'fund_raising',
+    FuneralServices: 'funeral_services',
+    FurnitureAndFixtures: 'furniture_and_fixtures',
+    FurnitureAndHomeDecor: 'furniture_and_home_decor',
+    Gardens: 'gardens',
+    Gas: 'gas',
+    GasStations: 'gas_stations',
+    Gastroenterologists: 'gastroenterologists',
+    Gastropub: 'gastropub',
+    General: 'general',
+    GeneralSurgery: 'general_surgery',
+    Geological: 'geological',
+    German: 'german',
+    GiftAndNovelty: 'gift_and_novelty',
+    Gifts: 'gifts',
+    GlassProducts: 'glass_products',
+    GlassesAndOptometrist: 'glasses_and_optometrist',
+    GoCarts: 'go_carts',
+    Golf: 'golf',
+    GovernmentDepartmentsAndAgencies: 'government_departments_and_agencies',
+    GovernmentLobbyists: 'government_lobbyists',
+    Greek: 'greek',
+    GunRanges: 'gun_ranges',
+    Gym: 'gym',
+    Gymnastics: 'gymnastics',
+    GymsAndFitnessCenters: 'gyms_and_fitness_centers',
+    HairRemoval: 'hair_removal',
+    HairSalonsAndBarbers: 'hair_salons_and_barbers',
+    HardwareAndServices: 'hardware_and_services',
+    HardwareStore: 'hardware_store',
+    HealthFood: 'health_food',
+    Healthcare: 'healthcare',
+    HealthcareServices: 'healthcare_services',
+    HeatingVentilatingAndAirConditioning: 'heating_ventilating_and_air_conditioning',
+    Heliports: 'heliports',
+    Hiking: 'hiking',
+    HistoricSites: 'historic_sites',
+    HobbyAndCollectibles: 'hobby_and_collectibles',
+    Hockey: 'hockey',
+    HoldingAndInvestmentOffices: 'holding_and_investment_offices',
+    Home: 'home',
+    HomeAppliances: 'home_appliances',
+    HomeImprovement: 'home_improvement',
+    HomeInspectionServices: 'home_inspection_services',
+    HookahLounges: 'hookah_lounges',
+    HospitalsClinicsAndMedicalCenters: 'hospitals_clinics_and_medical_centers',
+    Hostels: 'hostels',
+    HotAirBalloons: 'hot_air_balloons',
+    HotelLounge: 'hotel_lounge',
+    HotelsAndMotels: 'hotels_and_motels',
+    Household: 'household',
+    Housewares: 'housewares',
+    HousingAssistanceAndShelters: 'housing_assistance_and_shelters',
+    HumanResources: 'human_resources',
+    HuntingAndFishing: 'hunting_and_fishing',
+    IceCream: 'ice_cream',
+    Immigration: 'immigration',
+    ImportAndExport: 'import_and_export',
+    Income: 'income',
+    Indian: 'indian',
+    Indonesian: 'indonesian',
+    IndustrialMachineryAndEquipment: 'industrial_machinery_and_equipment',
+    IndustrialMachineryAndVehicles: 'industrial_machinery_and_vehicles',
+    IndustrialSupplies: 'industrial_supplies',
+    Infrastructure: 'infrastructure',
+    InsufficientFunds: 'insufficient_funds',
+    Insurance: 'insurance',
+    Interest: 'interest',
+    InterestCharged: 'interest_charged',
+    InterestEarned: 'interest_earned',
+    InteriorDesign: 'interior_design',
+    InternalAccountTransfer: 'internal_account_transfer',
+    InternalMedicine: 'internal_medicine',
+    Internet: 'internet',
+    InternetCafes: 'internet_cafes',
+    InternetServices: 'internet_services',
+    Investment: 'investment',
+    Italian: 'italian',
+    Japanese: 'japanese',
+    JazzAndBluesCafe: 'jazz_and_blues_cafe',
+    JewelryAndWatches: 'jewelry_and_watches',
+    JuiceBar: 'juice_bar',
+    Karaoke: 'karaoke',
+    KeepTheChangeSavingsProgram: 'keep_the_change_savings_program',
+    Kids: 'kids',
+    KidsStore: 'kids\'_store',
+    Kitchens: 'kitchens',
+    Korean: 'korean',
+    Lakes: 'lakes',
+    Landmarks: 'landmarks',
+    LandscapingAndGardeners: 'landscaping_and_gardeners',
+    LatePayment: 'late_payment',
+    LatinAmerican: 'latin_american',
+    LaundryAndGarmentServices: 'laundry_and_garment_services',
+    LawEnforcement: 'law_enforcement',
+    LawnAndGarden: 'lawn_and_garden',
+    Leather: 'leather',
+    LeatherGoods: 'leather_goods',
+    Legal: 'legal',
+    Libraries: 'libraries',
+    LightingFixtures: 'lighting_fixtures',
+    LimosAndChauffeurs: 'limos_and_chauffeurs',
+    LingerieStore: 'lingerie_store',
+    LivestockAndAnimals: 'livestock_and_animals',
+    Loan: 'loan',
+    LoansAndMortgages: 'loans_and_mortgages',
+    LodgesAndVacationRentals: 'lodges_and_vacation_rentals',
+    Lodging: 'lodging',
+    LoggingAndSawmills: 'logging_and_sawmills',
+    Luggage: 'luggage',
+    MachineShops: 'machine_shops',
+    MaintenanceAndRepair: 'maintenance_and_repair',
+    Management: 'management',
+    ManicuresAndPedicures: 'manicures_and_pedicures',
+    Manufacturing: 'manufacturing',
+    MarineSupplies: 'marine_supplies',
+    MarketResearchAndConsulting: 'market_research_and_consulting',
+    Masonry: 'masonry',
+    MassageClinicsAndTherapists: 'massage_clinics_and_therapists',
+    Media: 'media',
+    MediaProduction: 'media_production',
+    MedicalSuppliesAndLabs: 'medical_supplies_and_labs',
+    Mediterranean: 'mediterranean',
+    MensStore: 'men\'s_store',
+    MentalHealth: 'mental_health',
+    Metal: 'metal',
+    MetalProducts: 'metal_products',
+    Metals: 'metals',
+    Mexican: 'mexican',
+    MiddleEastern: 'middle_eastern',
+    Military: 'military',
+    MiniatureGolf: 'miniature_golf',
+    Mining: 'mining',
+    MobileHomes: 'mobile_homes',
+    MobilePhones: 'mobile_phones',
+    MonumentsAndMemorials: 'monuments_and_memorials',
+    Moroccan: 'moroccan',
+    Mosques: 'mosques',
+    MotorcycleMopedAndScooterRepair: 'motorcycle_moped_and_scooter_repair',
+    MotorcyclesMopedsAndScooters: 'motorcycles_mopeds_and_scooters',
+    Mountains: 'mountains',
+    Movers: 'movers',
+    MovieTheatres: 'movie_theatres',
+    Museums: 'museums',
+    MusicVideoAndDvd: 'music_video_and_dvd',
+    MusicAndShowVenues: 'music_and_show_venues',
+    MusicalInstruments: 'musical_instruments',
+    NaturalParks: 'natural_parks',
+    Neurologists: 'neurologists',
+    NewsReporting: 'news_reporting',
+    Newsstands: 'newsstands',
+    NightClubs: 'night_clubs',
+    Nightlife: 'nightlife',
+    NonMetallicMinerals: 'non-metallic_minerals',
+    NonmetallicMineralProducts: 'nonmetallic_mineral_products',
+    Nurses: 'nurses',
+    Nutritionists: 'nutritionists',
+    ObstetriciansAndGynecologists: 'obstetricians_and_gynecologists',
+    Office: 'office',
+    OfficeSupplies: 'office_supplies',
+    OilAndGas: 'oil_and_gas',
+    Oncologists: 'oncologists',
+    OnlineAdvertising: 'online_advertising',
+    OnlineSubscriptions: 'online_subscriptions',
+    Ophthalmologists: 'ophthalmologists',
+    Optometrists: 'optometrists',
+    OrganizationsAndAssociations: 'organizations_and_associations',
+    OrthopedicSurgeons: 'orthopedic_surgeons',
+    Other: 'other',
+    Outdoors: 'outdoors',
+    Outlet: 'outlet',
+    Overdraft: 'overdraft',
+    Packaging: 'packaging',
+    Paintball: 'paintball',
+    Painting: 'painting',
+    Paper: 'paper',
+    PaperProducts: 'paper_products',
+    Parking: 'parking',
+    Parks: 'parks',
+    PartyCenters: 'party_centers',
+    Pathologists: 'pathologists',
+    PawnShops: 'pawn_shops',
+    Payment: 'payment',
+    Paypal: 'paypal',
+    Payroll: 'payroll',
+    Pediatricians: 'pediatricians',
+    PersonalCare: 'personal_care',
+    PersonalTrainers: 'personal_trainers',
+    PestControl: 'pest_control',
+    Pet: 'pet',
+    Petroleum: 'petroleum',
+    Pets: 'pets',
+    Pharmacies: 'pharmacies',
+    Phone: 'phone',
+    Photography: 'photography',
+    PhotosAndFrames: 'photos_and_frames',
+    PhysicalTherapy: 'physical_therapy',
+    Physicians: 'physicians',
+    PicnicAreas: 'picnic_areas',
+    Piercing: 'piercing',
+    Pizza: 'pizza',
+    Plaid: 'plaid',
+    PlasticProducts: 'plastic_products',
+    PlasticSurgeons: 'plastic_surgeons',
+    Plastics: 'plastics',
+    Playgrounds: 'playgrounds',
+    Plumbing: 'plumbing',
+    Podiatrists: 'podiatrists',
+    PoliceStations: 'police_stations',
+    PoolsAndSpas: 'pools_and_spas',
+    Portuguese: 'portuguese',
+    PostOffices: 'post_offices',
+    PregnancyAndSexualHealth: 'pregnancy_and_sexual_health',
+    PrimaryAndSecondarySchools: 'primary_and_secondary_schools',
+    PrintTvRadioAndOutdoorAdvertising: 'print_tv_radio_and_outdoor_advertising',
+    PrintingAndPublishing: 'printing_and_publishing',
+    PromotionalItems: 'promotional_items',
+    PropertyManagement: 'property_management',
+    Psychiatrists: 'psychiatrists',
+    PsychicsAndAstrologers: 'psychics_and_astrologers',
+    Psychologists: 'psychologists',
+    PublicAndSocialServices: 'public_and_social_services',
+    PublicRelations: 'public_relations',
+    PublicTransportationServices: 'public_transportation_services',
+    RaceTracks: 'race_tracks',
+    RacquetSports: 'racquet_sports',
+    Racquetball: 'racquetball',
+    Radiologists: 'radiologists',
+    Rafting: 'rafting',
+    Rail: 'rail',
+    RealEstate: 'real_estate',
+    RealEstateAgents: 'real_estate_agents',
+    RealEstateAppraiser: 'real_estate_appraiser',
+    RealEstateDevelopmentAndTitleCompanies: 'real_estate_development_and_title_companies',
+    Recreation: 'recreation',
+    RecreationCenters: 'recreation_centers',
+    RefrigerationAndIce: 'refrigeration_and_ice',
+    Refund: 'refund',
+    Religious: 'religious',
+    RenewableEnergy: 'renewable_energy',
+    Rent: 'rent',
+    RepairServices: 'repair_services',
+    Research: 'research',
+    Resorts: 'resorts',
+    Respiratory: 'respiratory',
+    Restaurants: 'restaurants',
+    Retirement: 'retirement',
+    RideShare: 'ride_share',
+    Rivers: 'rivers',
+    RockClimbing: 'rock_climbing',
+    Roofers: 'roofers',
+    Rubber: 'rubber',
+    RubberProducts: 'rubber_products',
+    Running: 'running',
+    RvsAndMotorHomes: 'rvs_and_motor_homes',
+    SalvageYards: 'salvage_yards',
+    SanitaryAndWasteManagement: 'sanitary_and_waste_management',
+    SaveAsYouGo: 'save_as_you_go',
+    Scandinavian: 'scandinavian',
+    Scientific: 'scientific',
+    ScubaDiving: 'scuba_diving',
+    Seafood: 'seafood',
+    SearchEngineMarketingAndOptimization: 'search_engine_marketing_and_optimization',
+    SecurityAndSafety: 'security_and_safety',
+    SeniorCitizenServices: 'senior_citizen_services',
+    Service: 'service',
+    ServiceInstruments: 'service_instruments',
+    Services: 'services',
+    Shipping: 'shipping',
+    ShippingAndFreight: 'shipping_and_freight',
+    ShoeStore: 'shoe_store',
+    Shopping: 'shopping',
+    ShoppingCentersAndMalls: 'shopping_centers_and_malls',
+    Shops: 'shops',
+    Skating: 'skating',
+    SkinCare: 'skin_care',
+    Skydiving: 'skydiving',
+    SnowSports: 'snow_sports',
+    Soccer: 'soccer',
+    SocialClubs: 'social_clubs',
+    Software: 'software',
+    SoftwareDevelopment: 'software_development',
+    Spanish: 'spanish',
+    Spas: 'spas',
+    Specialty: 'specialty',
+    Sport: 'sport',
+    SportingGoods: 'sporting_goods',
+    SportsAndRecreationCamps: 'sports_and_recreation_camps',
+    SportsBar: 'sports_bar',
+    SportsClubs: 'sports_clubs',
+    SportsVenues: 'sports_venues',
+    Square: 'square',
+    SquareCash: 'square_cash',
+    StadiumsAndArenas: 'stadiums_and_arenas',
+    Steakhouses: 'steakhouses',
+    StockBrokers: 'stock_brokers',
+    Storage: 'storage',
+    StripClub: 'strip_club',
+    StudentAidAndGrants: 'student_aid_and_grants',
+    Subscription: 'subscription',
+    SupermarketsAndGroceries: 'supermarkets_and_groceries',
+    Sushi: 'sushi',
+    Swimming: 'swimming',
+    SwimmingPoolMaintenanceAndServices: 'swimming_pool_maintenance_and_services',
+    Swimwear: 'swimwear',
+    Swiss: 'swiss',
+    SymphonyAndOpera: 'symphony_and_opera',
+    Synagogues: 'synagogues',
+    Tailors: 'tailors',
+    TanningSalons: 'tanning_salons',
+    Tattooing: 'tattooing',
+    Tax: 'tax',
+    Taxes: 'taxes',
+    Taxi: 'taxi',
+    TelecommunicationServices: 'telecommunication_services',
+    Television: 'television',
+    Temple: 'temple',
+    Tennis: 'tennis',
+    Textiles: 'textiles',
+    Thai: 'thai',
+    TheatricalProductions: 'theatrical_productions',
+    ThirdParty: 'third_party',
+    Tobacco: 'tobacco',
+    TollsAndFees: 'tolls_and_fees',
+    TouristInformationAndServices: 'tourist_information_and_services',
+    Towing: 'towing',
+    Toys: 'toys',
+    Transfer: 'transfer',
+    Transport: 'transport',
+    Transportation: 'transportation',
+    TransportationCenters: 'transportation_centers',
+    TransportationEquipment: 'transportation_equipment',
+    Travel: 'travel',
+    TravelAgentsAndTourOperators: 'travel_agents_and_tour_operators',
+    TreeService: 'tree_service',
+    Turkish: 'turkish',
+    TutoringAndEducationalServices: 'tutoring_and_educational_services',
+    Upholstery: 'upholstery',
+    Urologists: 'urologists',
+    UsedCarDealers: 'used_car_dealers',
+    Utilities: 'utilities',
+    VeganAndVegetarian: 'vegan_and_vegetarian',
+    Venmo: 'venmo',
+    Veterinarians: 'veterinarians',
+    VideoGames: 'video_games',
+    VintageAndThrift: 'vintage_and_thrift',
+    VocationalSchools: 'vocational_schools',
+    WarehousesAndWholesaleStores: 'warehouses_and_wholesale_stores',
+    Water: 'water',
+    WaterAndWasteManagement: 'water_and_waste_management',
+    WaterSports: 'water_sports',
+    WebDesignAndDevelopment: 'web_design_and_development',
+    WeddingAndBridal: 'wedding_and_bridal',
+    Welding: 'welding',
+    Wholesale: 'wholesale',
+    WineBar: 'wine_bar',
+    Winery: 'winery',
+    Wire: 'wire',
+    WireTransfer: 'wire_transfer',
+    Withdrawal: 'withdrawal',
+    WomensStore: 'women\'s_store',
+    WoodProducts: 'wood_products',
+    WritingCopywritingAndTechnicalWriting: 'writing_copywriting_and_technical_writing',
+    YogaAndPilates: 'yoga_and_pilates',
+    YouthOrganizations: 'youth_organizations',
+    Zoo: 'zoo'
+} as const;
+
+export type AssetReportTransactionCategoryEnum = typeof AssetReportTransactionCategoryEnum[keyof typeof AssetReportTransactionCategoryEnum];
+export const AssetReportTransactionStatusEnum = {
+    Pending: 'pending',
+    Posted: 'posted'
+} as const;
+
+export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStatusEnum[keyof typeof AssetReportTransactionStatusEnum];
+
+/**
  * 
  * @export
  * @enum {string}
@@ -231,7 +1046,7 @@ export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
  */
 export interface CreateAssetReportRequest {
     /**
-     * Access token for the entity to create report for.
+     * Access fuse token corresponding to the financial account to be create the Asset Report for.
      * @type {string}
      * @memberof CreateAssetReportRequest
      */
@@ -242,12 +1057,6 @@ export interface CreateAssetReportRequest {
      * @memberof CreateAssetReportRequest
      */
     'days_requested': number;
-    /**
-     * Indicates whether to include identity data in the Asset Report
-     * @type {boolean}
-     * @memberof CreateAssetReportRequest
-     */
-    'include_identity'?: boolean;
 }
 /**
  * 
@@ -256,13 +1065,13 @@ export interface CreateAssetReportRequest {
  */
 export interface CreateAssetReportResponse {
     /**
-     * A token that can be provided to endpoints such as /asset_report or /asset_report/pdf to fetch an Asset Report.
+     * A token that can be provided to endpoints such as /asset_report to fetch an asset report.
      * @type {string}
      * @memberof CreateAssetReportResponse
      */
     'asset_report_token'?: string;
     /**
-     * A unique ID identifying an Asset Report. 
+     * A unique ID identifying an Asset Report.
      * @type {string}
      * @memberof CreateAssetReportResponse
      */
@@ -373,6 +1182,12 @@ export interface CreateLinkTokenRequest {
      */
     'session_client_secret': string;
     /**
+     * This field allows you to set a unique webhook URL for each individual entity. By specifying an entity-specific webhook URL, you can receive and process data events for each entity separately. If this field is left empty, the organization-wide webhook URL set in the sandbox/production environment will be used as the default for all entities.
+     * @type {string}
+     * @memberof CreateLinkTokenRequest
+     */
+    'webhook_url'?: string;
+    /**
      * 
      * @type {CreateLinkTokenRequestMx}
      * @memberof CreateLinkTokenRequest
@@ -441,13 +1256,13 @@ export interface CreateSessionRequest {
      * @type {Array<Aggregator>}
      * @memberof CreateSessionRequest
      */
-    'supported_financial_institution_aggregators'?: Array<Aggregator>;
+    'supported_financial_institution_aggregators': Array<Aggregator>;
     /**
      * List of products that you would like the institutions to support
      * @type {Array<Product>}
      * @memberof CreateSessionRequest
      */
-    'products'?: Array<Product>;
+    'products': Array<Product>;
     /**
      * List of country codes that you would like the institutions to support
      * @type {Array<CountryCode>}
@@ -459,7 +1274,7 @@ export interface CreateSessionRequest {
      * @type {Entity}
      * @memberof CreateSessionRequest
      */
-    'entity'?: Entity;
+    'entity': Entity;
     /**
      * The fuse access token for an existing account integration. This will perform the process to reconnect an existing disconnected account.
      * @type {string}
@@ -467,7 +1282,7 @@ export interface CreateSessionRequest {
      */
     'access_token'?: string;
     /**
-     * True if the fuse sdk is using a web view. Defaults to true.
+     * Set to false for web SDKs (e.g., React), and true for mobile SDKs (e.g., React Native, Flutter, iOS, Android).
      * @type {boolean}
      * @memberof CreateSessionRequest
      */
@@ -815,7 +1630,7 @@ export interface FinancialConnectionsAccountBalance {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents after factoring in pending balances
+     * Amount in cents after factoring in pending balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
@@ -846,7 +1661,7 @@ export interface FinancialConnectionsAccountBalance {
  */
 export interface FinancialConnectionsAccountCachedBalance {
     /**
-     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances.
+     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
@@ -1184,7 +1999,7 @@ export interface FinancialConnectionsInvestmentSecurity {
      * @type {number}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'close_price': number;
+    'close_price'?: number;
     /**
      * 
      * @type {Currency}
@@ -1266,6 +2081,12 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'fees': number;
     /**
+     * 
+     * @type {Currency}
+     * @memberof FinancialConnectionsInvestmentTransaction
+     */
+    'currency': Currency;
+    /**
      * The date and time of the investment transaction
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransaction
@@ -1276,7 +2097,7 @@ export interface FinancialConnectionsInvestmentTransaction {
      * @type {string}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
-    'type': string;
+    'type': FinancialConnectionsInvestmentTransactionTypeEnum;
     /**
      * The number of units of the security involved in this transaction
      * @type {number}
@@ -1296,6 +2117,19 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'security': FinancialConnectionsInvestmentSecurity;
 }
+
+export const FinancialConnectionsInvestmentTransactionTypeEnum = {
+    Cash: 'cash',
+    Buy: 'buy',
+    Sell: 'sell',
+    Transfer: 'transfer',
+    Fee: 'fee',
+    Cancel: 'cancel',
+    Minus: '-'
+} as const;
+
+export type FinancialConnectionsInvestmentTransactionTypeEnum = typeof FinancialConnectionsInvestmentTransactionTypeEnum[keyof typeof FinancialConnectionsInvestmentTransactionTypeEnum];
+
 /**
  * 
  * @export
@@ -1551,6 +2385,49 @@ export type FinancialInstitutionLogoFormatEnum = typeof FinancialInstitutionLogo
 /**
  * 
  * @export
+ * @interface FuseApiAggregatorError
+ */
+export interface FuseApiAggregatorError {
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiAggregatorError
+     */
+    'request_id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiAggregatorError
+     */
+    'title'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiAggregatorError
+     */
+    'details'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiAggregatorError
+     */
+    'code'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiAggregatorError
+     */
+    'type'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FuseApiAggregatorError
+     */
+    'path'?: string;
+}
+/**
+ * 
+ * @export
  * @interface FuseApiError
  */
 export interface FuseApiError {
@@ -1559,31 +2436,37 @@ export interface FuseApiError {
      * @type {string}
      * @memberof FuseApiError
      */
-    'title'?: string;
+    'request_id': string;
     /**
      * 
      * @type {string}
      * @memberof FuseApiError
      */
-    'details'?: string;
+    'title': string;
     /**
      * 
      * @type {string}
      * @memberof FuseApiError
      */
-    'code'?: FuseApiErrorCodeEnum;
+    'details': string;
+    /**
+     * 
+     * @type {FuseApiErrorCode}
+     * @memberof FuseApiError
+     */
+    'code': FuseApiErrorCode;
+    /**
+     * 
+     * @type {FuseApiErrorType}
+     * @memberof FuseApiError
+     */
+    'type': FuseApiErrorType;
     /**
      * 
      * @type {string}
      * @memberof FuseApiError
      */
-    'type'?: FuseApiErrorTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof FuseApiError
-     */
-    'source'?: FuseApiErrorSourceEnum;
+    'source': FuseApiErrorSourceEnum;
     /**
      * 
      * @type {FuseApiErrorData}
@@ -1592,7 +2475,22 @@ export interface FuseApiError {
     'data'?: FuseApiErrorData;
 }
 
-export const FuseApiErrorCodeEnum = {
+export const FuseApiErrorSourceEnum = {
+    Internal: 'internal',
+    Aggregator: 'aggregator'
+} as const;
+
+export type FuseApiErrorSourceEnum = typeof FuseApiErrorSourceEnum[keyof typeof FuseApiErrorSourceEnum];
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const FuseApiErrorCode = {
+    AssetReportGenerationFailed: 'asset_report_generation_failed',
+    AssetReportNotReady: 'asset_report_not_ready',
     ClientError: 'client_error',
     InvalidHeaders: 'invalid_headers',
     InvalidRequestBody: 'invalid_request_body',
@@ -1609,27 +2507,24 @@ export const FuseApiErrorCodeEnum = {
     MissingTellerPrivateKeyHeader: 'missing_teller_private_key_header',
     MissingTellerCertificateHeader: 'missing_teller_certificate_header',
     MissingTellerApplicationIdHeader: 'missing_teller_application_id_header',
+    MissingTellerSigningSecretHeader: 'missing_teller_signing_secret_header',
+    MissingSnaptradeClientIdHeader: 'missing_snaptrade_client_id_header',
+    MissingSnaptradeConsumerKeyHeader: 'missing_snaptrade_consumer_key_header',
+    MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
     AggregatorConnectionFinishedError: 'aggregator_connection_finished_error',
-    RequestBodyMissing: 'request_body_missing'
+    AggregatorRateLimitError: 'aggregator_rate_limit_error',
+    RequestBodyMissing: 'request_body_missing',
+    RequestContentTypeInvalid: 'request_content_type_invalid',
+    RequestBodyInvalidJson: 'request_body_invalid_json',
+    WebhookError: 'webhook_error',
+    Timeout: 'timeout',
+    Other: 'other'
 } as const;
 
-export type FuseApiErrorCodeEnum = typeof FuseApiErrorCodeEnum[keyof typeof FuseApiErrorCodeEnum];
-export const FuseApiErrorTypeEnum = {
-    AuthError: 'auth_error',
-    NotFound: 'not_found',
-    BadRequest: 'bad_request',
-    ServerError: 'server_error'
-} as const;
+export type FuseApiErrorCode = typeof FuseApiErrorCode[keyof typeof FuseApiErrorCode];
 
-export type FuseApiErrorTypeEnum = typeof FuseApiErrorTypeEnum[keyof typeof FuseApiErrorTypeEnum];
-export const FuseApiErrorSourceEnum = {
-    Internal: 'internal',
-    Aggregator: 'aggregator'
-} as const;
-
-export type FuseApiErrorSourceEnum = typeof FuseApiErrorSourceEnum[keyof typeof FuseApiErrorSourceEnum];
 
 /**
  * 
@@ -1645,11 +2540,27 @@ export interface FuseApiErrorData {
     'aggregator'?: Aggregator;
     /**
      * 
-     * @type {Array<FuseApiError>}
+     * @type {Array<FuseApiAggregatorError>}
      * @memberof FuseApiErrorData
      */
-    'errors'?: Array<FuseApiError>;
+    'errors'?: Array<FuseApiAggregatorError>;
 }
+
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const FuseApiErrorType = {
+    AuthError: 'auth_error',
+    NotFound: 'not_found',
+    BadRequest: 'bad_request',
+    ServerError: 'server_error'
+} as const;
+
+export type FuseApiErrorType = typeof FuseApiErrorType[keyof typeof FuseApiErrorType];
 
 
 /**
@@ -1776,154 +2687,17 @@ export type FuseApiWarningDataWarningsInnerSourceEnum = typeof FuseApiWarningDat
  */
 export interface GetAssetReportRequest {
     /**
+     * Access fuse token corresponding to the financial account to be refresh the Asset Report for.
+     * @type {string}
+     * @memberof GetAssetReportRequest
+     */
+    'access_token': string;
+    /**
      * The token associated with the Asset Report to retrieve.
      * @type {string}
      * @memberof GetAssetReportRequest
      */
     'asset_report_token': string;
-}
-/**
- * 
- * @export
- * @interface GetAssetReportResponse
- */
-export interface GetAssetReportResponse {
-    /**
-     * 
-     * @type {GetAssetReportResponseReport}
-     * @memberof GetAssetReportResponse
-     */
-    'report'?: GetAssetReportResponseReport;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetAssetReportResponse
-     */
-    'request_id'?: string;
-}
-/**
- * The Asset Report in JSON format.
- * @export
- * @interface GetAssetReportResponseReport
- */
-export interface GetAssetReportResponseReport {
-    /**
-     * A unique ID identifying an Asset Report.
-     * @type {string}
-     * @memberof GetAssetReportResponseReport
-     */
-    'asset_report_id'?: string;
-    /**
-     * An identifier you determine and submit for the Asset Report. 
-     * @type {string}
-     * @memberof GetAssetReportResponseReport
-     */
-    'client_report_id'?: string;
-    /**
-     * The date and time when the Asset Report was created, in ISO 8601 format
-     * @type {string}
-     * @memberof GetAssetReportResponseReport
-     */
-    'date_generated'?: string;
-    /**
-     * The duration of transaction history you requested
-     * @type {number}
-     * @memberof GetAssetReportResponseReport
-     */
-    'days_requested'?: number;
-    /**
-     * An array of Asset Reports, one for each account in the Asset Report.
-     * @type {Array<GetAssetReportResponseReportAccountsInner>}
-     * @memberof GetAssetReportResponseReport
-     */
-    'accounts'?: Array<GetAssetReportResponseReportAccountsInner>;
-    /**
-     * If the Asset Report generation was successful but identity information cannot be returned, this array will contain information about the errors causing identity information to be missing
-     * @type {Array<FuseApiWarning>}
-     * @memberof GetAssetReportResponseReport
-     */
-    'warnings'?: Array<FuseApiWarning>;
-}
-/**
- * 
- * @export
- * @interface GetAssetReportResponseReportAccountsInner
- */
-export interface GetAssetReportResponseReportAccountsInner {
-    /**
-     * \"The remote account ID of the account.\",
-     * @type {string}
-     * @memberof GetAssetReportResponseReportAccountsInner
-     */
-    'remote_account_id'?: string;
-    /**
-     * 
-     * @type {GetAssetReportResponseReportAccountsInnerBalances}
-     * @memberof GetAssetReportResponseReportAccountsInner
-     */
-    'balances'?: GetAssetReportResponseReportAccountsInnerBalances;
-    /**
-     * An array of historical balances for the account.
-     * @type {Array<GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner>}
-     * @memberof GetAssetReportResponseReportAccountsInner
-     */
-    'historical_balances'?: Array<GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner>;
-    /**
-     * 
-     * @type {Array<FinancialConnectionsOwner>}
-     * @memberof GetAssetReportResponseReportAccountsInner
-     */
-    'owners'?: Array<FinancialConnectionsOwner>;
-}
-/**
- * 
- * @export
- * @interface GetAssetReportResponseReportAccountsInnerBalances
- */
-export interface GetAssetReportResponseReportAccountsInnerBalances {
-    /**
-     * Amount after factoring in pending balances
-     * @type {number}
-     * @memberof GetAssetReportResponseReportAccountsInnerBalances
-     */
-    'available'?: number;
-    /**
-     * Amount without factoring in pending balances
-     * @type {number}
-     * @memberof GetAssetReportResponseReportAccountsInnerBalances
-     */
-    'current'?: number;
-    /**
-     * The ISO-4217 currency code of the balance.
-     * @type {string}
-     * @memberof GetAssetReportResponseReportAccountsInnerBalances
-     */
-    'iso_currency_code'?: string;
-}
-/**
- * 
- * @export
- * @interface GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner
- */
-export interface GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner {
-    /**
-     * The date of the calculated historical balance, in an ISO 8601 format (YYYY-MM-DD)
-     * @type {string}
-     * @memberof GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner
-     */
-    'date'?: string;
-    /**
-     * The total amount of funds in the account, calculated from the current balance in the balance object by subtracting inflows and adding back outflows according to the posted date of each transaction.
-     * @type {number}
-     * @memberof GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner
-     */
-    'current'?: number;
-    /**
-     * The ISO-4217 currency code of the balance.
-     * @type {string}
-     * @memberof GetAssetReportResponseReportAccountsInnerHistoricalBalancesInner
-     */
-    'iso_currency_code'?: string;
 }
 /**
  * 
@@ -2378,6 +3152,12 @@ export interface GetInvestmentTransactionsResponse {
      */
     'investment_transactions': Array<FinancialConnectionsInvestmentTransaction>;
     /**
+     * The total number of transactions within the specified date range.
+     * @type {number}
+     * @memberof GetInvestmentTransactionsResponse
+     */
+    'total_transactions'?: number;
+    /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetInvestmentTransactionsResponse
@@ -2434,6 +3214,12 @@ export interface MigrateFinancialConnectionsAggregatorConnectionData {
      * @memberof MigrateFinancialConnectionsAggregatorConnectionData
      */
     'mx'?: MigrateFinancialConnectionsAggregatorConnectionDataMx;
+    /**
+     * 
+     * @type {MigrateFinancialConnectionsAggregatorConnectionDataTeller}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionData
+     */
+    'teller'?: MigrateFinancialConnectionsAggregatorConnectionDataTeller;
 }
 /**
  * Details of the MX connection to migrate into the unified Fuse API.
@@ -2466,6 +3252,25 @@ export interface MigrateFinancialConnectionsAggregatorConnectionDataPlaid {
      * @memberof MigrateFinancialConnectionsAggregatorConnectionDataPlaid
      */
     'access_token': string;
+    /**
+     * If true, any webhooks received for this new financial connection will be sent to the webhook url used when the item was created. If false, the webhook url set at the organization sandbox/production environment level will be used instead.
+     * @type {boolean}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionDataPlaid
+     */
+    'use_item_webhook'?: boolean;
+}
+/**
+ * Details of the Teller connection to migrate into the unified Fuse API.
+ * @export
+ * @interface MigrateFinancialConnectionsAggregatorConnectionDataTeller
+ */
+export interface MigrateFinancialConnectionsAggregatorConnectionDataTeller {
+    /**
+     * The Teller access token associated with the user\'s financial accounts.
+     * @type {string}
+     * @memberof MigrateFinancialConnectionsAggregatorConnectionDataTeller
+     */
+    'access_token': string;
 }
 /**
  * 
@@ -2480,7 +3285,7 @@ export interface MigrateFinancialConnectionsTokenRequest {
      */
     'connection_data': MigrateFinancialConnectionsAggregatorConnectionData;
     /**
-     * The aggregator being migrated (either \'plaid\' or \'mx\').
+     * The aggregator being migrated (either \'plaid\', \'mx\' or \'teller).
      * @type {string}
      * @memberof MigrateFinancialConnectionsTokenRequest
      */
@@ -2501,7 +3306,8 @@ export interface MigrateFinancialConnectionsTokenRequest {
 
 export const MigrateFinancialConnectionsTokenRequestAggregatorEnum = {
     Plaid: 'plaid',
-    Mx: 'mx'
+    Mx: 'mx',
+    Teller: 'teller'
 } as const;
 
 export type MigrateFinancialConnectionsTokenRequestAggregatorEnum = typeof MigrateFinancialConnectionsTokenRequestAggregatorEnum[keyof typeof MigrateFinancialConnectionsTokenRequestAggregatorEnum];
@@ -2562,7 +3368,7 @@ export const Product = {
     Ownership: 'ownership',
     Transactions: 'transactions',
     Investments: 'investments',
-    AssetReport: 'asset_report'
+    Assets: 'assets'
 } as const;
 
 export type Product = typeof Product[keyof typeof Product];
@@ -2575,23 +3381,48 @@ export type Product = typeof Product[keyof typeof Product];
  */
 export interface RefreshAssetReportRequest {
     /**
+     * Access fuse token corresponding to the financial account to be refresh the Asset Report for.
+     * @type {string}
+     * @memberof RefreshAssetReportRequest
+     */
+    'access_token': string;
+    /**
      * The asset_report_token returned by the original call to /asset_report/create
      * @type {string}
      * @memberof RefreshAssetReportRequest
      */
-    'access_token'?: string;
+    'asset_report_token': string;
     /**
      * The maximum integer number of days of history to include in the Asset Report
      * @type {number}
      * @memberof RefreshAssetReportRequest
      */
-    'days_requested': number;
+    'days_requested'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface RefreshAssetReportResponse
+ */
+export interface RefreshAssetReportResponse {
     /**
-     * Indicates whether to include identity data in the Asset Report
-     * @type {boolean}
-     * @memberof RefreshAssetReportRequest
+     * A token that can be provided to endpoints such as /asset_report to fetch an asset report.
+     * @type {string}
+     * @memberof RefreshAssetReportResponse
      */
-    'include_identity'?: boolean;
+    'asset_report_token'?: string;
+    /**
+     * A unique ID identifying an Asset Report.
+     * @type {string}
+     * @memberof RefreshAssetReportResponse
+     */
+    'asset_report_id'?: string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof RefreshAssetReportResponse
+     */
+    'request_id'?: string;
 }
 /**
  * 
@@ -2712,7 +3543,7 @@ export interface Transaction {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents associated with the transaction
+     * Amount in cents associated with the transaction. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
      * @type {number}
      * @memberof Transaction
      */
@@ -2734,7 +3565,7 @@ export interface Transaction {
      * @type {Array<string>}
      * @memberof Transaction
      */
-    'category': Array<string>;
+    'category': Array<TransactionCategoryEnum>;
     /**
      * 
      * @type {TransactionMerchant}
@@ -2752,7 +3583,7 @@ export interface Transaction {
      * @type {string}
      * @memberof Transaction
      */
-    'type': string;
+    'type': TransactionTypeEnum;
     /**
      * The ISO-4217 currency code of the transaction
      * @type {string}
@@ -2767,12 +3598,646 @@ export interface Transaction {
     'remote_data': any;
 }
 
+export const TransactionCategoryEnum = {
+    AccessoriesStore: 'accessories_store',
+    AccountingAndBookkeeping: 'accounting_and_bookkeeping',
+    Ach: 'ach',
+    Acorns: 'acorns',
+    Acupuncture: 'acupuncture',
+    Adult: 'adult',
+    AdultEducation: 'adult_education',
+    AdultEntertainment: 'adult_entertainment',
+    Advertising: 'advertising',
+    AdvertisingAgenciesAndMediaBuyers: 'advertising_agencies_and_media_buyers',
+    AdvertisingAndMarketing: 'advertising_and_marketing',
+    Afghan: 'afghan',
+    African: 'african',
+    AgricultureAndForestry: 'agriculture_and_forestry',
+    AirlinesAndAviationServices: 'airlines_and_aviation_services',
+    Airports: 'airports',
+    AlcoholAndBars: 'alcohol_and_bars',
+    AlternativeMedicine: 'alternative_medicine',
+    American: 'american',
+    Anesthesiologists: 'anesthesiologists',
+    AnimalShelter: 'animal_shelter',
+    Antiques: 'antiques',
+    ApartmentsCondosAndHouses: 'apartments_condos_and_houses',
+    ApparelAndFabricProducts: 'apparel_and_fabric_products',
+    Aquarium: 'aquarium',
+    ArcadesAndAmusementParks: 'arcades_and_amusement_parks',
+    Architects: 'architects',
+    ArtAndGraphicDesign: 'art_and_graphic_design',
+    ArtDealersAndGalleries: 'art_dealers_and_galleries',
+    ArtRestoration: 'art_restoration',
+    ArtSchool: 'art_school',
+    ArtsAndCrafts: 'arts_and_crafts',
+    ArtsAndEntertainment: 'arts_and_entertainment',
+    Asian: 'asian',
+    AssistedLivingServices: 'assisted_living_services',
+    AthleticFields: 'athletic_fields',
+    Atm: 'atm',
+    Atms: 'atms',
+    Auctions: 'auctions',
+    Audiovisual: 'audiovisual',
+    Australian: 'australian',
+    AutoOilAndLube: 'auto_oil_and_lube',
+    AutoPayment: 'auto_payment',
+    AutoSmogCheck: 'auto_smog_check',
+    AutoTires: 'auto_tires',
+    AutoTransmission: 'auto_transmission',
+    AutomationAndControlSystems: 'automation_and_control_systems',
+    Automotive: 'automotive',
+    BagelShop: 'bagel_shop',
+    Bakery: 'bakery',
+    BankFees: 'bank_fees',
+    BankingAndFinance: 'banking_and_finance',
+    Bar: 'bar',
+    Barbecue: 'barbecue',
+    Baseball: 'baseball',
+    Basketball: 'basketball',
+    BattingCages: 'batting_cages',
+    Beaches: 'beaches',
+    BeautyProducts: 'beauty_products',
+    BedAndBreakfasts: 'bed_and_breakfasts',
+    BeerWineAndSpirits: 'beer_wine_and_spirits',
+    Benefits: 'benefits',
+    Betterment: 'betterment',
+    Bicycles: 'bicycles',
+    Bill: 'bill',
+    BilliardsAndPool: 'billiards_and_pool',
+    Billpay: 'billpay',
+    BloodBanksAndCenters: 'blood_banks_and_centers',
+    BoardingHouses: 'boarding_houses',
+    Boat: 'boat',
+    BoatDealers: 'boat_dealers',
+    Boating: 'boating',
+    Bookstores: 'bookstores',
+    Boutique: 'boutique',
+    Bowling: 'bowling',
+    Brazilian: 'brazilian',
+    BreakfastSpot: 'breakfast_spot',
+    Breweries: 'breweries',
+    BuildingAndLandSurveyors: 'building_and_land_surveyors',
+    BuildingsAndStructures: 'buildings_and_structures',
+    Burgers: 'burgers',
+    Burrito: 'burrito',
+    BusStations: 'bus_stations',
+    Business: 'business',
+    BusinessAndStrategyConsulting: 'business_and_strategy_consulting',
+    BusinessBrokersAndFranchises: 'business_brokers_and_franchises',
+    BusinessServices: 'business_services',
+    Cable: 'cable',
+    Cafe: 'cafe',
+    Cajun: 'cajun',
+    Cameras: 'cameras',
+    CampgroundsAndRvParks: 'campgrounds_and_rv_parks',
+    CanoesAndKayaks: 'canoes_and_kayaks',
+    CarAndTruckRentals: 'car_and_truck_rentals',
+    CarAppraisers: 'car_appraisers',
+    CarDealersAndLeasing: 'car_dealers_and_leasing',
+    CarPartsAndAccessories: 'car_parts_and_accessories',
+    CarService: 'car_service',
+    CarWashAndDetail: 'car_wash_and_detail',
+    Cardiologists: 'cardiologists',
+    CardsAndStationery: 'cards_and_stationery',
+    Caretakers: 'caretakers',
+    Caribbean: 'caribbean',
+    Carpenters: 'carpenters',
+    CarpetAndFlooring: 'carpet_and_flooring',
+    CashAdvance: 'cash_advance',
+    CasinosAndGaming: 'casinos_and_gaming',
+    Catering: 'catering',
+    Cemetery: 'cemetery',
+    CharitiesAndNonProfits: 'charities_and_non-profits',
+    Charity: 'charity',
+    CharterBuses: 'charter_buses',
+    ChaseQuickpay: 'chase_quickpay',
+    Check: 'check',
+    CheckCashing: 'check_cashing',
+    ChemicalsAndGasses: 'chemicals_and_gasses',
+    Childcare: 'childcare',
+    Children: 'children',
+    Chinese: 'chinese',
+    Chiropractors: 'chiropractors',
+    Churches: 'churches',
+    CircusesAndCarnivals: 'circuses_and_carnivals',
+    ClassicAndAntiqueCar: 'classic_and_antique_car',
+    Cleaning: 'cleaning',
+    Clothing: 'clothing',
+    ClothingAndAccessories: 'clothing_and_accessories',
+    Coal: 'coal',
+    CoffeeShop: 'coffee_shop',
+    Coinbase: 'coinbase',
+    Collections: 'collections',
+    CollegesAndUniversities: 'colleges_and_universities',
+    CombatSports: 'combat_sports',
+    CommercialRealEstate: 'commercial_real_estate',
+    Community: 'community',
+    ComputerTraining: 'computer_training',
+    Computers: 'computers',
+    ComputersAndElectronics: 'computers_and_electronics',
+    ComputersAndOfficeMachines: 'computers_and_office_machines',
+    Construction: 'construction',
+    ConstructionSupplies: 'construction_supplies',
+    Contractors: 'contractors',
+    ConvenienceStores: 'convenience_stores',
+    CorporateHousing: 'corporate_housing',
+    CorrectionalInstitutions: 'correctional_institutions',
+    Costumes: 'costumes',
+    CottagesAndCabins: 'cottages_and_cabins',
+    CounselingAndTherapy: 'counseling_and_therapy',
+    Courts: 'courts',
+    CreativeServices: 'creative_services',
+    Credit: 'credit',
+    CreditCard: 'credit_card',
+    CreditCounselingAndBankruptcyServices: 'credit_counseling_and_bankruptcy_services',
+    CreditReporting: 'credit_reporting',
+    CropProduction: 'crop_production',
+    Cruises: 'cruises',
+    Cuban: 'cuban',
+    CulinaryLessonsAndSchools: 'culinary_lessons_and_schools',
+    CupcakeShop: 'cupcake_shop',
+    Cycling: 'cycling',
+    Dance: 'dance',
+    DanceAndMusic: 'dance_and_music',
+    DanceHallsAndSaloons: 'dance_halls_and_saloons',
+    DanceSchools: 'dance_schools',
+    DatingAndEscort: 'dating_and_escort',
+    DayCareAndPreschools: 'day_care_and_preschools',
+    Debit: 'debit',
+    Delis: 'delis',
+    Dentists: 'dentists',
+    DepartmentStores: 'department_stores',
+    Deposit: 'deposit',
+    Dermatologists: 'dermatologists',
+    Dessert: 'dessert',
+    Digit: 'digit',
+    DigitalPurchase: 'digital_purchase',
+    Diners: 'diners',
+    Dining: 'dining',
+    DirectMailAndEmailMarketingServices: 'direct_mail_and_email_marketing_services',
+    DisabledPersonsServices: 'disabled_persons_services',
+    DiscountStores: 'discount_stores',
+    Distillery: 'distillery',
+    Distribution: 'distribution',
+    DoctorsAndDentists: 'doctors_and_dentists',
+    Donuts: 'donuts',
+    DoorsAndWindows: 'doors_and_windows',
+    DrivingSchools: 'driving_schools',
+    DrugAndAlcoholServices: 'drug_and_alcohol_services',
+    Dwolla: 'dwolla',
+    EarNoseAndThroat: 'ear_nose_and_throat',
+    EasternEuropean: 'eastern_european',
+    Education: 'education',
+    Electric: 'electric',
+    ElectricalEquipment: 'electrical_equipment',
+    ElectricalEquipmentAndComponents: 'electrical_equipment_and_components',
+    Electricians: 'electricians',
+    Electronics: 'electronics',
+    EmergencyServices: 'emergency_services',
+    EmploymentAgencies: 'employment_agencies',
+    Engineering: 'engineering',
+    Entertainment: 'entertainment',
+    Environmental: 'environmental',
+    Equestrian: 'equestrian',
+    EquipmentRental: 'equipment_rental',
+    Ethiopian: 'ethiopian',
+    EventsAndEventPlanning: 'events_and_event_planning',
+    ExcessActivity: 'excess_activity',
+    FacilitiesAndNursingHomes: 'facilities_and_nursing_homes',
+    FairgroundsAndRodeos: 'fairgrounds_and_rodeos',
+    Falafel: 'falafel',
+    FamilyMedicine: 'family_medicine',
+    FarmersMarkets: 'farmers_markets',
+    FastFood: 'fast_food',
+    Fee: 'fee',
+    FencesFireplacesAndGarageDoors: 'fences_fireplaces_and_garage_doors',
+    Filipino: 'filipino',
+    Financial: 'financial',
+    FinancialPlanningAndInvestments: 'financial_planning_and_investments',
+    FireStations: 'fire_stations',
+    FishAndChips: 'fish_and_chips',
+    FleaMarkets: 'flea_markets',
+    Florists: 'florists',
+    FoodAndBeverage: 'food_and_beverage',
+    FoodAndBeverageStore: 'food_and_beverage_store',
+    FoodAndDrink: 'food_and_drink',
+    FoodTruck: 'food_truck',
+    Football: 'football',
+    ForeignTransaction: 'foreign_transaction',
+    Forestry: 'forestry',
+    Forests: 'forests',
+    FraternitiesAndSororities: 'fraternities_and_sororities',
+    FraudDispute: 'fraud_dispute',
+    French: 'french',
+    Fuel: 'fuel',
+    FuelDealer: 'fuel_dealer',
+    FundRaising: 'fund_raising',
+    FuneralServices: 'funeral_services',
+    FurnitureAndFixtures: 'furniture_and_fixtures',
+    FurnitureAndHomeDecor: 'furniture_and_home_decor',
+    Gardens: 'gardens',
+    Gas: 'gas',
+    GasStations: 'gas_stations',
+    Gastroenterologists: 'gastroenterologists',
+    Gastropub: 'gastropub',
+    General: 'general',
+    GeneralSurgery: 'general_surgery',
+    Geological: 'geological',
+    German: 'german',
+    GiftAndNovelty: 'gift_and_novelty',
+    Gifts: 'gifts',
+    GlassProducts: 'glass_products',
+    GlassesAndOptometrist: 'glasses_and_optometrist',
+    GoCarts: 'go_carts',
+    Golf: 'golf',
+    GovernmentDepartmentsAndAgencies: 'government_departments_and_agencies',
+    GovernmentLobbyists: 'government_lobbyists',
+    Greek: 'greek',
+    GunRanges: 'gun_ranges',
+    Gym: 'gym',
+    Gymnastics: 'gymnastics',
+    GymsAndFitnessCenters: 'gyms_and_fitness_centers',
+    HairRemoval: 'hair_removal',
+    HairSalonsAndBarbers: 'hair_salons_and_barbers',
+    HardwareAndServices: 'hardware_and_services',
+    HardwareStore: 'hardware_store',
+    HealthFood: 'health_food',
+    Healthcare: 'healthcare',
+    HealthcareServices: 'healthcare_services',
+    HeatingVentilatingAndAirConditioning: 'heating_ventilating_and_air_conditioning',
+    Heliports: 'heliports',
+    Hiking: 'hiking',
+    HistoricSites: 'historic_sites',
+    HobbyAndCollectibles: 'hobby_and_collectibles',
+    Hockey: 'hockey',
+    HoldingAndInvestmentOffices: 'holding_and_investment_offices',
+    Home: 'home',
+    HomeAppliances: 'home_appliances',
+    HomeImprovement: 'home_improvement',
+    HomeInspectionServices: 'home_inspection_services',
+    HookahLounges: 'hookah_lounges',
+    HospitalsClinicsAndMedicalCenters: 'hospitals_clinics_and_medical_centers',
+    Hostels: 'hostels',
+    HotAirBalloons: 'hot_air_balloons',
+    HotelLounge: 'hotel_lounge',
+    HotelsAndMotels: 'hotels_and_motels',
+    Household: 'household',
+    Housewares: 'housewares',
+    HousingAssistanceAndShelters: 'housing_assistance_and_shelters',
+    HumanResources: 'human_resources',
+    HuntingAndFishing: 'hunting_and_fishing',
+    IceCream: 'ice_cream',
+    Immigration: 'immigration',
+    ImportAndExport: 'import_and_export',
+    Income: 'income',
+    Indian: 'indian',
+    Indonesian: 'indonesian',
+    IndustrialMachineryAndEquipment: 'industrial_machinery_and_equipment',
+    IndustrialMachineryAndVehicles: 'industrial_machinery_and_vehicles',
+    IndustrialSupplies: 'industrial_supplies',
+    Infrastructure: 'infrastructure',
+    InsufficientFunds: 'insufficient_funds',
+    Insurance: 'insurance',
+    Interest: 'interest',
+    InterestCharged: 'interest_charged',
+    InterestEarned: 'interest_earned',
+    InteriorDesign: 'interior_design',
+    InternalAccountTransfer: 'internal_account_transfer',
+    InternalMedicine: 'internal_medicine',
+    Internet: 'internet',
+    InternetCafes: 'internet_cafes',
+    InternetServices: 'internet_services',
+    Investment: 'investment',
+    Italian: 'italian',
+    Japanese: 'japanese',
+    JazzAndBluesCafe: 'jazz_and_blues_cafe',
+    JewelryAndWatches: 'jewelry_and_watches',
+    JuiceBar: 'juice_bar',
+    Karaoke: 'karaoke',
+    KeepTheChangeSavingsProgram: 'keep_the_change_savings_program',
+    Kids: 'kids',
+    KidsStore: 'kids\'_store',
+    Kitchens: 'kitchens',
+    Korean: 'korean',
+    Lakes: 'lakes',
+    Landmarks: 'landmarks',
+    LandscapingAndGardeners: 'landscaping_and_gardeners',
+    LatePayment: 'late_payment',
+    LatinAmerican: 'latin_american',
+    LaundryAndGarmentServices: 'laundry_and_garment_services',
+    LawEnforcement: 'law_enforcement',
+    LawnAndGarden: 'lawn_and_garden',
+    Leather: 'leather',
+    LeatherGoods: 'leather_goods',
+    Legal: 'legal',
+    Libraries: 'libraries',
+    LightingFixtures: 'lighting_fixtures',
+    LimosAndChauffeurs: 'limos_and_chauffeurs',
+    LingerieStore: 'lingerie_store',
+    LivestockAndAnimals: 'livestock_and_animals',
+    Loan: 'loan',
+    LoansAndMortgages: 'loans_and_mortgages',
+    LodgesAndVacationRentals: 'lodges_and_vacation_rentals',
+    Lodging: 'lodging',
+    LoggingAndSawmills: 'logging_and_sawmills',
+    Luggage: 'luggage',
+    MachineShops: 'machine_shops',
+    MaintenanceAndRepair: 'maintenance_and_repair',
+    Management: 'management',
+    ManicuresAndPedicures: 'manicures_and_pedicures',
+    Manufacturing: 'manufacturing',
+    MarineSupplies: 'marine_supplies',
+    MarketResearchAndConsulting: 'market_research_and_consulting',
+    Masonry: 'masonry',
+    MassageClinicsAndTherapists: 'massage_clinics_and_therapists',
+    Media: 'media',
+    MediaProduction: 'media_production',
+    MedicalSuppliesAndLabs: 'medical_supplies_and_labs',
+    Mediterranean: 'mediterranean',
+    MensStore: 'men\'s_store',
+    MentalHealth: 'mental_health',
+    Metal: 'metal',
+    MetalProducts: 'metal_products',
+    Metals: 'metals',
+    Mexican: 'mexican',
+    MiddleEastern: 'middle_eastern',
+    Military: 'military',
+    MiniatureGolf: 'miniature_golf',
+    Mining: 'mining',
+    MobileHomes: 'mobile_homes',
+    MobilePhones: 'mobile_phones',
+    MonumentsAndMemorials: 'monuments_and_memorials',
+    Moroccan: 'moroccan',
+    Mosques: 'mosques',
+    MotorcycleMopedAndScooterRepair: 'motorcycle_moped_and_scooter_repair',
+    MotorcyclesMopedsAndScooters: 'motorcycles_mopeds_and_scooters',
+    Mountains: 'mountains',
+    Movers: 'movers',
+    MovieTheatres: 'movie_theatres',
+    Museums: 'museums',
+    MusicVideoAndDvd: 'music_video_and_dvd',
+    MusicAndShowVenues: 'music_and_show_venues',
+    MusicalInstruments: 'musical_instruments',
+    NaturalParks: 'natural_parks',
+    Neurologists: 'neurologists',
+    NewsReporting: 'news_reporting',
+    Newsstands: 'newsstands',
+    NightClubs: 'night_clubs',
+    Nightlife: 'nightlife',
+    NonMetallicMinerals: 'non-metallic_minerals',
+    NonmetallicMineralProducts: 'nonmetallic_mineral_products',
+    Nurses: 'nurses',
+    Nutritionists: 'nutritionists',
+    ObstetriciansAndGynecologists: 'obstetricians_and_gynecologists',
+    Office: 'office',
+    OfficeSupplies: 'office_supplies',
+    OilAndGas: 'oil_and_gas',
+    Oncologists: 'oncologists',
+    OnlineAdvertising: 'online_advertising',
+    OnlineSubscriptions: 'online_subscriptions',
+    Ophthalmologists: 'ophthalmologists',
+    Optometrists: 'optometrists',
+    OrganizationsAndAssociations: 'organizations_and_associations',
+    OrthopedicSurgeons: 'orthopedic_surgeons',
+    Other: 'other',
+    Outdoors: 'outdoors',
+    Outlet: 'outlet',
+    Overdraft: 'overdraft',
+    Packaging: 'packaging',
+    Paintball: 'paintball',
+    Painting: 'painting',
+    Paper: 'paper',
+    PaperProducts: 'paper_products',
+    Parking: 'parking',
+    Parks: 'parks',
+    PartyCenters: 'party_centers',
+    Pathologists: 'pathologists',
+    PawnShops: 'pawn_shops',
+    Payment: 'payment',
+    Paypal: 'paypal',
+    Payroll: 'payroll',
+    Pediatricians: 'pediatricians',
+    PersonalCare: 'personal_care',
+    PersonalTrainers: 'personal_trainers',
+    PestControl: 'pest_control',
+    Pet: 'pet',
+    Petroleum: 'petroleum',
+    Pets: 'pets',
+    Pharmacies: 'pharmacies',
+    Phone: 'phone',
+    Photography: 'photography',
+    PhotosAndFrames: 'photos_and_frames',
+    PhysicalTherapy: 'physical_therapy',
+    Physicians: 'physicians',
+    PicnicAreas: 'picnic_areas',
+    Piercing: 'piercing',
+    Pizza: 'pizza',
+    Plaid: 'plaid',
+    PlasticProducts: 'plastic_products',
+    PlasticSurgeons: 'plastic_surgeons',
+    Plastics: 'plastics',
+    Playgrounds: 'playgrounds',
+    Plumbing: 'plumbing',
+    Podiatrists: 'podiatrists',
+    PoliceStations: 'police_stations',
+    PoolsAndSpas: 'pools_and_spas',
+    Portuguese: 'portuguese',
+    PostOffices: 'post_offices',
+    PregnancyAndSexualHealth: 'pregnancy_and_sexual_health',
+    PrimaryAndSecondarySchools: 'primary_and_secondary_schools',
+    PrintTvRadioAndOutdoorAdvertising: 'print_tv_radio_and_outdoor_advertising',
+    PrintingAndPublishing: 'printing_and_publishing',
+    PromotionalItems: 'promotional_items',
+    PropertyManagement: 'property_management',
+    Psychiatrists: 'psychiatrists',
+    PsychicsAndAstrologers: 'psychics_and_astrologers',
+    Psychologists: 'psychologists',
+    PublicAndSocialServices: 'public_and_social_services',
+    PublicRelations: 'public_relations',
+    PublicTransportationServices: 'public_transportation_services',
+    RaceTracks: 'race_tracks',
+    RacquetSports: 'racquet_sports',
+    Racquetball: 'racquetball',
+    Radiologists: 'radiologists',
+    Rafting: 'rafting',
+    Rail: 'rail',
+    RealEstate: 'real_estate',
+    RealEstateAgents: 'real_estate_agents',
+    RealEstateAppraiser: 'real_estate_appraiser',
+    RealEstateDevelopmentAndTitleCompanies: 'real_estate_development_and_title_companies',
+    Recreation: 'recreation',
+    RecreationCenters: 'recreation_centers',
+    RefrigerationAndIce: 'refrigeration_and_ice',
+    Refund: 'refund',
+    Religious: 'religious',
+    RenewableEnergy: 'renewable_energy',
+    Rent: 'rent',
+    RepairServices: 'repair_services',
+    Research: 'research',
+    Resorts: 'resorts',
+    Respiratory: 'respiratory',
+    Restaurants: 'restaurants',
+    Retirement: 'retirement',
+    RideShare: 'ride_share',
+    Rivers: 'rivers',
+    RockClimbing: 'rock_climbing',
+    Roofers: 'roofers',
+    Rubber: 'rubber',
+    RubberProducts: 'rubber_products',
+    Running: 'running',
+    RvsAndMotorHomes: 'rvs_and_motor_homes',
+    SalvageYards: 'salvage_yards',
+    SanitaryAndWasteManagement: 'sanitary_and_waste_management',
+    SaveAsYouGo: 'save_as_you_go',
+    Scandinavian: 'scandinavian',
+    Scientific: 'scientific',
+    ScubaDiving: 'scuba_diving',
+    Seafood: 'seafood',
+    SearchEngineMarketingAndOptimization: 'search_engine_marketing_and_optimization',
+    SecurityAndSafety: 'security_and_safety',
+    SeniorCitizenServices: 'senior_citizen_services',
+    Service: 'service',
+    ServiceInstruments: 'service_instruments',
+    Services: 'services',
+    Shipping: 'shipping',
+    ShippingAndFreight: 'shipping_and_freight',
+    ShoeStore: 'shoe_store',
+    Shopping: 'shopping',
+    ShoppingCentersAndMalls: 'shopping_centers_and_malls',
+    Shops: 'shops',
+    Skating: 'skating',
+    SkinCare: 'skin_care',
+    Skydiving: 'skydiving',
+    SnowSports: 'snow_sports',
+    Soccer: 'soccer',
+    SocialClubs: 'social_clubs',
+    Software: 'software',
+    SoftwareDevelopment: 'software_development',
+    Spanish: 'spanish',
+    Spas: 'spas',
+    Specialty: 'specialty',
+    Sport: 'sport',
+    SportingGoods: 'sporting_goods',
+    SportsAndRecreationCamps: 'sports_and_recreation_camps',
+    SportsBar: 'sports_bar',
+    SportsClubs: 'sports_clubs',
+    SportsVenues: 'sports_venues',
+    Square: 'square',
+    SquareCash: 'square_cash',
+    StadiumsAndArenas: 'stadiums_and_arenas',
+    Steakhouses: 'steakhouses',
+    StockBrokers: 'stock_brokers',
+    Storage: 'storage',
+    StripClub: 'strip_club',
+    StudentAidAndGrants: 'student_aid_and_grants',
+    Subscription: 'subscription',
+    SupermarketsAndGroceries: 'supermarkets_and_groceries',
+    Sushi: 'sushi',
+    Swimming: 'swimming',
+    SwimmingPoolMaintenanceAndServices: 'swimming_pool_maintenance_and_services',
+    Swimwear: 'swimwear',
+    Swiss: 'swiss',
+    SymphonyAndOpera: 'symphony_and_opera',
+    Synagogues: 'synagogues',
+    Tailors: 'tailors',
+    TanningSalons: 'tanning_salons',
+    Tattooing: 'tattooing',
+    Tax: 'tax',
+    Taxes: 'taxes',
+    Taxi: 'taxi',
+    TelecommunicationServices: 'telecommunication_services',
+    Television: 'television',
+    Temple: 'temple',
+    Tennis: 'tennis',
+    Textiles: 'textiles',
+    Thai: 'thai',
+    TheatricalProductions: 'theatrical_productions',
+    ThirdParty: 'third_party',
+    Tobacco: 'tobacco',
+    TollsAndFees: 'tolls_and_fees',
+    TouristInformationAndServices: 'tourist_information_and_services',
+    Towing: 'towing',
+    Toys: 'toys',
+    Transfer: 'transfer',
+    Transport: 'transport',
+    Transportation: 'transportation',
+    TransportationCenters: 'transportation_centers',
+    TransportationEquipment: 'transportation_equipment',
+    Travel: 'travel',
+    TravelAgentsAndTourOperators: 'travel_agents_and_tour_operators',
+    TreeService: 'tree_service',
+    Turkish: 'turkish',
+    TutoringAndEducationalServices: 'tutoring_and_educational_services',
+    Upholstery: 'upholstery',
+    Urologists: 'urologists',
+    UsedCarDealers: 'used_car_dealers',
+    Utilities: 'utilities',
+    VeganAndVegetarian: 'vegan_and_vegetarian',
+    Venmo: 'venmo',
+    Veterinarians: 'veterinarians',
+    VideoGames: 'video_games',
+    VintageAndThrift: 'vintage_and_thrift',
+    VocationalSchools: 'vocational_schools',
+    WarehousesAndWholesaleStores: 'warehouses_and_wholesale_stores',
+    Water: 'water',
+    WaterAndWasteManagement: 'water_and_waste_management',
+    WaterSports: 'water_sports',
+    WebDesignAndDevelopment: 'web_design_and_development',
+    WeddingAndBridal: 'wedding_and_bridal',
+    Welding: 'welding',
+    Wholesale: 'wholesale',
+    WineBar: 'wine_bar',
+    Winery: 'winery',
+    Wire: 'wire',
+    WireTransfer: 'wire_transfer',
+    Withdrawal: 'withdrawal',
+    WomensStore: 'women\'s_store',
+    WoodProducts: 'wood_products',
+    WritingCopywritingAndTechnicalWriting: 'writing_copywriting_and_technical_writing',
+    YogaAndPilates: 'yoga_and_pilates',
+    YouthOrganizations: 'youth_organizations',
+    Zoo: 'zoo'
+} as const;
+
+export type TransactionCategoryEnum = typeof TransactionCategoryEnum[keyof typeof TransactionCategoryEnum];
 export const TransactionStatusEnum = {
     Pending: 'pending',
     Posted: 'posted'
 } as const;
 
 export type TransactionStatusEnum = typeof TransactionStatusEnum[keyof typeof TransactionStatusEnum];
+export const TransactionTypeEnum = {
+    Ach: 'ach',
+    Adjustment: 'adjustment',
+    Atm: 'atm',
+    BankCharge: 'bank_charge',
+    BillPayment: 'bill_payment',
+    CardPayment: 'card_payment',
+    Cash: 'cash',
+    Cashback: 'cashback',
+    Charge: 'charge',
+    Cheque: 'cheque',
+    Credit: 'credit',
+    Debit: 'debit',
+    Deposit: 'deposit',
+    DigitalPayment: 'digital_payment',
+    DirectDebit: 'direct_debit',
+    Fee: 'fee',
+    InStore: 'in_store',
+    Interest: 'interest',
+    Online: 'online',
+    Other: 'other',
+    Payment: 'payment',
+    Purchase: 'purchase',
+    StandingOrder: 'standing_order',
+    Transaction: 'transaction',
+    Transfer: 'transfer',
+    Wire: 'wire',
+    Withdrawal: 'withdrawal'
+} as const;
+
+export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
 
 /**
  * 
@@ -2886,6 +4351,12 @@ export interface WebhookEvent {
      */
     'verification_token'?: string;
     /**
+     * Exists for assets.report_ready webhooks
+     * @type {string}
+     * @memberof WebhookEvent
+     */
+    'asset_report_id'?: string;
+    /**
      * 
      * @type {any}
      * @memberof WebhookEvent
@@ -2927,7 +4398,8 @@ export const WebhookType = {
     FinancialConnectionSyncData: 'financial_connection.sync_data',
     FinancialConnectionDisconnected: 'financial_connection.disconnected',
     FinancialConnectionFinished: 'financial_connection.finished',
-    TransactionUpdates: 'transaction.updates'
+    TransactionsUpdates: 'transactions.updates',
+    AssetsReportReady: 'assets.report_ready'
 } as const;
 
 export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
@@ -2941,7 +4413,7 @@ export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
 export const FuseApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
-         * Use this endpoint to generate an Asset Report for a user.
+         * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {CreateAssetReportRequest} [createAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3137,7 +4609,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Retrieves the Asset Report in JSON format.
+         * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3630,7 +5102,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Refreshes the Asset Report in JSON format.
+         * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3671,11 +5143,14 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: async (body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        syncFinancialConnectionsData: async (fuseVerification: string, body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fuseVerification' is not null or undefined
+            assertParamExists('syncFinancialConnectionsData', 'fuseVerification', fuseVerification)
             // verify required parameter 'body' is not null or undefined
             assertParamExists('syncFinancialConnectionsData', 'body', body)
             const localVarPath = `/v1/financial_connections/sync`;
@@ -3695,6 +5170,10 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
 
             // authentication fuseClientId required
             await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+            if (fuseVerification != null) {
+                localVarHeaderParameter['Fuse-Verification'] = String(fuseVerification);
+            }
 
 
     
@@ -3763,7 +5242,7 @@ export const FuseApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = FuseApiAxiosParamCreator(configuration)
     return {
         /**
-         * Use this endpoint to generate an Asset Report for a user.
+         * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {CreateAssetReportRequest} [createAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3814,12 +5293,12 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Retrieves the Asset Report in JSON format.
+         * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAssetReportResponse>> {
+        async getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetReport(getAssetReportRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -3945,24 +5424,25 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Refreshes the Asset Report in JSON format.
+         * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>> {
+        async refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refreshAssetReport(refreshAssetReportRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(body, options);
+        async syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3987,7 +5467,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
     const localVarFp = FuseApiFp(configuration)
     return {
         /**
-         * Use this endpoint to generate an Asset Report for a user.
+         * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {CreateAssetReportRequest} [createAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -4033,12 +5513,12 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieves the Asset Report in JSON format.
+         * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<GetAssetReportResponse> {
+        getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse> {
             return localVarFp.getAssetReport(getAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -4152,23 +5632,24 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.migrateFinancialConnection(migrateFinancialConnectionsTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * Refreshes the Asset Report in JSON format.
+         * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<CreateAssetReportResponse> {
+        refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<AssetReportResponse> {
             return localVarFp.refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse> {
-            return localVarFp.syncFinancialConnectionsData(body, options).then((request) => request(axios, basePath));
+        syncFinancialConnectionsData(fuseVerification: string, body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse> {
+            return localVarFp.syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4191,7 +5672,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
  */
 export class FuseApi extends BaseAPI {
     /**
-     * Use this endpoint to generate an Asset Report for a user.
+     * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4247,7 +5728,7 @@ export class FuseApi extends BaseAPI {
     }
 
     /**
-     * Retrieves the Asset Report in JSON format.
+     * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4390,7 +5871,7 @@ export class FuseApi extends BaseAPI {
     }
 
     /**
-     * Refreshes the Asset Report in JSON format.
+     * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4403,13 +5884,14 @@ export class FuseApi extends BaseAPI {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
+     * @param {string} fuseVerification 
      * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).syncFinancialConnectionsData(body, options).then((request) => request(this.axios, this.basePath));
+    public syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
