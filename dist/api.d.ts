@@ -186,6 +186,7 @@ export declare const Aggregator: {
     readonly Teller: "teller";
     readonly Mx: "mx";
     readonly Snaptrade: "snaptrade";
+    readonly Flinks: "flinks";
 };
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 /**
@@ -362,7 +363,7 @@ export interface AssetReportTransaction {
      */
     'description': string;
     /**
-     * Categories of the transaction, ie Computers and Electronics
+     * Categories of the transaction, ie Computers and Electronics. \'-\' means we could not map the upstream category.
      * @type {Array<string>}
      * @memberof AssetReportTransaction
      */
@@ -992,6 +993,7 @@ export declare const AssetReportTransactionCategoryEnum: {
     readonly YogaAndPilates: "yoga_and_pilates";
     readonly YouthOrganizations: "youth_organizations";
     readonly Zoo: "zoo";
+    readonly Minus: "-";
 };
 export type AssetReportTransactionCategoryEnum = typeof AssetReportTransactionCategoryEnum[keyof typeof AssetReportTransactionCategoryEnum];
 export declare const AssetReportTransactionStatusEnum: {
@@ -1140,7 +1142,7 @@ export interface CreateLinkTokenRequest {
      */
     'entity': Entity;
     /**
-     * The name of your application.
+     * The name of your application. This is what will be displayed to users.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
@@ -1334,7 +1336,7 @@ export interface DeleteFinancialConnectionResponse {
  */
 export interface Entity {
     /**
-     * Unique identifier for the user or business account.
+     * Unique identifier for the user or business account that is connecting to an institution. Use this id when calling the GET /entities/${entity_id} endpoint.
      * @type {string}
      * @memberof Entity
      */
@@ -1363,7 +1365,7 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenRequest
      */
-    'public_token'?: string;
+    'public_token': string;
 }
 /**
  *
@@ -1372,13 +1374,13 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
  */
 export interface ExchangeFinancialConnectionsPublicTokenResponse {
     /**
-     * Token used for querying data on the user
+     * Token used for querying data on the user, ie account details, balances etc. This does NOT expire and should be stored securely.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
     'access_token': string;
     /**
-     * The id of the new financial connection. Every webhook will be sent with this id.
+     * The id of the new financial connection. Every webhook will be sent with this id. Use this id when calling the GET /financial_connection/${financial_connection_id} endpoint.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
@@ -2456,6 +2458,9 @@ export declare const FuseApiErrorCode: {
     readonly MissingTellerSigningSecretHeader: "missing_teller_signing_secret_header";
     readonly MissingSnaptradeClientIdHeader: "missing_snaptrade_client_id_header";
     readonly MissingSnaptradeConsumerKeyHeader: "missing_snaptrade_consumer_key_header";
+    readonly MissingFlinksCustomerIdHeader: "missing_flinks_customer_id_header";
+    readonly MissingFlinksCaInstanceIdHeader: "missing_flinks_ca_instance_id_header";
+    readonly MissingFlinksUsInstanceIdHeader: "missing_flinks_us_instance_id_header";
     readonly MissingFuseVerificationHeader: "missing_fuse_verification_header";
     readonly AggregatorError: "aggregator_error";
     readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
@@ -2466,6 +2471,8 @@ export declare const FuseApiErrorCode: {
     readonly RequestBodyInvalidJson: "request_body_invalid_json";
     readonly WebhookError: "webhook_error";
     readonly Timeout: "timeout";
+    readonly InvalidCertificate: "invalid_certificate";
+    readonly InvalidPrivateKey: "invalid_private_key";
     readonly Other: "other";
 };
 export type FuseApiErrorCode = typeof FuseApiErrorCode[keyof typeof FuseApiErrorCode];
@@ -3501,7 +3508,7 @@ export interface Transaction {
      */
     'status': TransactionStatusEnum;
     /**
-     * Type of the transaction, ie adjustment
+     * Type of the transaction, ie adjustment. \'-\' means we were not able to map the upstream type.
      * @type {string}
      * @memberof Transaction
      */
@@ -4154,6 +4161,7 @@ export declare const TransactionTypeEnum: {
     readonly Transfer: "transfer";
     readonly Wire: "wire";
     readonly Withdrawal: "withdrawal";
+    readonly Minus: "-";
 };
 export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
 /**

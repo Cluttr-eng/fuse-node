@@ -199,7 +199,8 @@ exports.Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Snaptrade: 'snaptrade'
+    Snaptrade: 'snaptrade',
+    Flinks: 'flinks'
 };
 exports.AssetReportTransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
@@ -800,7 +801,8 @@ exports.AssetReportTransactionCategoryEnum = {
     WritingCopywritingAndTechnicalWriting: 'writing_copywriting_and_technical_writing',
     YogaAndPilates: 'yoga_and_pilates',
     YouthOrganizations: 'youth_organizations',
-    Zoo: 'zoo'
+    Zoo: 'zoo',
+    Minus: '-'
 };
 exports.AssetReportTransactionStatusEnum = {
     Pending: 'pending',
@@ -880,6 +882,9 @@ exports.FuseApiErrorCode = {
     MissingTellerSigningSecretHeader: 'missing_teller_signing_secret_header',
     MissingSnaptradeClientIdHeader: 'missing_snaptrade_client_id_header',
     MissingSnaptradeConsumerKeyHeader: 'missing_snaptrade_consumer_key_header',
+    MissingFlinksCustomerIdHeader: 'missing_flinks_customer_id_header',
+    MissingFlinksCaInstanceIdHeader: 'missing_flinks_ca_instance_id_header',
+    MissingFlinksUsInstanceIdHeader: 'missing_flinks_us_instance_id_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -890,6 +895,8 @@ exports.FuseApiErrorCode = {
     RequestBodyInvalidJson: 'request_body_invalid_json',
     WebhookError: 'webhook_error',
     Timeout: 'timeout',
+    InvalidCertificate: 'invalid_certificate',
+    InvalidPrivateKey: 'invalid_private_key',
     Other: 'other'
 };
 /**
@@ -1561,7 +1568,8 @@ exports.TransactionTypeEnum = {
     Transaction: 'transaction',
     Transfer: 'transfer',
     Wire: 'wire',
-    Withdrawal: 'withdrawal'
+    Withdrawal: 'withdrawal',
+    Minus: '-'
 };
 exports.WebhookEventEnvironmentEnum = {
     Sandbox: 'sandbox',
@@ -1604,7 +1612,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @throws {RequiredError}
          */
         createAssetReport: (createAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/asset_report/create`;
+            const localVarPath = `/v1/financial_connections/asset_report/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
             let baseOptions;
@@ -1761,7 +1769,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @throws {RequiredError}
          */
         getAssetReport: (getAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/asset_report`;
+            const localVarPath = `/v1/financial_connections/asset_report`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
             let baseOptions;
@@ -2161,7 +2169,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @throws {RequiredError}
          */
         refreshAssetReport: (refreshAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/asset_report/refresh`;
+            const localVarPath = `/v1/financial_connections/asset_report/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
             let baseOptions;

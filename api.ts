@@ -204,7 +204,8 @@ export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Snaptrade: 'snaptrade'
+    Snaptrade: 'snaptrade',
+    Flinks: 'flinks'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -384,7 +385,7 @@ export interface AssetReportTransaction {
      */
     'description': string;
     /**
-     * Categories of the transaction, ie Computers and Electronics
+     * Categories of the transaction, ie Computers and Electronics. \'-\' means we could not map the upstream category.
      * @type {Array<string>}
      * @memberof AssetReportTransaction
      */
@@ -1014,7 +1015,8 @@ export const AssetReportTransactionCategoryEnum = {
     WritingCopywritingAndTechnicalWriting: 'writing_copywriting_and_technical_writing',
     YogaAndPilates: 'yoga_and_pilates',
     YouthOrganizations: 'youth_organizations',
-    Zoo: 'zoo'
+    Zoo: 'zoo',
+    Minus: '-'
 } as const;
 
 export type AssetReportTransactionCategoryEnum = typeof AssetReportTransactionCategoryEnum[keyof typeof AssetReportTransactionCategoryEnum];
@@ -1170,7 +1172,7 @@ export interface CreateLinkTokenRequest {
      */
     'entity': Entity;
     /**
-     * The name of your application.
+     * The name of your application. This is what will be displayed to users.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
@@ -1364,7 +1366,7 @@ export interface DeleteFinancialConnectionResponse {
  */
 export interface Entity {
     /**
-     * Unique identifier for the user or business account.
+     * Unique identifier for the user or business account that is connecting to an institution. Use this id when calling the GET /entities/${entity_id} endpoint.
      * @type {string}
      * @memberof Entity
      */
@@ -1393,7 +1395,7 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenRequest
      */
-    'public_token'?: string;
+    'public_token': string;
 }
 /**
  * 
@@ -1402,13 +1404,13 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
  */
 export interface ExchangeFinancialConnectionsPublicTokenResponse {
     /**
-     * Token used for querying data on the user
+     * Token used for querying data on the user, ie account details, balances etc. This does NOT expire and should be stored securely.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
     'access_token': string;
     /**
-     * The id of the new financial connection. Every webhook will be sent with this id.
+     * The id of the new financial connection. Every webhook will be sent with this id. Use this id when calling the GET /financial_connection/${financial_connection_id} endpoint. 
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
@@ -2510,6 +2512,9 @@ export const FuseApiErrorCode = {
     MissingTellerSigningSecretHeader: 'missing_teller_signing_secret_header',
     MissingSnaptradeClientIdHeader: 'missing_snaptrade_client_id_header',
     MissingSnaptradeConsumerKeyHeader: 'missing_snaptrade_consumer_key_header',
+    MissingFlinksCustomerIdHeader: 'missing_flinks_customer_id_header',
+    MissingFlinksCaInstanceIdHeader: 'missing_flinks_ca_instance_id_header',
+    MissingFlinksUsInstanceIdHeader: 'missing_flinks_us_instance_id_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -2520,6 +2525,8 @@ export const FuseApiErrorCode = {
     RequestBodyInvalidJson: 'request_body_invalid_json',
     WebhookError: 'webhook_error',
     Timeout: 'timeout',
+    InvalidCertificate: 'invalid_certificate',
+    InvalidPrivateKey: 'invalid_private_key',
     Other: 'other'
 } as const;
 
@@ -3579,7 +3586,7 @@ export interface Transaction {
      */
     'status': TransactionStatusEnum;
     /**
-     * Type of the transaction, ie adjustment
+     * Type of the transaction, ie adjustment. \'-\' means we were not able to map the upstream type.
      * @type {string}
      * @memberof Transaction
      */
@@ -4234,7 +4241,8 @@ export const TransactionTypeEnum = {
     Transaction: 'transaction',
     Transfer: 'transfer',
     Wire: 'wire',
-    Withdrawal: 'withdrawal'
+    Withdrawal: 'withdrawal',
+    Minus: '-'
 } as const;
 
 export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
@@ -4419,7 +4427,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         createAssetReport: async (createAssetReportRequest?: CreateAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/asset_report/create`;
+            const localVarPath = `/v1/financial_connections/asset_report/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4615,7 +4623,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         getAssetReport: async (getAssetReportRequest?: GetAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/asset_report`;
+            const localVarPath = `/v1/financial_connections/asset_report`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5108,7 +5116,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         refreshAssetReport: async (refreshAssetReportRequest?: RefreshAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/asset_report/refresh`;
+            const localVarPath = `/v1/financial_connections/asset_report/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
