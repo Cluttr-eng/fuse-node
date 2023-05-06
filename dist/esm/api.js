@@ -174,7 +174,7 @@ export const AccountSubtype = {
     Other: 'other'
 };
 /**
- * The account\'s type
+ * The account\'s type. \'-\' means we were not able to map the upstream type.
  * @export
  * @enum {string}
  */
@@ -185,7 +185,8 @@ export const AccountType = {
     Investment: 'investment',
     Insurance: 'insurance',
     Property: 'property',
-    Other: 'other'
+    Other: 'other',
+    Minus: '-'
 };
 /**
  *
@@ -196,7 +197,9 @@ export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Snaptrade: 'snaptrade'
+    Snaptrade: 'snaptrade',
+    Flinks: 'flinks',
+    Finicity: 'finicity'
 };
 export const AssetReportTransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
@@ -404,6 +407,7 @@ export const AssetReportTransactionCategoryEnum = {
     Ethiopian: 'ethiopian',
     EventsAndEventPlanning: 'events_and_event_planning',
     ExcessActivity: 'excess_activity',
+    Expense: 'expense',
     FacilitiesAndNursingHomes: 'facilities_and_nursing_homes',
     FairgroundsAndRodeos: 'fairgrounds_and_rodeos',
     Falafel: 'falafel',
@@ -451,6 +455,7 @@ export const AssetReportTransactionCategoryEnum = {
     GlassesAndOptometrist: 'glasses_and_optometrist',
     GoCarts: 'go_carts',
     Golf: 'golf',
+    GoodsAndMerchandise: 'goods_and_merchandise',
     GovernmentDepartmentsAndAgencies: 'government_departments_and_agencies',
     GovernmentLobbyists: 'government_lobbyists',
     Greek: 'greek',
@@ -760,11 +765,13 @@ export const AssetReportTransactionCategoryEnum = {
     Towing: 'towing',
     Toys: 'toys',
     Transfer: 'transfer',
+    TransfersAndAdjustments: 'transfers_and_adjustments',
     Transport: 'transport',
     Transportation: 'transportation',
     TransportationCenters: 'transportation_centers',
     TransportationEquipment: 'transportation_equipment',
     Travel: 'travel',
+    TravelAndTransportation: 'travel_and_transportation',
     TravelAgentsAndTourOperators: 'travel_agents_and_tour_operators',
     TreeService: 'tree_service',
     Turkish: 'turkish',
@@ -797,7 +804,8 @@ export const AssetReportTransactionCategoryEnum = {
     WritingCopywritingAndTechnicalWriting: 'writing_copywriting_and_technical_writing',
     YogaAndPilates: 'yoga_and_pilates',
     YouthOrganizations: 'youth_organizations',
-    Zoo: 'zoo'
+    Zoo: 'zoo',
+    Minus: '-'
 };
 export const AssetReportTransactionStatusEnum = {
     Pending: 'pending',
@@ -812,10 +820,48 @@ export const CountryCode = {
     Us: 'US',
     Ca: 'CA'
 };
+export const CreateLinkTokenRequestTellerConfigSelectAccountEnum = {
+    Disabled: 'disabled',
+    Single: 'single',
+    Multiple: 'multiple'
+};
 export const FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
     Disconnected: 'disconnected',
     Finished: 'finished'
+};
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export const FinancialConnectionsInvestmentSecurityType = {
+    Cash: 'cash',
+    Cryptocurrency: 'cryptocurrency',
+    Derivative: 'derivative',
+    Equity: 'equity',
+    Etf: 'etf',
+    FixedIncome: 'fixed_income',
+    Loan: 'loan',
+    MutualFund: 'mutual_fund',
+    Other: 'other',
+    GlobalDepositaryReceipt: 'global_depositary_receipt',
+    OpenEndedFund: 'open_ended_fund',
+    Right: 'right',
+    Temporary: 'temporary',
+    Warrant: 'warrant',
+    ClosedEndedFund: 'closed_ended_fund',
+    CommonStock: 'common_stock',
+    ExchangeTradedFund: 'exchange_traded_fund',
+    Bond: 'bond',
+    AmericanDepositaryReceipt: 'american_depositary_receipt',
+    Unit: 'unit',
+    StructuredProduct: 'structured_product',
+    PreferredStock: 'preferred_stock',
+    RealEstate: 'real_estate',
+    Automobile: 'automobile',
+    DelistedOrDefunctAsset: 'delisted_or_defunct_asset',
+    Minus: '-'
 };
 export const FinancialConnectionsInvestmentTransactionTypeEnum = {
     Cash: 'cash',
@@ -877,6 +923,10 @@ export const FuseApiErrorCode = {
     MissingTellerSigningSecretHeader: 'missing_teller_signing_secret_header',
     MissingSnaptradeClientIdHeader: 'missing_snaptrade_client_id_header',
     MissingSnaptradeConsumerKeyHeader: 'missing_snaptrade_consumer_key_header',
+    MissingFlinksCaCustomerIdHeader: 'missing_flinks_ca_customer_id_header',
+    MissingFlinksUsCustomerIdHeader: 'missing_flinks_us_customer_id_header',
+    MissingFlinksCaInstanceIdHeader: 'missing_flinks_ca_instance_id_header',
+    MissingFlinksUsInstanceIdHeader: 'missing_flinks_us_instance_id_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -887,6 +937,8 @@ export const FuseApiErrorCode = {
     RequestBodyInvalidJson: 'request_body_invalid_json',
     WebhookError: 'webhook_error',
     Timeout: 'timeout',
+    InvalidCertificate: 'invalid_certificate',
+    InvalidPrivateKey: 'invalid_private_key',
     Other: 'other'
 };
 /**
@@ -1132,6 +1184,7 @@ export const TransactionCategoryEnum = {
     Ethiopian: 'ethiopian',
     EventsAndEventPlanning: 'events_and_event_planning',
     ExcessActivity: 'excess_activity',
+    Expense: 'expense',
     FacilitiesAndNursingHomes: 'facilities_and_nursing_homes',
     FairgroundsAndRodeos: 'fairgrounds_and_rodeos',
     Falafel: 'falafel',
@@ -1179,6 +1232,7 @@ export const TransactionCategoryEnum = {
     GlassesAndOptometrist: 'glasses_and_optometrist',
     GoCarts: 'go_carts',
     Golf: 'golf',
+    GoodsAndMerchandise: 'goods_and_merchandise',
     GovernmentDepartmentsAndAgencies: 'government_departments_and_agencies',
     GovernmentLobbyists: 'government_lobbyists',
     Greek: 'greek',
@@ -1488,11 +1542,13 @@ export const TransactionCategoryEnum = {
     Towing: 'towing',
     Toys: 'toys',
     Transfer: 'transfer',
+    TransfersAndAdjustments: 'transfers_and_adjustments',
     Transport: 'transport',
     Transportation: 'transportation',
     TransportationCenters: 'transportation_centers',
     TransportationEquipment: 'transportation_equipment',
     Travel: 'travel',
+    TravelAndTransportation: 'travel_and_transportation',
     TravelAgentsAndTourOperators: 'travel_agents_and_tour_operators',
     TreeService: 'tree_service',
     Turkish: 'turkish',
@@ -1558,7 +1614,8 @@ export const TransactionTypeEnum = {
     Transaction: 'transaction',
     Transfer: 'transfer',
     Wire: 'wire',
-    Withdrawal: 'withdrawal'
+    Withdrawal: 'withdrawal',
+    Minus: '-'
 };
 export const WebhookEventEnvironmentEnum = {
     Sandbox: 'sandbox',
@@ -1601,7 +1658,7 @@ export const FuseApiAxiosParamCreator = function (configuration) {
          * @throws {RequiredError}
          */
         createAssetReport: (createAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/asset_report/create`;
+            const localVarPath = `/v1/financial_connections/asset_report/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1752,13 +1809,44 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountStatement: (getAccountStatementRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/financial_connections/accounts/statement`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = serializeDataIfNeeded(getAccountStatementRequest, localVarRequestOptions, configuration);
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getAssetReport: (getAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/asset_report`;
+            const localVarPath = `/v1/financial_connections/asset_report`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2158,7 +2246,7 @@ export const FuseApiAxiosParamCreator = function (configuration) {
          * @throws {RequiredError}
          */
         refreshAssetReport: (refreshAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/asset_report/refresh`;
+            const localVarPath = `/v1/financial_connections/asset_report/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2185,14 +2273,11 @@ export const FuseApiAxiosParamCreator = function (configuration) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
-         * @param {string} fuseVerification
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: (fuseVerification, body, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'fuseVerification' is not null or undefined
-            assertParamExists('syncFinancialConnectionsData', 'fuseVerification', fuseVerification);
+        syncFinancialConnectionsData: (body, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'body' is not null or undefined
             assertParamExists('syncFinancialConnectionsData', 'body', body);
             const localVarPath = `/v1/financial_connections/sync`;
@@ -2209,9 +2294,6 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
             // authentication fuseClientId required
             yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            if (fuseVerification != null) {
-                localVarHeaderParameter['Fuse-Verification'] = String(fuseVerification);
-            }
             localVarHeaderParameter['Content-Type'] = 'application/json';
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2323,6 +2405,18 @@ export const FuseApiFp = function (configuration) {
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
+                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            });
+        },
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountStatement(getAccountStatementRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getAccountStatement(getAccountStatementRequest, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
@@ -2496,14 +2590,13 @@ export const FuseApiFp = function (configuration) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
-         * @param {string} fuseVerification
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(fuseVerification, body, options) {
+        syncFinancialConnectionsData(body, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.syncFinancialConnectionsData(body, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
@@ -2574,6 +2667,15 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
          */
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountStatement(getAccountStatementRequest, options) {
+            return localVarFp.getAccountStatement(getAccountStatementRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -2706,13 +2808,12 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
-         * @param {string} fuseVerification
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(fuseVerification, body, options) {
-            return localVarFp.syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(axios, basePath));
+        syncFinancialConnectionsData(body, options) {
+            return localVarFp.syncFinancialConnectionsData(body, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -2783,6 +2884,16 @@ export class FuseApi extends BaseAPI {
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
         return FuseApiFp(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getAccountStatement(getAccountStatementRequest, options) {
+        return FuseApiFp(this.configuration).getAccountStatement(getAccountStatementRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -2928,14 +3039,13 @@ export class FuseApi extends BaseAPI {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
-     * @param {string} fuseVerification
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    syncFinancialConnectionsData(fuseVerification, body, options) {
-        return FuseApiFp(this.configuration).syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(this.axios, this.basePath));
+    syncFinancialConnectionsData(body, options) {
+        return FuseApiFp(this.configuration).syncFinancialConnectionsData(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *

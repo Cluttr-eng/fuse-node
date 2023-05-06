@@ -162,7 +162,7 @@ export declare const AccountSubtype: {
 };
 export type AccountSubtype = typeof AccountSubtype[keyof typeof AccountSubtype];
 /**
- * The account\'s type
+ * The account\'s type. \'-\' means we were not able to map the upstream type.
  * @export
  * @enum {string}
  */
@@ -174,6 +174,7 @@ export declare const AccountType: {
     readonly Insurance: "insurance";
     readonly Property: "property";
     readonly Other: "other";
+    readonly Minus: "-";
 };
 export type AccountType = typeof AccountType[keyof typeof AccountType];
 /**
@@ -186,6 +187,8 @@ export declare const Aggregator: {
     readonly Teller: "teller";
     readonly Mx: "mx";
     readonly Snaptrade: "snaptrade";
+    readonly Flinks: "flinks";
+    readonly Finicity: "finicity";
 };
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 /**
@@ -362,7 +365,7 @@ export interface AssetReportTransaction {
      */
     'description': string;
     /**
-     * Categories of the transaction, ie Computers and Electronics
+     * Categories of the transaction, ie Computers and Electronics. \'-\' means we could not map the upstream category.
      * @type {Array<string>}
      * @memberof AssetReportTransaction
      */
@@ -598,6 +601,7 @@ export declare const AssetReportTransactionCategoryEnum: {
     readonly Ethiopian: "ethiopian";
     readonly EventsAndEventPlanning: "events_and_event_planning";
     readonly ExcessActivity: "excess_activity";
+    readonly Expense: "expense";
     readonly FacilitiesAndNursingHomes: "facilities_and_nursing_homes";
     readonly FairgroundsAndRodeos: "fairgrounds_and_rodeos";
     readonly Falafel: "falafel";
@@ -645,6 +649,7 @@ export declare const AssetReportTransactionCategoryEnum: {
     readonly GlassesAndOptometrist: "glasses_and_optometrist";
     readonly GoCarts: "go_carts";
     readonly Golf: "golf";
+    readonly GoodsAndMerchandise: "goods_and_merchandise";
     readonly GovernmentDepartmentsAndAgencies: "government_departments_and_agencies";
     readonly GovernmentLobbyists: "government_lobbyists";
     readonly Greek: "greek";
@@ -954,11 +959,13 @@ export declare const AssetReportTransactionCategoryEnum: {
     readonly Towing: "towing";
     readonly Toys: "toys";
     readonly Transfer: "transfer";
+    readonly TransfersAndAdjustments: "transfers_and_adjustments";
     readonly Transport: "transport";
     readonly Transportation: "transportation";
     readonly TransportationCenters: "transportation_centers";
     readonly TransportationEquipment: "transportation_equipment";
     readonly Travel: "travel";
+    readonly TravelAndTransportation: "travel_and_transportation";
     readonly TravelAgentsAndTourOperators: "travel_agents_and_tour_operators";
     readonly TreeService: "tree_service";
     readonly Turkish: "turkish";
@@ -992,6 +999,7 @@ export declare const AssetReportTransactionCategoryEnum: {
     readonly YogaAndPilates: "yoga_and_pilates";
     readonly YouthOrganizations: "youth_organizations";
     readonly Zoo: "zoo";
+    readonly Minus: "-";
 };
 export type AssetReportTransactionCategoryEnum = typeof AssetReportTransactionCategoryEnum[keyof typeof AssetReportTransactionCategoryEnum];
 export declare const AssetReportTransactionStatusEnum: {
@@ -1140,7 +1148,7 @@ export interface CreateLinkTokenRequest {
      */
     'entity': Entity;
     /**
-     * The name of your application.
+     * The name of your application. This is what will be displayed to users.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
@@ -1169,6 +1177,12 @@ export interface CreateLinkTokenRequest {
      * @memberof CreateLinkTokenRequest
      */
     'plaid'?: CreateLinkTokenRequestPlaid;
+    /**
+     *
+     * @type {CreateLinkTokenRequestTeller}
+     * @memberof CreateLinkTokenRequest
+     */
+    'teller'?: CreateLinkTokenRequestTeller;
 }
 /**
  * An object specifying information about the MX configuration to use for deciding which MX supported financial institutions to display.
@@ -1190,12 +1204,44 @@ export interface CreateLinkTokenRequestMx {
  */
 export interface CreateLinkTokenRequestPlaid {
     /**
-     * Follows the same schema as Plaid\'s Link Token Create Schema(https://plaid.com/docs/api/tokens/#linktokencreate). \'products\', \'client_id\', \'secret\', \'client_user_id\', \'client_name\', \'webhook\', \'institution_data\' and \'country_codes\' (only US supported right now) will be set by Fuse and override any values you set.
+     * Follows the same schema as Plaid\'s Link Token Create Schema(https://plaid.com/docs/api/tokens/#linktokencreate). \'products\', \'client_id\', \'secret\', \'client_user_id\', \'client_name\', \'webhook\', \'institution_data\' and \'country_codes\' (only US and Canada is supported right now) will be set by Fuse and override any values you set.
      * @type {object}
      * @memberof CreateLinkTokenRequestPlaid
      */
     'config'?: object;
 }
+/**
+ * An object specifying information about the Teller configuration to use when creating a link token.
+ * @export
+ * @interface CreateLinkTokenRequestTeller
+ */
+export interface CreateLinkTokenRequestTeller {
+    /**
+     *
+     * @type {CreateLinkTokenRequestTellerConfig}
+     * @memberof CreateLinkTokenRequestTeller
+     */
+    'config'?: CreateLinkTokenRequestTellerConfig;
+}
+/**
+ *
+ * @export
+ * @interface CreateLinkTokenRequestTellerConfig
+ */
+export interface CreateLinkTokenRequestTellerConfig {
+    /**
+     * The mode of account selection: - \'disabled\': automatically connect all the supported financial accounts associated with this user\'s account at the institution (default). - \'single\': the user will see a list of supported financial accounts and will need to select one to connect - \'multiple\': the user will see a list of supported financial accounts and will need to select one or more to connect
+     * @type {string}
+     * @memberof CreateLinkTokenRequestTellerConfig
+     */
+    'selectAccount'?: CreateLinkTokenRequestTellerConfigSelectAccountEnum;
+}
+export declare const CreateLinkTokenRequestTellerConfigSelectAccountEnum: {
+    readonly Disabled: "disabled";
+    readonly Single: "single";
+    readonly Multiple: "multiple";
+};
+export type CreateLinkTokenRequestTellerConfigSelectAccountEnum = typeof CreateLinkTokenRequestTellerConfigSelectAccountEnum[keyof typeof CreateLinkTokenRequestTellerConfigSelectAccountEnum];
 /**
  *
  * @export
@@ -1334,7 +1380,7 @@ export interface DeleteFinancialConnectionResponse {
  */
 export interface Entity {
     /**
-     * Unique identifier for the user or business account.
+     * Unique identifier for the user or business account that is connecting to an institution. Use this id when calling the GET /entities/${entity_id} endpoint.
      * @type {string}
      * @memberof Entity
      */
@@ -1363,7 +1409,7 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenRequest
      */
-    'public_token'?: string;
+    'public_token': string;
 }
 /**
  *
@@ -1372,13 +1418,13 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
  */
 export interface ExchangeFinancialConnectionsPublicTokenResponse {
     /**
-     * Token used for querying data on the user
+     * Token used for querying data on the user, ie account details, balances etc. This does NOT expire and should be stored securely.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
     'access_token': string;
     /**
-     * The id of the new financial connection. Every webhook will be sent with this id.
+     * The id of the new financial connection. Every webhook will be sent with this id. Use this id when calling the GET /financial_connection/${financial_connection_id} endpoint.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
@@ -1976,11 +2022,11 @@ export interface FinancialConnectionsInvestmentSecurity {
      */
     'name'?: string;
     /**
-     * The type of security (e.g., equity, mutual fund)
-     * @type {string}
+     *
+     * @type {FinancialConnectionsInvestmentSecurityType}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'type'?: string;
+    'type'?: FinancialConnectionsInvestmentSecurityType;
     /**
      *
      * @type {FinancialConnectionsInvestmentSecurityExchange}
@@ -2001,6 +2047,40 @@ export interface FinancialConnectionsInvestmentSecurityExchange {
      */
     'mic_code'?: string;
 }
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const FinancialConnectionsInvestmentSecurityType: {
+    readonly Cash: "cash";
+    readonly Cryptocurrency: "cryptocurrency";
+    readonly Derivative: "derivative";
+    readonly Equity: "equity";
+    readonly Etf: "etf";
+    readonly FixedIncome: "fixed_income";
+    readonly Loan: "loan";
+    readonly MutualFund: "mutual_fund";
+    readonly Other: "other";
+    readonly GlobalDepositaryReceipt: "global_depositary_receipt";
+    readonly OpenEndedFund: "open_ended_fund";
+    readonly Right: "right";
+    readonly Temporary: "temporary";
+    readonly Warrant: "warrant";
+    readonly ClosedEndedFund: "closed_ended_fund";
+    readonly CommonStock: "common_stock";
+    readonly ExchangeTradedFund: "exchange_traded_fund";
+    readonly Bond: "bond";
+    readonly AmericanDepositaryReceipt: "american_depositary_receipt";
+    readonly Unit: "unit";
+    readonly StructuredProduct: "structured_product";
+    readonly PreferredStock: "preferred_stock";
+    readonly RealEstate: "real_estate";
+    readonly Automobile: "automobile";
+    readonly DelistedOrDefunctAsset: "delisted_or_defunct_asset";
+    readonly Minus: "-";
+};
+export type FinancialConnectionsInvestmentSecurityType = typeof FinancialConnectionsInvestmentSecurityType[keyof typeof FinancialConnectionsInvestmentSecurityType];
 /**
  *
  * @export
@@ -2456,6 +2536,10 @@ export declare const FuseApiErrorCode: {
     readonly MissingTellerSigningSecretHeader: "missing_teller_signing_secret_header";
     readonly MissingSnaptradeClientIdHeader: "missing_snaptrade_client_id_header";
     readonly MissingSnaptradeConsumerKeyHeader: "missing_snaptrade_consumer_key_header";
+    readonly MissingFlinksCaCustomerIdHeader: "missing_flinks_ca_customer_id_header";
+    readonly MissingFlinksUsCustomerIdHeader: "missing_flinks_us_customer_id_header";
+    readonly MissingFlinksCaInstanceIdHeader: "missing_flinks_ca_instance_id_header";
+    readonly MissingFlinksUsInstanceIdHeader: "missing_flinks_us_instance_id_header";
     readonly MissingFuseVerificationHeader: "missing_fuse_verification_header";
     readonly AggregatorError: "aggregator_error";
     readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
@@ -2466,6 +2550,8 @@ export declare const FuseApiErrorCode: {
     readonly RequestBodyInvalidJson: "request_body_invalid_json";
     readonly WebhookError: "webhook_error";
     readonly Timeout: "timeout";
+    readonly InvalidCertificate: "invalid_certificate";
+    readonly InvalidPrivateKey: "invalid_private_key";
     readonly Other: "other";
 };
 export type FuseApiErrorCode = typeof FuseApiErrorCode[keyof typeof FuseApiErrorCode];
@@ -2609,6 +2695,44 @@ export declare const FuseApiWarningDataWarningsInnerSourceEnum: {
     readonly Aggregator: "aggregator";
 };
 export type FuseApiWarningDataWarningsInnerSourceEnum = typeof FuseApiWarningDataWarningsInnerSourceEnum[keyof typeof FuseApiWarningDataWarningsInnerSourceEnum];
+/**
+ *
+ * @export
+ * @interface GetAccountStatementRequest
+ */
+export interface GetAccountStatementRequest {
+    /**
+     * Access token for authentication
+     * @type {string}
+     * @memberof GetAccountStatementRequest
+     */
+    'access_token': string;
+    /**
+     * The remote account id to retrieve the statement for.
+     * @type {string}
+     * @memberof GetAccountStatementRequest
+     */
+    'remote_account_id': string;
+    /**
+     * The year and month for the account statement to be retrieved in YYYY-MM.
+     * @type {string}
+     * @memberof GetAccountStatementRequest
+     */
+    'date'?: string;
+}
+/**
+ *
+ * @export
+ * @interface GetAccountStatementResponse
+ */
+export interface GetAccountStatementResponse {
+    /**
+     * PDF statement URL.
+     * @type {string}
+     * @memberof GetAccountStatementResponse
+     */
+    'statement_url': string;
+}
 /**
  *
  * @export
@@ -3501,7 +3625,7 @@ export interface Transaction {
      */
     'status': TransactionStatusEnum;
     /**
-     * Type of the transaction, ie adjustment
+     * Type of the transaction, ie adjustment. \'-\' means we were not able to map the upstream type.
      * @type {string}
      * @memberof Transaction
      */
@@ -3725,6 +3849,7 @@ export declare const TransactionCategoryEnum: {
     readonly Ethiopian: "ethiopian";
     readonly EventsAndEventPlanning: "events_and_event_planning";
     readonly ExcessActivity: "excess_activity";
+    readonly Expense: "expense";
     readonly FacilitiesAndNursingHomes: "facilities_and_nursing_homes";
     readonly FairgroundsAndRodeos: "fairgrounds_and_rodeos";
     readonly Falafel: "falafel";
@@ -3772,6 +3897,7 @@ export declare const TransactionCategoryEnum: {
     readonly GlassesAndOptometrist: "glasses_and_optometrist";
     readonly GoCarts: "go_carts";
     readonly Golf: "golf";
+    readonly GoodsAndMerchandise: "goods_and_merchandise";
     readonly GovernmentDepartmentsAndAgencies: "government_departments_and_agencies";
     readonly GovernmentLobbyists: "government_lobbyists";
     readonly Greek: "greek";
@@ -4081,11 +4207,13 @@ export declare const TransactionCategoryEnum: {
     readonly Towing: "towing";
     readonly Toys: "toys";
     readonly Transfer: "transfer";
+    readonly TransfersAndAdjustments: "transfers_and_adjustments";
     readonly Transport: "transport";
     readonly Transportation: "transportation";
     readonly TransportationCenters: "transportation_centers";
     readonly TransportationEquipment: "transportation_equipment";
     readonly Travel: "travel";
+    readonly TravelAndTransportation: "travel_and_transportation";
     readonly TravelAgentsAndTourOperators: "travel_agents_and_tour_operators";
     readonly TreeService: "tree_service";
     readonly Turkish: "turkish";
@@ -4154,6 +4282,7 @@ export declare const TransactionTypeEnum: {
     readonly Transfer: "transfer";
     readonly Wire: "wire";
     readonly Withdrawal: "withdrawal";
+    readonly Minus: "-";
 };
 export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
 /**
@@ -4353,6 +4482,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAccountStatement: (getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -4457,12 +4593,11 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
-     * @param {string} fuseVerification
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    syncFinancialConnectionsData: (fuseVerification: string, body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    syncFinancialConnectionsData: (body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get liabilities
@@ -4513,6 +4648,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAccountStatementResponse>>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -4618,12 +4760,11 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
-     * @param {string} fuseVerification
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
+    syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
     /**
      *
      * @summary Get liabilities
@@ -4674,6 +4815,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: any): AxiosPromise<GetAccountStatementResponse>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -4779,12 +4927,11 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
-     * @param {string} fuseVerification
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse>;
+    syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse>;
     /**
      *
      * @summary Get liabilities
@@ -4842,6 +4989,14 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetAccountStatementResponse, any>>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -4960,13 +5115,12 @@ export declare class FuseApi extends BaseAPI {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
-     * @param {string} fuseVerification
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
+    syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
     /**
      *
      * @summary Get liabilities

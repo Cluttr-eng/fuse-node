@@ -176,7 +176,7 @@ export type AccountSubtype = typeof AccountSubtype[keyof typeof AccountSubtype];
 
 
 /**
- * The account\'s type
+ * The account\'s type. \'-\' means we were not able to map the upstream type.
  * @export
  * @enum {string}
  */
@@ -188,7 +188,8 @@ export const AccountType = {
     Investment: 'investment',
     Insurance: 'insurance',
     Property: 'property',
-    Other: 'other'
+    Other: 'other',
+    Minus: '-'
 } as const;
 
 export type AccountType = typeof AccountType[keyof typeof AccountType];
@@ -204,7 +205,9 @@ export const Aggregator = {
     Plaid: 'plaid',
     Teller: 'teller',
     Mx: 'mx',
-    Snaptrade: 'snaptrade'
+    Snaptrade: 'snaptrade',
+    Flinks: 'flinks',
+    Finicity: 'finicity'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -384,7 +387,7 @@ export interface AssetReportTransaction {
      */
     'description': string;
     /**
-     * Categories of the transaction, ie Computers and Electronics
+     * Categories of the transaction, ie Computers and Electronics. \'-\' means we could not map the upstream category.
      * @type {Array<string>}
      * @memberof AssetReportTransaction
      */
@@ -621,6 +624,7 @@ export const AssetReportTransactionCategoryEnum = {
     Ethiopian: 'ethiopian',
     EventsAndEventPlanning: 'events_and_event_planning',
     ExcessActivity: 'excess_activity',
+    Expense: 'expense',
     FacilitiesAndNursingHomes: 'facilities_and_nursing_homes',
     FairgroundsAndRodeos: 'fairgrounds_and_rodeos',
     Falafel: 'falafel',
@@ -668,6 +672,7 @@ export const AssetReportTransactionCategoryEnum = {
     GlassesAndOptometrist: 'glasses_and_optometrist',
     GoCarts: 'go_carts',
     Golf: 'golf',
+    GoodsAndMerchandise: 'goods_and_merchandise',
     GovernmentDepartmentsAndAgencies: 'government_departments_and_agencies',
     GovernmentLobbyists: 'government_lobbyists',
     Greek: 'greek',
@@ -977,11 +982,13 @@ export const AssetReportTransactionCategoryEnum = {
     Towing: 'towing',
     Toys: 'toys',
     Transfer: 'transfer',
+    TransfersAndAdjustments: 'transfers_and_adjustments',
     Transport: 'transport',
     Transportation: 'transportation',
     TransportationCenters: 'transportation_centers',
     TransportationEquipment: 'transportation_equipment',
     Travel: 'travel',
+    TravelAndTransportation: 'travel_and_transportation',
     TravelAgentsAndTourOperators: 'travel_agents_and_tour_operators',
     TreeService: 'tree_service',
     Turkish: 'turkish',
@@ -1014,7 +1021,8 @@ export const AssetReportTransactionCategoryEnum = {
     WritingCopywritingAndTechnicalWriting: 'writing_copywriting_and_technical_writing',
     YogaAndPilates: 'yoga_and_pilates',
     YouthOrganizations: 'youth_organizations',
-    Zoo: 'zoo'
+    Zoo: 'zoo',
+    Minus: '-'
 } as const;
 
 export type AssetReportTransactionCategoryEnum = typeof AssetReportTransactionCategoryEnum[keyof typeof AssetReportTransactionCategoryEnum];
@@ -1170,7 +1178,7 @@ export interface CreateLinkTokenRequest {
      */
     'entity': Entity;
     /**
-     * The name of your application.
+     * The name of your application. This is what will be displayed to users.
      * @type {string}
      * @memberof CreateLinkTokenRequest
      */
@@ -1199,6 +1207,12 @@ export interface CreateLinkTokenRequest {
      * @memberof CreateLinkTokenRequest
      */
     'plaid'?: CreateLinkTokenRequestPlaid;
+    /**
+     * 
+     * @type {CreateLinkTokenRequestTeller}
+     * @memberof CreateLinkTokenRequest
+     */
+    'teller'?: CreateLinkTokenRequestTeller;
 }
 /**
  * An object specifying information about the MX configuration to use for deciding which MX supported financial institutions to display.
@@ -1220,12 +1234,47 @@ export interface CreateLinkTokenRequestMx {
  */
 export interface CreateLinkTokenRequestPlaid {
     /**
-     * Follows the same schema as Plaid\'s Link Token Create Schema(https://plaid.com/docs/api/tokens/#linktokencreate). \'products\', \'client_id\', \'secret\', \'client_user_id\', \'client_name\', \'webhook\', \'institution_data\' and \'country_codes\' (only US supported right now) will be set by Fuse and override any values you set.
+     * Follows the same schema as Plaid\'s Link Token Create Schema(https://plaid.com/docs/api/tokens/#linktokencreate). \'products\', \'client_id\', \'secret\', \'client_user_id\', \'client_name\', \'webhook\', \'institution_data\' and \'country_codes\' (only US and Canada is supported right now) will be set by Fuse and override any values you set.
      * @type {object}
      * @memberof CreateLinkTokenRequestPlaid
      */
     'config'?: object;
 }
+/**
+ * An object specifying information about the Teller configuration to use when creating a link token. 
+ * @export
+ * @interface CreateLinkTokenRequestTeller
+ */
+export interface CreateLinkTokenRequestTeller {
+    /**
+     * 
+     * @type {CreateLinkTokenRequestTellerConfig}
+     * @memberof CreateLinkTokenRequestTeller
+     */
+    'config'?: CreateLinkTokenRequestTellerConfig;
+}
+/**
+ * 
+ * @export
+ * @interface CreateLinkTokenRequestTellerConfig
+ */
+export interface CreateLinkTokenRequestTellerConfig {
+    /**
+     * The mode of account selection: - \'disabled\': automatically connect all the supported financial accounts associated with this user\'s account at the institution (default). - \'single\': the user will see a list of supported financial accounts and will need to select one to connect - \'multiple\': the user will see a list of supported financial accounts and will need to select one or more to connect
+     * @type {string}
+     * @memberof CreateLinkTokenRequestTellerConfig
+     */
+    'selectAccount'?: CreateLinkTokenRequestTellerConfigSelectAccountEnum;
+}
+
+export const CreateLinkTokenRequestTellerConfigSelectAccountEnum = {
+    Disabled: 'disabled',
+    Single: 'single',
+    Multiple: 'multiple'
+} as const;
+
+export type CreateLinkTokenRequestTellerConfigSelectAccountEnum = typeof CreateLinkTokenRequestTellerConfigSelectAccountEnum[keyof typeof CreateLinkTokenRequestTellerConfigSelectAccountEnum];
+
 /**
  * 
  * @export
@@ -1364,7 +1413,7 @@ export interface DeleteFinancialConnectionResponse {
  */
 export interface Entity {
     /**
-     * Unique identifier for the user or business account.
+     * Unique identifier for the user or business account that is connecting to an institution. Use this id when calling the GET /entities/${entity_id} endpoint.
      * @type {string}
      * @memberof Entity
      */
@@ -1393,7 +1442,7 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenRequest
      */
-    'public_token'?: string;
+    'public_token': string;
 }
 /**
  * 
@@ -1402,13 +1451,13 @@ export interface ExchangeFinancialConnectionsPublicTokenRequest {
  */
 export interface ExchangeFinancialConnectionsPublicTokenResponse {
     /**
-     * Token used for querying data on the user
+     * Token used for querying data on the user, ie account details, balances etc. This does NOT expire and should be stored securely.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
     'access_token': string;
     /**
-     * The id of the new financial connection. Every webhook will be sent with this id.
+     * The id of the new financial connection. Every webhook will be sent with this id. Use this id when calling the GET /financial_connection/${financial_connection_id} endpoint. 
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
@@ -2013,11 +2062,11 @@ export interface FinancialConnectionsInvestmentSecurity {
      */
     'name'?: string;
     /**
-     * The type of security (e.g., equity, mutual fund)
-     * @type {string}
+     * 
+     * @type {FinancialConnectionsInvestmentSecurityType}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
-    'type'?: string;
+    'type'?: FinancialConnectionsInvestmentSecurityType;
     /**
      * 
      * @type {FinancialConnectionsInvestmentSecurityExchange}
@@ -2025,6 +2074,8 @@ export interface FinancialConnectionsInvestmentSecurity {
      */
     'exchange'?: FinancialConnectionsInvestmentSecurityExchange;
 }
+
+
 /**
  * 
  * @export
@@ -2038,6 +2089,44 @@ export interface FinancialConnectionsInvestmentSecurityExchange {
      */
     'mic_code'?: string;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const FinancialConnectionsInvestmentSecurityType = {
+    Cash: 'cash',
+    Cryptocurrency: 'cryptocurrency',
+    Derivative: 'derivative',
+    Equity: 'equity',
+    Etf: 'etf',
+    FixedIncome: 'fixed_income',
+    Loan: 'loan',
+    MutualFund: 'mutual_fund',
+    Other: 'other',
+    GlobalDepositaryReceipt: 'global_depositary_receipt',
+    OpenEndedFund: 'open_ended_fund',
+    Right: 'right',
+    Temporary: 'temporary',
+    Warrant: 'warrant',
+    ClosedEndedFund: 'closed_ended_fund',
+    CommonStock: 'common_stock',
+    ExchangeTradedFund: 'exchange_traded_fund',
+    Bond: 'bond',
+    AmericanDepositaryReceipt: 'american_depositary_receipt',
+    Unit: 'unit',
+    StructuredProduct: 'structured_product',
+    PreferredStock: 'preferred_stock',
+    RealEstate: 'real_estate',
+    Automobile: 'automobile',
+    DelistedOrDefunctAsset: 'delisted_or_defunct_asset',
+    Minus: '-'
+} as const;
+
+export type FinancialConnectionsInvestmentSecurityType = typeof FinancialConnectionsInvestmentSecurityType[keyof typeof FinancialConnectionsInvestmentSecurityType];
+
+
 /**
  * 
  * @export
@@ -2510,6 +2599,10 @@ export const FuseApiErrorCode = {
     MissingTellerSigningSecretHeader: 'missing_teller_signing_secret_header',
     MissingSnaptradeClientIdHeader: 'missing_snaptrade_client_id_header',
     MissingSnaptradeConsumerKeyHeader: 'missing_snaptrade_consumer_key_header',
+    MissingFlinksCaCustomerIdHeader: 'missing_flinks_ca_customer_id_header',
+    MissingFlinksUsCustomerIdHeader: 'missing_flinks_us_customer_id_header',
+    MissingFlinksCaInstanceIdHeader: 'missing_flinks_ca_instance_id_header',
+    MissingFlinksUsInstanceIdHeader: 'missing_flinks_us_instance_id_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -2520,6 +2613,8 @@ export const FuseApiErrorCode = {
     RequestBodyInvalidJson: 'request_body_invalid_json',
     WebhookError: 'webhook_error',
     Timeout: 'timeout',
+    InvalidCertificate: 'invalid_certificate',
+    InvalidPrivateKey: 'invalid_private_key',
     Other: 'other'
 } as const;
 
@@ -2680,6 +2775,44 @@ export const FuseApiWarningDataWarningsInnerSourceEnum = {
 
 export type FuseApiWarningDataWarningsInnerSourceEnum = typeof FuseApiWarningDataWarningsInnerSourceEnum[keyof typeof FuseApiWarningDataWarningsInnerSourceEnum];
 
+/**
+ * 
+ * @export
+ * @interface GetAccountStatementRequest
+ */
+export interface GetAccountStatementRequest {
+    /**
+     * Access token for authentication
+     * @type {string}
+     * @memberof GetAccountStatementRequest
+     */
+    'access_token': string;
+    /**
+     * The remote account id to retrieve the statement for.
+     * @type {string}
+     * @memberof GetAccountStatementRequest
+     */
+    'remote_account_id': string;
+    /**
+     * The year and month for the account statement to be retrieved in YYYY-MM.
+     * @type {string}
+     * @memberof GetAccountStatementRequest
+     */
+    'date'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface GetAccountStatementResponse
+ */
+export interface GetAccountStatementResponse {
+    /**
+     * PDF statement URL.
+     * @type {string}
+     * @memberof GetAccountStatementResponse
+     */
+    'statement_url': string;
+}
 /**
  * 
  * @export
@@ -3579,7 +3712,7 @@ export interface Transaction {
      */
     'status': TransactionStatusEnum;
     /**
-     * Type of the transaction, ie adjustment
+     * Type of the transaction, ie adjustment. \'-\' means we were not able to map the upstream type.
      * @type {string}
      * @memberof Transaction
      */
@@ -3804,6 +3937,7 @@ export const TransactionCategoryEnum = {
     Ethiopian: 'ethiopian',
     EventsAndEventPlanning: 'events_and_event_planning',
     ExcessActivity: 'excess_activity',
+    Expense: 'expense',
     FacilitiesAndNursingHomes: 'facilities_and_nursing_homes',
     FairgroundsAndRodeos: 'fairgrounds_and_rodeos',
     Falafel: 'falafel',
@@ -3851,6 +3985,7 @@ export const TransactionCategoryEnum = {
     GlassesAndOptometrist: 'glasses_and_optometrist',
     GoCarts: 'go_carts',
     Golf: 'golf',
+    GoodsAndMerchandise: 'goods_and_merchandise',
     GovernmentDepartmentsAndAgencies: 'government_departments_and_agencies',
     GovernmentLobbyists: 'government_lobbyists',
     Greek: 'greek',
@@ -4160,11 +4295,13 @@ export const TransactionCategoryEnum = {
     Towing: 'towing',
     Toys: 'toys',
     Transfer: 'transfer',
+    TransfersAndAdjustments: 'transfers_and_adjustments',
     Transport: 'transport',
     Transportation: 'transportation',
     TransportationCenters: 'transportation_centers',
     TransportationEquipment: 'transportation_equipment',
     Travel: 'travel',
+    TravelAndTransportation: 'travel_and_transportation',
     TravelAgentsAndTourOperators: 'travel_agents_and_tour_operators',
     TreeService: 'tree_service',
     Turkish: 'turkish',
@@ -4234,7 +4371,8 @@ export const TransactionTypeEnum = {
     Transaction: 'transaction',
     Transfer: 'transfer',
     Wire: 'wire',
-    Withdrawal: 'withdrawal'
+    Withdrawal: 'withdrawal',
+    Minus: '-'
 } as const;
 
 export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof TransactionTypeEnum];
@@ -4419,7 +4557,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         createAssetReport: async (createAssetReportRequest?: CreateAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/asset_report/create`;
+            const localVarPath = `/v1/financial_connections/asset_report/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4609,13 +4747,52 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetAccountStatementRequest} [getAccountStatementRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountStatement: async (getAccountStatementRequest?: GetAccountStatementRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/financial_connections/accounts/statement`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getAccountStatementRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
         getAssetReport: async (getAssetReportRequest?: GetAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/asset_report`;
+            const localVarPath = `/v1/financial_connections/asset_report`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5108,7 +5285,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         refreshAssetReport: async (refreshAssetReportRequest?: RefreshAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/asset_report/refresh`;
+            const localVarPath = `/v1/financial_connections/asset_report/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5143,14 +5320,11 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
-         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: async (fuseVerification: string, body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'fuseVerification' is not null or undefined
-            assertParamExists('syncFinancialConnectionsData', 'fuseVerification', fuseVerification)
+        syncFinancialConnectionsData: async (body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             assertParamExists('syncFinancialConnectionsData', 'body', body)
             const localVarPath = `/v1/financial_connections/sync`;
@@ -5170,10 +5344,6 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
 
             // authentication fuseClientId required
             await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
-
-            if (fuseVerification != null) {
-                localVarHeaderParameter['Fuse-Verification'] = String(fuseVerification);
-            }
 
 
     
@@ -5290,6 +5460,16 @@ export const FuseApiFp = function(configuration?: Configuration) {
          */
         async exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetAccountStatementRequest} [getAccountStatementRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAccountStatementResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getAccountStatement(getAccountStatementRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5436,13 +5616,12 @@ export const FuseApiFp = function(configuration?: Configuration) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
-         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
+        async syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5511,6 +5690,15 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse> {
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetAccountStatementRequest} [getAccountStatementRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: any): AxiosPromise<GetAccountStatementResponse> {
+            return localVarFp.getAccountStatement(getAccountStatementRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -5643,13 +5831,12 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
-         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(fuseVerification: string, body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse> {
-            return localVarFp.syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(axios, basePath));
+        syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse> {
+            return localVarFp.syncFinancialConnectionsData(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5725,6 +5912,17 @@ export class FuseApi extends BaseAPI {
      */
     public exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetAccountStatementRequest} [getAccountStatementRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getAccountStatement(getAccountStatementRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5884,14 +6082,13 @@ export class FuseApi extends BaseAPI {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
-     * @param {string} fuseVerification 
      * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(this.axios, this.basePath));
+    public syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).syncFinancialConnectionsData(body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
