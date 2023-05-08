@@ -1812,37 +1812,6 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
-         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-         * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAccountStatement: (getAccountStatementRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/financial_connections/accounts/statement`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            // authentication fuseApiKey required
-            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
-            // authentication fuseClientId required
-            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(getAccountStatementRequest, localVarRequestOptions, configuration);
-            return {
-                url: (0, common_1.toPathString)(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -1968,6 +1937,37 @@ const FuseApiAxiosParamCreator = function (configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(getFinancialConnectionsAccountDetailsRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnectionsAccountStatement: (getFinancialConnectionsAccountStatementRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/financial_connections/accounts/statement`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(getFinancialConnectionsAccountStatementRequest, localVarRequestOptions, configuration);
             return {
                 url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -2413,18 +2413,6 @@ const FuseApiFp = function (configuration) {
             });
         },
         /**
-         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-         * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAccountStatement(getAccountStatementRequest, options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.getAccountStatement(getAccountStatementRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
-            });
-        },
-        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -2472,6 +2460,18 @@ const FuseApiFp = function (configuration) {
         getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -2674,15 +2674,6 @@ const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-         * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getAccountStatement(getAccountStatementRequest, options) {
-            return localVarFp.getAccountStatement(getAccountStatementRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -2720,6 +2711,15 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options) {
             return localVarFp.getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+         * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options) {
+            return localVarFp.getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -2892,16 +2892,6 @@ class FuseApi extends base_1.BaseAPI {
         return (0, exports.FuseApiFp)(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    getAccountStatement(getAccountStatementRequest, options) {
-        return (0, exports.FuseApiFp)(this.configuration).getAccountStatement(getAccountStatementRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -2943,6 +2933,16 @@ class FuseApi extends base_1.BaseAPI {
      */
     getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
