@@ -4403,6 +4403,24 @@ export interface WebhookEvent {
      */
     'asset_report_id'?: string;
     /**
+     * Exists for transactions.updates webhooks
+     * @type {number}
+     * @memberof WebhookEvent
+     */
+    'new_transactions_count'?: number;
+    /**
+     * Exists for transactions.updates webhooks. Indicates if historical transaction information (up to 24 months) is ready to be queried.
+     * @type {boolean}
+     * @memberof WebhookEvent
+     */
+    'historical_transactions_available'?: boolean;
+    /**
+     * Exists for transactions.updates webhooks. Currently only supported by Plaid.
+     * @type {Array<string>}
+     * @memberof WebhookEvent
+     */
+    'removed_transaction_ids'?: Array<string>;
+    /**
      *
      * @type {any}
      * @memberof WebhookEvent
