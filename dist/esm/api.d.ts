@@ -2698,44 +2698,6 @@ export type FuseApiWarningDataWarningsInnerSourceEnum = typeof FuseApiWarningDat
 /**
  *
  * @export
- * @interface GetAccountStatementRequest
- */
-export interface GetAccountStatementRequest {
-    /**
-     * Access token for authentication
-     * @type {string}
-     * @memberof GetAccountStatementRequest
-     */
-    'access_token': string;
-    /**
-     * The remote account id to retrieve the statement for.
-     * @type {string}
-     * @memberof GetAccountStatementRequest
-     */
-    'remote_account_id': string;
-    /**
-     * The year and month for the account statement to be retrieved in YYYY-MM.
-     * @type {string}
-     * @memberof GetAccountStatementRequest
-     */
-    'date'?: string;
-}
-/**
- *
- * @export
- * @interface GetAccountStatementResponse
- */
-export interface GetAccountStatementResponse {
-    /**
-     * PDF statement URL.
-     * @type {string}
-     * @memberof GetAccountStatementResponse
-     */
-    'statement_url': string;
-}
-/**
- *
- * @export
  * @interface GetAssetReportRequest
  */
 export interface GetAssetReportRequest {
@@ -2851,6 +2813,44 @@ export interface GetFinancialConnectionsAccountDetailsResponse {
      * @memberof GetFinancialConnectionsAccountDetailsResponse
      */
     'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialConnectionsAccountStatementRequest
+ */
+export interface GetFinancialConnectionsAccountStatementRequest {
+    /**
+     * Access token for authentication
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountStatementRequest
+     */
+    'access_token': string;
+    /**
+     * The remote account id to retrieve the statement for.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountStatementRequest
+     */
+    'remote_account_id': string;
+    /**
+     * The year and month for the account statement to be retrieved in YYYY-MM.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountStatementRequest
+     */
+    'date'?: string;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialConnectionsAccountStatementResponse
+ */
+export interface GetFinancialConnectionsAccountStatementResponse {
+    /**
+     * PDF statement URL.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountStatementResponse
+     */
+    'statement_url': string;
 }
 /**
  *
@@ -4500,13 +4500,6 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
-     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getAccountStatement: (getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -4537,6 +4530,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     getFinancialConnectionsAccountDetails: (getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinancialConnectionsAccountStatement: (getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get accounts
@@ -4667,13 +4667,6 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
     /**
-     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetAccountStatementResponse>>;
-    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -4704,6 +4697,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountDetailsResponse>>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountStatementResponse>>;
     /**
      *
      * @summary Get accounts
@@ -4834,13 +4834,6 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>;
     /**
-     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: any): AxiosPromise<GetAccountStatementResponse>;
-    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -4871,6 +4864,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: any): AxiosPromise<GetFinancialConnectionsAccountDetailsResponse>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: any): AxiosPromise<GetFinancialConnectionsAccountStatementResponse>;
     /**
      *
      * @summary Get accounts
@@ -5008,14 +5008,6 @@ export declare class FuseApi extends BaseAPI {
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
     /**
-     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
-     * @param {GetAccountStatementRequest} [getAccountStatementRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    getAccountStatement(getAccountStatementRequest?: GetAccountStatementRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetAccountStatementResponse, any>>;
-    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -5050,6 +5042,14 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountDetailsResponse, any>>;
+    /**
+     * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
+     * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountStatementResponse, any>>;
     /**
      *
      * @summary Get accounts
