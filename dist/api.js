@@ -22,7 +22,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.TransactionTypeEnum = exports.TransactionStatusEnum = exports.TransactionCategoryEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorType = exports.FuseApiErrorCode = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionsInvestmentTransactionTypeEnum = exports.FinancialConnectionsInvestmentSecurityType = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.CreateLinkTokenRequestTellerConfigSelectAccountEnum = exports.CountryCode = exports.AssetReportTransactionStatusEnum = exports.AssetReportTransactionCategoryEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
+exports.SpendPowerApi = exports.SpendPowerApiFactory = exports.SpendPowerApiFp = exports.SpendPowerApiAxiosParamCreator = exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.TransactionTypeEnum = exports.TransactionStatusEnum = exports.TransactionCategoryEnum = exports.SpendPowerCustomizationTimeframeEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorType = exports.FuseApiErrorCode = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionsInvestmentTransactionTypeEnum = exports.FinancialConnectionsInvestmentSecurityType = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.CreateLinkTokenRequestTellerConfigSelectAccountEnum = exports.CountryCode = exports.AssetReportTransactionStatusEnum = exports.AssetReportTransactionCategoryEnum = exports.Aggregator = exports.AddSpendPowerTransactionRequestStatusEnum = exports.AccountType = exports.AccountSubtype = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -190,6 +190,11 @@ exports.AccountType = {
     Property: 'property',
     Other: 'other',
     Minus: '-'
+};
+exports.AddSpendPowerTransactionRequestStatusEnum = {
+    Pending: 'pending',
+    Posted: 'posted',
+    Cancelled: 'cancelled'
 };
 /**
  *
@@ -981,6 +986,11 @@ exports.Product = {
     Investments: 'investments',
     Assets: 'assets'
 };
+exports.SpendPowerCustomizationTimeframeEnum = {
+    Daily: 'daily',
+    Weekly: 'weekly',
+    Monthly: 'monthly'
+};
 exports.TransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
     AccountingAndBookkeeping: 'accounting_and_bookkeeping',
@@ -1655,6 +1665,41 @@ exports.WebhookType = {
 const FuseApiAxiosParamCreator = function (configuration) {
     return {
         /**
+         *
+         * @param {string} spendPowerId
+         * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addSpendPowerTransaction: (spendPowerId, addSpendPowerTransactionRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'spendPowerId' is not null or undefined
+            (0, common_1.assertParamExists)('addSpendPowerTransaction', 'spendPowerId', spendPowerId);
+            const localVarPath = `/v1/financial_connections/spend-power/{spend_power_id}/transaction`
+                .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(addSpendPowerTransactionRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {CreateAssetReportRequest} [createAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -1742,6 +1787,68 @@ const FuseApiAxiosParamCreator = function (configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(createSessionRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         * Starts the background process that will determine the spend power depending on the customization passed in.
+         * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSpendPower: (createSpendPowerRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/financial_connections/spend-power`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(createSpendPowerRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @param {SpendPowerCustomization} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSpendPowerCustomization: (body, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/financial_connections/spend-power/customization`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(body, localVarRequestOptions, configuration);
             return {
                 url: (0, common_1.toPathString)(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -2211,6 +2318,38 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         *
+         * @param {string} spendPowerId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSpendPower: (spendPowerId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'spendPowerId' is not null or undefined
+            (0, common_1.assertParamExists)('getSpendPower', 'spendPowerId', spendPowerId);
+            const localVarPath = `/v1/financial_connections/spend-power/{spend_power_id}`
+                .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -2309,6 +2448,37 @@ const FuseApiAxiosParamCreator = function (configuration) {
         }),
         /**
          *
+         * @param {SpendPowerCustomization} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateSpendPowerCustomization: (body, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/financial_connections/spend-power/customization/update`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(body, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
          * @summary Get liabilities
          * @param {GetLiabilitiesRequest} getLiabilitiesRequest
          * @param {*} [options] Override http request option.
@@ -2352,6 +2522,19 @@ const FuseApiFp = function (configuration) {
     const localVarAxiosParamCreator = (0, exports.FuseApiAxiosParamCreator)(configuration);
     return {
         /**
+         *
+         * @param {string} spendPowerId
+         * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
          * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {CreateAssetReportRequest} [createAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -2384,6 +2567,30 @@ const FuseApiFp = function (configuration) {
         createSession(createSessionRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createSession(createSessionRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         * Starts the background process that will determine the spend power depending on the customization passed in.
+         * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSpendPower(createSpendPowerRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.createSpendPower(createSpendPowerRequest, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @param {SpendPowerCustomization} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSpendPowerCustomization(body, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.createSpendPowerCustomization(body, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -2567,6 +2774,18 @@ const FuseApiFp = function (configuration) {
             });
         },
         /**
+         *
+         * @param {string} spendPowerId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSpendPower(spendPowerId, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getSpendPower(spendPowerId, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -2606,6 +2825,18 @@ const FuseApiFp = function (configuration) {
         },
         /**
          *
+         * @param {SpendPowerCustomization} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateSpendPowerCustomization(body, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.updateSpendPowerCustomization(body, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
          * @summary Get liabilities
          * @param {GetLiabilitiesRequest} getLiabilitiesRequest
          * @param {*} [options] Override http request option.
@@ -2627,6 +2858,16 @@ exports.FuseApiFp = FuseApiFp;
 const FuseApiFactory = function (configuration, basePath, axios) {
     const localVarFp = (0, exports.FuseApiFp)(configuration);
     return {
+        /**
+         *
+         * @param {string} spendPowerId
+         * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options) {
+            return localVarFp.addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options).then((request) => request(axios, basePath));
+        },
         /**
          * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -2653,6 +2894,24 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         createSession(createSessionRequest, options) {
             return localVarFp.createSession(createSessionRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Starts the background process that will determine the spend power depending on the customization passed in.
+         * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSpendPower(createSpendPowerRequest, options) {
+            return localVarFp.createSpendPower(createSpendPowerRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @param {SpendPowerCustomization} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createSpendPowerCustomization(body, options) {
+            return localVarFp.createSpendPowerCustomization(body, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -2792,6 +3051,15 @@ const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         *
+         * @param {string} spendPowerId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSpendPower(spendPowerId, options) {
+            return localVarFp.getSpendPower(spendPowerId, options).then((request) => request(axios, basePath));
+        },
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -2822,6 +3090,15 @@ const FuseApiFactory = function (configuration, basePath, axios) {
         },
         /**
          *
+         * @param {SpendPowerCustomization} [body]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateSpendPowerCustomization(body, options) {
+            return localVarFp.updateSpendPowerCustomization(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
          * @summary Get liabilities
          * @param {GetLiabilitiesRequest} getLiabilitiesRequest
          * @param {*} [options] Override http request option.
@@ -2840,6 +3117,17 @@ exports.FuseApiFactory = FuseApiFactory;
  * @extends {BaseAPI}
  */
 class FuseApi extends base_1.BaseAPI {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -2869,6 +3157,26 @@ class FuseApi extends base_1.BaseAPI {
      */
     createSession(createSessionRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).createSession(createSessionRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Starts the background process that will determine the spend power depending on the customization passed in.
+     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createSpendPower(createSpendPowerRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).createSpendPower(createSpendPowerRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createSpendPowerCustomization(body, options) {
+        return (0, exports.FuseApiFp)(this.configuration).createSpendPowerCustomization(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -3022,6 +3330,16 @@ class FuseApi extends base_1.BaseAPI {
         return (0, exports.FuseApiFp)(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
+     *
+     * @param {string} spendPowerId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getSpendPower(spendPowerId, options) {
+        return (0, exports.FuseApiFp)(this.configuration).getSpendPower(spendPowerId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -3055,6 +3373,16 @@ class FuseApi extends base_1.BaseAPI {
     }
     /**
      *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    updateSpendPowerCustomization(body, options) {
+        return (0, exports.FuseApiFp)(this.configuration).updateSpendPowerCustomization(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
      * @summary Get liabilities
      * @param {GetLiabilitiesRequest} getLiabilitiesRequest
      * @param {*} [options] Override http request option.
@@ -3066,3 +3394,241 @@ class FuseApi extends base_1.BaseAPI {
     }
 }
 exports.FuseApi = FuseApi;
+/**
+ * SpendPowerApi - axios parameter creator
+ * @export
+ */
+const SpendPowerApiAxiosParamCreator = function (configuration) {
+    return {
+        /**
+         *
+         * @param {string} spendPowerId
+         * @param {string} fuseClientId
+         * @param {string} fuseApiKey
+         * @param {string} [plaidClientId]
+         * @param {string} [plaidSecret]
+         * @param {string} [tellerApplicationId]
+         * @param {string} [tellerCertificate]
+         * @param {string} [tellerPrivateKey]
+         * @param {string} [tellerTokenSigningKey]
+         * @param {string} [tellerSigningSecret]
+         * @param {string} [mxClientId]
+         * @param {string} [mxApiKey]
+         * @param {string} [snaptradeClientId]
+         * @param {string} [snaptradeConsumerKey]
+         * @param {string} [flinksCustomerId]
+         * @param {string} [flinksUsInstanceId]
+         * @param {string} [flinksCaInstanceId]
+         * @param {string} [finicityPartnerId]
+         * @param {string} [finicityPartnerSecret]
+         * @param {string} [finicityAppKey]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSpendPower: (spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'spendPowerId' is not null or undefined
+            (0, common_1.assertParamExists)('deleteSpendPower', 'spendPowerId', spendPowerId);
+            // verify required parameter 'fuseClientId' is not null or undefined
+            (0, common_1.assertParamExists)('deleteSpendPower', 'fuseClientId', fuseClientId);
+            // verify required parameter 'fuseApiKey' is not null or undefined
+            (0, common_1.assertParamExists)('deleteSpendPower', 'fuseApiKey', fuseApiKey);
+            const localVarPath = `/v1/financial_connections/spend-power/{spend_power_id}`
+                .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'DELETE' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            if (fuseClientId != null) {
+                localVarHeaderParameter['Fuse-Client-Id'] = String(fuseClientId);
+            }
+            if (fuseApiKey != null) {
+                localVarHeaderParameter['Fuse-Api-Key'] = String(fuseApiKey);
+            }
+            if (plaidClientId != null) {
+                localVarHeaderParameter['Plaid-Client-Id'] = String(plaidClientId);
+            }
+            if (plaidSecret != null) {
+                localVarHeaderParameter['Plaid-Secret'] = String(plaidSecret);
+            }
+            if (tellerApplicationId != null) {
+                localVarHeaderParameter['Teller-Application-Id'] = String(tellerApplicationId);
+            }
+            if (tellerCertificate != null) {
+                localVarHeaderParameter['Teller-Certificate'] = String(tellerCertificate);
+            }
+            if (tellerPrivateKey != null) {
+                localVarHeaderParameter['Teller-Private-Key'] = String(tellerPrivateKey);
+            }
+            if (tellerTokenSigningKey != null) {
+                localVarHeaderParameter['Teller-Token-Signing-Key'] = String(tellerTokenSigningKey);
+            }
+            if (tellerSigningSecret != null) {
+                localVarHeaderParameter['Teller-Signing-Secret'] = String(tellerSigningSecret);
+            }
+            if (mxClientId != null) {
+                localVarHeaderParameter['Mx-Client-Id'] = String(mxClientId);
+            }
+            if (mxApiKey != null) {
+                localVarHeaderParameter['Mx-Api-Key'] = String(mxApiKey);
+            }
+            if (snaptradeClientId != null) {
+                localVarHeaderParameter['Snaptrade-Client-Id'] = String(snaptradeClientId);
+            }
+            if (snaptradeConsumerKey != null) {
+                localVarHeaderParameter['Snaptrade-Consumer-Key'] = String(snaptradeConsumerKey);
+            }
+            if (flinksCustomerId != null) {
+                localVarHeaderParameter['Flinks-Customer-Id'] = String(flinksCustomerId);
+            }
+            if (flinksUsInstanceId != null) {
+                localVarHeaderParameter['Flinks-Us-Instance-Id'] = String(flinksUsInstanceId);
+            }
+            if (flinksCaInstanceId != null) {
+                localVarHeaderParameter['Flinks-Ca-Instance-Id'] = String(flinksCaInstanceId);
+            }
+            if (finicityPartnerId != null) {
+                localVarHeaderParameter['Finicity-Partner-Id'] = String(finicityPartnerId);
+            }
+            if (finicityPartnerSecret != null) {
+                localVarHeaderParameter['Finicity-Partner-Secret'] = String(finicityPartnerSecret);
+            }
+            if (finicityAppKey != null) {
+                localVarHeaderParameter['Finicity-App-Key'] = String(finicityAppKey);
+            }
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+    };
+};
+exports.SpendPowerApiAxiosParamCreator = SpendPowerApiAxiosParamCreator;
+/**
+ * SpendPowerApi - functional programming interface
+ * @export
+ */
+const SpendPowerApiFp = function (configuration) {
+    const localVarAxiosParamCreator = (0, exports.SpendPowerApiAxiosParamCreator)(configuration);
+    return {
+        /**
+         *
+         * @param {string} spendPowerId
+         * @param {string} fuseClientId
+         * @param {string} fuseApiKey
+         * @param {string} [plaidClientId]
+         * @param {string} [plaidSecret]
+         * @param {string} [tellerApplicationId]
+         * @param {string} [tellerCertificate]
+         * @param {string} [tellerPrivateKey]
+         * @param {string} [tellerTokenSigningKey]
+         * @param {string} [tellerSigningSecret]
+         * @param {string} [mxClientId]
+         * @param {string} [mxApiKey]
+         * @param {string} [snaptradeClientId]
+         * @param {string} [snaptradeConsumerKey]
+         * @param {string} [flinksCustomerId]
+         * @param {string} [flinksUsInstanceId]
+         * @param {string} [flinksCaInstanceId]
+         * @param {string} [finicityPartnerId]
+         * @param {string} [finicityPartnerSecret]
+         * @param {string} [finicityAppKey]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options);
+                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+            });
+        },
+    };
+};
+exports.SpendPowerApiFp = SpendPowerApiFp;
+/**
+ * SpendPowerApi - factory interface
+ * @export
+ */
+const SpendPowerApiFactory = function (configuration, basePath, axios) {
+    const localVarFp = (0, exports.SpendPowerApiFp)(configuration);
+    return {
+        /**
+         *
+         * @param {string} spendPowerId
+         * @param {string} fuseClientId
+         * @param {string} fuseApiKey
+         * @param {string} [plaidClientId]
+         * @param {string} [plaidSecret]
+         * @param {string} [tellerApplicationId]
+         * @param {string} [tellerCertificate]
+         * @param {string} [tellerPrivateKey]
+         * @param {string} [tellerTokenSigningKey]
+         * @param {string} [tellerSigningSecret]
+         * @param {string} [mxClientId]
+         * @param {string} [mxApiKey]
+         * @param {string} [snaptradeClientId]
+         * @param {string} [snaptradeConsumerKey]
+         * @param {string} [flinksCustomerId]
+         * @param {string} [flinksUsInstanceId]
+         * @param {string} [flinksCaInstanceId]
+         * @param {string} [finicityPartnerId]
+         * @param {string} [finicityPartnerSecret]
+         * @param {string} [finicityAppKey]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options) {
+            return localVarFp.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+exports.SpendPowerApiFactory = SpendPowerApiFactory;
+/**
+ * SpendPowerApi - object-oriented interface
+ * @export
+ * @class SpendPowerApi
+ * @extends {BaseAPI}
+ */
+class SpendPowerApi extends base_1.BaseAPI {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {string} [plaidClientId]
+     * @param {string} [plaidSecret]
+     * @param {string} [tellerApplicationId]
+     * @param {string} [tellerCertificate]
+     * @param {string} [tellerPrivateKey]
+     * @param {string} [tellerTokenSigningKey]
+     * @param {string} [tellerSigningSecret]
+     * @param {string} [mxClientId]
+     * @param {string} [mxApiKey]
+     * @param {string} [snaptradeClientId]
+     * @param {string} [snaptradeConsumerKey]
+     * @param {string} [flinksCustomerId]
+     * @param {string} [flinksUsInstanceId]
+     * @param {string} [flinksCaInstanceId]
+     * @param {string} [finicityPartnerId]
+     * @param {string} [finicityPartnerSecret]
+     * @param {string} [finicityAppKey]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SpendPowerApi
+     */
+    deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options) {
+        return (0, exports.SpendPowerApiFp)(this.configuration).deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+exports.SpendPowerApi = SpendPowerApi;
