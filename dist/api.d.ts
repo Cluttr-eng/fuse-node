@@ -180,6 +180,56 @@ export type AccountType = typeof AccountType[keyof typeof AccountType];
 /**
  *
  * @export
+ * @interface AddSpendPowerTransactionRequest
+ */
+export interface AddSpendPowerTransactionRequest {
+    /**
+     * Id of the transaction
+     * @type {string}
+     * @memberof AddSpendPowerTransactionRequest
+     */
+    'id': string;
+    /**
+     * The status of the transaction. This will be either pending, posted or cancelled.
+     * @type {string}
+     * @memberof AddSpendPowerTransactionRequest
+     */
+    'status': AddSpendPowerTransactionRequestStatusEnum;
+    /**
+     * The amount of the transaction, in cents. Use positive numbers to represent money going out and negative numbers to represent money coming in.
+     * @type {string}
+     * @memberof AddSpendPowerTransactionRequest
+     */
+    'amount'?: string;
+}
+export declare const AddSpendPowerTransactionRequestStatusEnum: {
+    readonly Pending: "pending";
+    readonly Posted: "posted";
+    readonly Cancelled: "cancelled";
+};
+export type AddSpendPowerTransactionRequestStatusEnum = typeof AddSpendPowerTransactionRequestStatusEnum[keyof typeof AddSpendPowerTransactionRequestStatusEnum];
+/**
+ *
+ * @export
+ * @interface AddSpendPowerTransactionResponse
+ */
+export interface AddSpendPowerTransactionResponse {
+    /**
+     * Response message
+     * @type {string}
+     * @memberof AddSpendPowerTransactionResponse
+     */
+    'message': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof AddSpendPowerTransactionResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
  * @enum {string}
  */
 export declare const Aggregator: {
@@ -1332,6 +1382,69 @@ export interface CreateSessionResponse {
 /**
  *
  * @export
+ * @interface CreateSpendPowerCustomizationResponse
+ */
+export interface CreateSpendPowerCustomizationResponse {
+    /**
+     * The id of the created customization.
+     * @type {string}
+     * @memberof CreateSpendPowerCustomizationResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof CreateSpendPowerCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface CreateSpendPowerRequest
+ */
+export interface CreateSpendPowerRequest {
+    /**
+     * Access token for authentication
+     * @type {string}
+     * @memberof CreateSpendPowerRequest
+     */
+    'access_token': string;
+    /**
+     * The remote account id to create the spend power for.
+     * @type {string}
+     * @memberof CreateSpendPowerRequest
+     */
+    'remote_account_id': string;
+    /**
+     * The spend power customization id.
+     * @type {string}
+     * @memberof CreateSpendPowerRequest
+     */
+    'customization_id': string;
+}
+/**
+ *
+ * @export
+ * @interface CreateSpendPowerResponse
+ */
+export interface CreateSpendPowerResponse {
+    /**
+     * The id of the created spend power
+     * @type {string}
+     * @memberof CreateSpendPowerResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof CreateSpendPowerResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
  * @interface Currency
  */
 export interface Currency {
@@ -1370,6 +1483,25 @@ export interface DeleteFinancialConnectionResponse {
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof DeleteFinancialConnectionResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface DeleteSpendPowerResponse
+ */
+export interface DeleteSpendPowerResponse {
+    /**
+     *
+     * @type {SpendPower}
+     * @memberof DeleteSpendPowerResponse
+     */
+    'spend_power': SpendPower;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof DeleteSpendPowerResponse
      */
     'request_id': string;
 }
@@ -2851,6 +2983,12 @@ export interface GetFinancialConnectionsAccountStatementResponse {
      * @memberof GetFinancialConnectionsAccountStatementResponse
      */
     'statement_url': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsAccountStatementResponse
+     */
+    'request_id': string;
 }
 /**
  *
@@ -3250,6 +3388,25 @@ export interface GetLiabilitiesResponse {
     'request_id'?: string;
 }
 /**
+ *
+ * @export
+ * @interface GetSpendPowerResponse
+ */
+export interface GetSpendPowerResponse {
+    /**
+     *
+     * @type {SpendPower}
+     * @memberof GetSpendPowerResponse
+     */
+    'spend_power': SpendPower;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetSpendPowerResponse
+     */
+    'request_id': string;
+}
+/**
  * The input data for the financial connections to be migrated into the unified Fuse API.
  * @export
  * @interface MigrateFinancialConnectionsAggregatorConnectionData
@@ -3470,6 +3627,86 @@ export interface RefreshAssetReportResponse {
      */
     'request_id'?: string;
 }
+/**
+ *
+ * @export
+ * @interface SpendPower
+ */
+export interface SpendPower {
+    /**
+     * The id of the spend power
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'id': string;
+    /**
+     * The customization id of the spend power.
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'customization_id': string;
+    /**
+     * The amount, in cents, of the users spend limit.
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'spend_limit': string;
+    /**
+     * The amount, in cents, that the user has already spent.
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'current_spend': string;
+    /**
+     * The accumulative amount, in cents, of all the combined pending payments.
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'pending_payments_amount': string;
+    /**
+     * The currency.
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'currency': string;
+    /**
+     * The datetime of when the spend power was most recently updated.
+     * @type {string}
+     * @memberof SpendPower
+     */
+    'last_updated': string;
+}
+/**
+ *
+ * @export
+ * @interface SpendPowerCustomization
+ */
+export interface SpendPowerCustomization {
+    /**
+     * The timeframe to base the spend power on.
+     * @type {string}
+     * @memberof SpendPowerCustomization
+     */
+    'timeframe': SpendPowerCustomizationTimeframeEnum;
+    /**
+     * The minimum allowed limit for the spend power, in cents.
+     * @type {string}
+     * @memberof SpendPowerCustomization
+     */
+    'min_limit': string;
+    /**
+     * The maximum allowed limit for the spend power, in cents.
+     * @type {string}
+     * @memberof SpendPowerCustomization
+     */
+    'max_limit': string;
+}
+export declare const SpendPowerCustomizationTimeframeEnum: {
+    readonly Daily: "daily";
+    readonly Weekly: "weekly";
+    readonly Monthly: "monthly";
+};
+export type SpendPowerCustomizationTimeframeEnum = typeof SpendPowerCustomizationTimeframeEnum[keyof typeof SpendPowerCustomizationTimeframeEnum];
 /**
  *
  * @export
@@ -4363,6 +4600,25 @@ export interface UpdateEntityResponse {
 /**
  *
  * @export
+ * @interface UpdateSpendPowerCustomizationResponse
+ */
+export interface UpdateSpendPowerCustomizationResponse {
+    /**
+     * The id of the updated customization.
+     * @type {string}
+     * @memberof UpdateSpendPowerCustomizationResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof UpdateSpendPowerCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
  * @interface WebhookEvent
  */
 export interface WebhookEvent {
@@ -4402,12 +4658,6 @@ export interface WebhookEvent {
      * @memberof WebhookEvent
      */
     'asset_report_id'?: string;
-    /**
-     * Exists for transactions.updates webhooks
-     * @type {number}
-     * @memberof WebhookEvent
-     */
-    'new_transactions_count'?: number;
     /**
      * Exists for transactions.updates webhooks. Indicates if historical transaction information (up to 24 months) is ready to be queried.
      * @type {boolean}
@@ -4464,6 +4714,14 @@ export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
  */
 export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) => {
     /**
+     *
+     * @param {string} spendPowerId
+     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    addSpendPowerTransaction: (spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -4484,6 +4742,20 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     createSession: (createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     * Starts the background process that will determine the spend power depending on the customization passed in.
+     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createSpendPower: (createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createSpendPowerCustomization: (body?: SpendPowerCustomization, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Delete a financial connection
@@ -4594,6 +4866,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     *
+     * @param {string} spendPowerId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSpendPower: (spendPowerId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -4618,6 +4897,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     syncFinancialConnectionsData: (body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateSpendPowerCustomization: (body?: SpendPowerCustomization, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
      * @summary Get liabilities
      * @param {GetLiabilitiesRequest} getLiabilitiesRequest
      * @param {*} [options] Override http request option.
@@ -4630,6 +4916,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
  * @export
  */
 export declare const FuseApiFp: (configuration?: Configuration) => {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddSpendPowerTransactionResponse>>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -4651,6 +4945,20 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSessionResponse>>;
+    /**
+     * Starts the background process that will determine the spend power depending on the customization passed in.
+     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerResponse>>;
+    /**
+     *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerCustomizationResponse>>;
     /**
      *
      * @summary Delete a financial connection
@@ -4761,6 +5069,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
     /**
+     *
+     * @param {string} spendPowerId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSpendPower(spendPowerId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSpendPowerResponse>>;
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -4785,6 +5100,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
     /**
      *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateSpendPowerCustomizationResponse>>;
+    /**
+     *
      * @summary Get liabilities
      * @param {GetLiabilitiesRequest} getLiabilitiesRequest
      * @param {*} [options] Override http request option.
@@ -4797,6 +5119,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
  * @export
  */
 export declare const FuseApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: any): AxiosPromise<AddSpendPowerTransactionResponse>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -4818,6 +5148,20 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     createSession(createSessionRequest?: CreateSessionRequest, options?: any): AxiosPromise<CreateSessionResponse>;
+    /**
+     * Starts the background process that will determine the spend power depending on the customization passed in.
+     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: any): AxiosPromise<CreateSpendPowerResponse>;
+    /**
+     *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createSpendPowerCustomization(body?: SpendPowerCustomization, options?: any): AxiosPromise<CreateSpendPowerCustomizationResponse>;
     /**
      *
      * @summary Delete a financial connection
@@ -4928,6 +5272,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse>;
     /**
+     *
+     * @param {string} spendPowerId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSpendPower(spendPowerId: string, options?: any): AxiosPromise<GetSpendPowerResponse>;
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -4952,6 +5303,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse>;
     /**
      *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: any): AxiosPromise<UpdateSpendPowerCustomizationResponse>;
+    /**
+     *
      * @summary Get liabilities
      * @param {GetLiabilitiesRequest} getLiabilitiesRequest
      * @param {*} [options] Override http request option.
@@ -4966,6 +5324,15 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
  * @extends {BaseAPI}
  */
 export declare class FuseApi extends BaseAPI {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AddSpendPowerTransactionResponse, any>>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -4990,6 +5357,22 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSessionResponse, any>>;
+    /**
+     * Starts the background process that will determine the spend power depending on the customization passed in.
+     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerResponse, any>>;
+    /**
+     *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerCustomizationResponse, any>>;
     /**
      *
      * @summary Delete a financial connection
@@ -5114,6 +5497,14 @@ export declare class FuseApi extends BaseAPI {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
     /**
+     *
+     * @param {string} spendPowerId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getSpendPower(spendPowerId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetSpendPowerResponse, any>>;
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -5141,6 +5532,14 @@ export declare class FuseApi extends BaseAPI {
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
     /**
      *
+     * @param {SpendPowerCustomization} [body]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateSpendPowerCustomizationResponse, any>>;
+    /**
+     *
      * @summary Get liabilities
      * @param {GetLiabilitiesRequest} getLiabilitiesRequest
      * @param {*} [options] Override http request option.
@@ -5148,4 +5547,135 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetLiabilitiesResponse, any>>;
+}
+/**
+ * SpendPowerApi - axios parameter creator
+ * @export
+ */
+export declare const SpendPowerApiAxiosParamCreator: (configuration?: Configuration) => {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {string} [plaidClientId]
+     * @param {string} [plaidSecret]
+     * @param {string} [tellerApplicationId]
+     * @param {string} [tellerCertificate]
+     * @param {string} [tellerPrivateKey]
+     * @param {string} [tellerTokenSigningKey]
+     * @param {string} [tellerSigningSecret]
+     * @param {string} [mxClientId]
+     * @param {string} [mxApiKey]
+     * @param {string} [snaptradeClientId]
+     * @param {string} [snaptradeConsumerKey]
+     * @param {string} [flinksCustomerId]
+     * @param {string} [flinksUsInstanceId]
+     * @param {string} [flinksCaInstanceId]
+     * @param {string} [finicityPartnerId]
+     * @param {string} [finicityPartnerSecret]
+     * @param {string} [finicityAppKey]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteSpendPower: (spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+};
+/**
+ * SpendPowerApi - functional programming interface
+ * @export
+ */
+export declare const SpendPowerApiFp: (configuration?: Configuration) => {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {string} [plaidClientId]
+     * @param {string} [plaidSecret]
+     * @param {string} [tellerApplicationId]
+     * @param {string} [tellerCertificate]
+     * @param {string} [tellerPrivateKey]
+     * @param {string} [tellerTokenSigningKey]
+     * @param {string} [tellerSigningSecret]
+     * @param {string} [mxClientId]
+     * @param {string} [mxApiKey]
+     * @param {string} [snaptradeClientId]
+     * @param {string} [snaptradeConsumerKey]
+     * @param {string} [flinksCustomerId]
+     * @param {string} [flinksUsInstanceId]
+     * @param {string} [flinksCaInstanceId]
+     * @param {string} [finicityPartnerId]
+     * @param {string} [finicityPartnerSecret]
+     * @param {string} [finicityAppKey]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteSpendPowerResponse>>;
+};
+/**
+ * SpendPowerApi - factory interface
+ * @export
+ */
+export declare const SpendPowerApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {string} [plaidClientId]
+     * @param {string} [plaidSecret]
+     * @param {string} [tellerApplicationId]
+     * @param {string} [tellerCertificate]
+     * @param {string} [tellerPrivateKey]
+     * @param {string} [tellerTokenSigningKey]
+     * @param {string} [tellerSigningSecret]
+     * @param {string} [mxClientId]
+     * @param {string} [mxApiKey]
+     * @param {string} [snaptradeClientId]
+     * @param {string} [snaptradeConsumerKey]
+     * @param {string} [flinksCustomerId]
+     * @param {string} [flinksUsInstanceId]
+     * @param {string} [flinksCaInstanceId]
+     * @param {string} [finicityPartnerId]
+     * @param {string} [finicityPartnerSecret]
+     * @param {string} [finicityAppKey]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: any): AxiosPromise<DeleteSpendPowerResponse>;
+};
+/**
+ * SpendPowerApi - object-oriented interface
+ * @export
+ * @class SpendPowerApi
+ * @extends {BaseAPI}
+ */
+export declare class SpendPowerApi extends BaseAPI {
+    /**
+     *
+     * @param {string} spendPowerId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {string} [plaidClientId]
+     * @param {string} [plaidSecret]
+     * @param {string} [tellerApplicationId]
+     * @param {string} [tellerCertificate]
+     * @param {string} [tellerPrivateKey]
+     * @param {string} [tellerTokenSigningKey]
+     * @param {string} [tellerSigningSecret]
+     * @param {string} [mxClientId]
+     * @param {string} [mxApiKey]
+     * @param {string} [snaptradeClientId]
+     * @param {string} [snaptradeConsumerKey]
+     * @param {string} [flinksCustomerId]
+     * @param {string} [flinksUsInstanceId]
+     * @param {string} [flinksCaInstanceId]
+     * @param {string} [finicityPartnerId]
+     * @param {string} [finicityPartnerSecret]
+     * @param {string} [finicityAppKey]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SpendPowerApi
+     */
+    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteSpendPowerResponse, any>>;
 }
