@@ -180,50 +180,37 @@ export type AccountType = typeof AccountType[keyof typeof AccountType];
 /**
  *
  * @export
- * @interface AddSpendPowerTransactionRequest
+ * @interface AddAccountEventsRequest
  */
-export interface AddSpendPowerTransactionRequest {
+export interface AddAccountEventsRequest {
     /**
-     * Id of the transaction
-     * @type {string}
-     * @memberof AddSpendPowerTransactionRequest
+     *
+     * @type {Array<AddAccountEventsRequestEventsInner>}
+     * @memberof AddAccountEventsRequest
      */
-    'id': string;
-    /**
-     * The status of the transaction. This will be either pending, posted or cancelled.
-     * @type {string}
-     * @memberof AddSpendPowerTransactionRequest
-     */
-    'status': AddSpendPowerTransactionRequestStatusEnum;
-    /**
-     * The amount of the transaction, in cents. Use positive numbers to represent money going out and negative numbers to represent money coming in.
-     * @type {string}
-     * @memberof AddSpendPowerTransactionRequest
-     */
-    'amount'?: string;
+    'events': Array<AddAccountEventsRequestEventsInner>;
 }
-export declare const AddSpendPowerTransactionRequestStatusEnum: {
-    readonly Pending: "pending";
-    readonly Posted: "posted";
-    readonly Cancelled: "cancelled";
-};
-export type AddSpendPowerTransactionRequestStatusEnum = typeof AddSpendPowerTransactionRequestStatusEnum[keyof typeof AddSpendPowerTransactionRequestStatusEnum];
+/**
+ * @type AddAccountEventsRequestEventsInner
+ * @export
+ */
+export type AddAccountEventsRequestEventsInner = ExternalTransactionEvent | InAppTransactionEvent | UpdatedBalanceEvent;
 /**
  *
  * @export
- * @interface AddSpendPowerTransactionResponse
+ * @interface AddAccountEventsResponse
  */
-export interface AddSpendPowerTransactionResponse {
+export interface AddAccountEventsResponse {
     /**
      * Response message
      * @type {string}
-     * @memberof AddSpendPowerTransactionResponse
+     * @memberof AddAccountEventsResponse
      */
     'message': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
-     * @memberof AddSpendPowerTransactionResponse
+     * @memberof AddAccountEventsResponse
      */
     'request_id': string;
 }
@@ -397,7 +384,7 @@ export interface AssetReportTransaction {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents associated with the transaction. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
+     * Amount in cents associated with the transaction. The format of this value is a double. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
      * @type {number}
      * @memberof AssetReportTransaction
      */
@@ -1065,6 +1052,7 @@ export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStat
 export declare const CountryCode: {
     readonly Us: "US";
     readonly Ca: "CA";
+    readonly In: "IN";
 };
 export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
 /**
@@ -1342,7 +1330,7 @@ export interface CreateSessionRequest {
      */
     'entity': Entity;
     /**
-     * The fuse access token for an existing account integration. This will perform the process to reconnect an existing disconnected account.
+     * The fuse access token for an existing financial connection. This will perform the process to reconnect an existing disconnected account.
      * @type {string}
      * @memberof CreateSessionRequest
      */
@@ -1382,6 +1370,31 @@ export interface CreateSessionResponse {
 /**
  *
  * @export
+ * @interface CreateSpendPowerCustomizationRequest
+ */
+export interface CreateSpendPowerCustomizationRequest {
+    /**
+     *
+     * @type {SpendPowerTimeFrame}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'timeframe': SpendPowerTimeFrame;
+    /**
+     * The minimum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'min_limit': number;
+    /**
+     * The maximum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'max_limit': number;
+}
+/**
+ *
+ * @export
  * @interface CreateSpendPowerCustomizationResponse
  */
 export interface CreateSpendPowerCustomizationResponse {
@@ -1405,19 +1418,19 @@ export interface CreateSpendPowerCustomizationResponse {
  */
 export interface CreateSpendPowerRequest {
     /**
-     * Access token for authentication
+     * A unique ID representing the bank account that this spend power is calculated for. Typically this will be a bank connection account ID from your application. It is currently used as a means of connecting events to the spend power.
      * @type {string}
      * @memberof CreateSpendPowerRequest
      */
-    'access_token': string;
+    'account_id': string;
     /**
-     * The remote account id to create the spend power for.
+     * The ISO-4217 currency code of the transaction
      * @type {string}
      * @memberof CreateSpendPowerRequest
      */
-    'remote_account_id': string;
+    'iso_currency_code': string;
     /**
-     * The spend power customization id.
+     * The spend power customization id. This is used to determine the timeframe and other metadata for the spend power.
      * @type {string}
      * @memberof CreateSpendPowerRequest
      */
@@ -1430,7 +1443,7 @@ export interface CreateSpendPowerRequest {
  */
 export interface CreateSpendPowerResponse {
     /**
-     * The id of the created spend power
+     * The id of the created spend power.
      * @type {string}
      * @memberof CreateSpendPowerResponse
      */
@@ -1493,17 +1506,158 @@ export interface DeleteFinancialConnectionResponse {
  */
 export interface DeleteSpendPowerResponse {
     /**
-     *
-     * @type {SpendPower}
+     * The id of the deleted spend power
+     * @type {string}
      * @memberof DeleteSpendPowerResponse
      */
-    'spend_power': SpendPower;
+    'id': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof DeleteSpendPowerResponse
      */
     'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface EnrichTransactionsRequest
+ */
+export interface EnrichTransactionsRequest {
+    /**
+     *
+     * @type {Array<TransactionToEnrich>}
+     * @memberof EnrichTransactionsRequest
+     */
+    'transactions': Array<TransactionToEnrich>;
+}
+/**
+ *
+ * @export
+ * @interface EnrichTransactionsResponse
+ */
+export interface EnrichTransactionsResponse {
+    /**
+     * The enriched transactions.
+     * @type {Array<EnrichedTransaction>}
+     * @memberof EnrichTransactionsResponse
+     */
+    'enriched_transactions'?: Array<EnrichedTransaction>;
+}
+/**
+ *
+ * @export
+ * @interface EnrichedTransaction
+ */
+export interface EnrichedTransaction {
+    /**
+     * A original ID for the transaction that to help you tie data back to your systems.
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'id': string;
+    /**
+     * The original or enhanced name of the merchant.
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'name'?: string;
+    /**
+     *
+     * @type {EnrichedTransactionLogo}
+     * @memberof EnrichedTransaction
+     */
+    'logo'?: EnrichedTransactionLogo;
+    /**
+     * The amount of the transaction in cents, in the currency of the account.
+     * @type {number}
+     * @memberof EnrichedTransaction
+     */
+    'amount'?: number;
+    /**
+     *
+     * @type {TransactionCategory}
+     * @memberof EnrichedTransaction
+     */
+    'category'?: TransactionCategory;
+    /**
+     * Whether the transaction is a bill pay.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_bill_pay'?: boolean;
+    /**
+     * Whether the transaction is a direct deposit.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_direct_deposit'?: boolean;
+    /**
+     * Whether the transaction is a an expense
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_expense'?: boolean;
+    /**
+     * Whether the transaction is a fee.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_fee'?: boolean;
+    /**
+     * Whether the transaction is income.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_income'?: boolean;
+    /**
+     * Whether the transaction is international.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_international'?: boolean;
+    /**
+     * This indicates whether the transaction represents an overdraft fee.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_overdraft_fee'?: boolean;
+    /**
+     * Whether the transaction is a payroll advance.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_payroll_advance'?: boolean;
+    /**
+     * Whether the transaction is a subscription.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_subscription'?: boolean;
+    /**
+     * The type of transaction
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'type'?: EnrichedTransactionTypeEnum;
+}
+export declare const EnrichedTransactionTypeEnum: {
+    readonly Debit: "debit";
+    readonly Credit: "credit";
+};
+export type EnrichedTransactionTypeEnum = typeof EnrichedTransactionTypeEnum[keyof typeof EnrichedTransactionTypeEnum];
+/**
+ *
+ * @export
+ * @interface EnrichedTransactionLogo
+ */
+export interface EnrichedTransactionLogo {
+    /**
+     * The URL of the logo.
+     * @type {string}
+     * @memberof EnrichedTransactionLogo
+     */
+    'url'?: string;
 }
 /**
  *
@@ -1529,6 +1683,69 @@ export interface Entity {
      * @memberof Entity
      */
     'email'?: string;
+}
+/**
+ *
+ * @export
+ * @interface EvalSpendPowerRequest
+ */
+export interface EvalSpendPowerRequest {
+    /**
+     * The size of the window for training
+     * @type {number}
+     * @memberof EvalSpendPowerRequest
+     */
+    'window_size': number;
+    /**
+     *
+     * @type {SpendPowerTimeFrame}
+     * @memberof EvalSpendPowerRequest
+     */
+    'time_frame': SpendPowerTimeFrame;
+    /**
+     *
+     * @type {Array<EvalSpendPowerRequestEventsInner>}
+     * @memberof EvalSpendPowerRequest
+     */
+    'events': Array<EvalSpendPowerRequestEventsInner>;
+}
+/**
+ *
+ * @export
+ * @interface EvalSpendPowerRequestEventsInner
+ */
+export interface EvalSpendPowerRequestEventsInner {
+    /**
+     * The id of the account that event belongs to
+     * @type {string}
+     * @memberof EvalSpendPowerRequestEventsInner
+     */
+    'account_id': string;
+    /**
+     *
+     * @type {AddAccountEventsRequestEventsInner}
+     * @memberof EvalSpendPowerRequestEventsInner
+     */
+    'event': AddAccountEventsRequestEventsInner;
+}
+/**
+ *
+ * @export
+ * @interface EvalSpendPowerResponse
+ */
+export interface EvalSpendPowerResponse {
+    /**
+     * The mean absolute overestimation error for the data
+     * @type {number}
+     * @memberof EvalSpendPowerResponse
+     */
+    'mean_absolute_overestimation_error'?: number;
+    /**
+     * The mean absolute underestimation error for the data
+     * @type {number}
+     * @memberof EvalSpendPowerResponse
+     */
+    'mean_absolute_underestimation_error'?: number;
 }
 /**
  *
@@ -1568,6 +1785,87 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
      */
     'request_id': string;
 }
+/**
+ *
+ * @export
+ * @interface ExternalTransactionEvent
+ */
+export interface ExternalTransactionEvent {
+    /**
+     * ID of the transaction
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'id': string;
+    /**
+     *
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'event_type': ExternalTransactionEventEventTypeEnum;
+    /**
+     *
+     * @type {ExternalTransactionEventStatus}
+     * @memberof ExternalTransactionEvent
+     */
+    'status': ExternalTransactionEventStatus;
+    /**
+     * The running balance of the account after the transaction has occurred, in cents
+     * @type {number}
+     * @memberof ExternalTransactionEvent
+     */
+    'balance'?: number;
+    /**
+     * Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof ExternalTransactionEvent
+     */
+    'amount': number;
+    /**
+     *
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'merchant_name': string;
+    /**
+     *
+     * @type {TransactionEventType}
+     * @memberof ExternalTransactionEvent
+     */
+    'transaction_type': TransactionEventType;
+    /**
+     *
+     * @type {TransactionCategory}
+     * @memberof ExternalTransactionEvent
+     */
+    'category': TransactionCategory;
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'iso_currency_code': string;
+    /**
+     * Datetime of the transaction In ISO-8601 format
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'timestamp': string;
+}
+export declare const ExternalTransactionEventEventTypeEnum: {
+    readonly ExternalTransaction: "external_transaction";
+};
+export type ExternalTransactionEventEventTypeEnum = typeof ExternalTransactionEventEventTypeEnum[keyof typeof ExternalTransactionEventEventTypeEnum];
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const ExternalTransactionEventStatus: {
+    readonly Pending: "pending";
+    readonly Posted: "posted";
+};
+export type ExternalTransactionEventStatus = typeof ExternalTransactionEventStatus[keyof typeof ExternalTransactionEventStatus];
 /**
  *
  * @export
@@ -1773,13 +2071,13 @@ export interface FinancialConnectionsAccountBalance {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents after factoring in pending balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
+     * Amount in cents after factoring in pending balances. The format of this value is a double. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
     'available'?: number;
     /**
-     * Amount in cents without factoring in pending balances
+     * Amount in cents without factoring in pending balances. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
@@ -1804,13 +2102,13 @@ export interface FinancialConnectionsAccountBalance {
  */
 export interface FinancialConnectionsAccountCachedBalance {
     /**
-     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
+     * The amount of funds available, in cents, to be withdrawn from the account, as determined by the financial institution. The format of this value is a double. Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
     'available'?: number;
     /**
-     * Amount without factoring in pending balances
+     * Amount without factoring in pending balances, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
@@ -2069,13 +2367,13 @@ export interface FinancialConnectionsHolding {
      */
     'remote_account_id': string;
     /**
-     * The original total value of the holding when it was purchased.
+     * The original total value of the holding, in cents, when it was purchased. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
     'cost_basis': number;
     /**
-     * The current market value of the holding.
+     * The current market value of the holding, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
@@ -2087,7 +2385,7 @@ export interface FinancialConnectionsHolding {
      */
     'quantity': number;
     /**
-     * The price of the security as provided by the financial institution managing the holding.
+     * The price of the security, in cents, as provided by the financial institution managing the holding. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
@@ -2136,7 +2434,7 @@ export interface FinancialConnectionsInvestmentSecurity {
      */
     'cusip'?: string;
     /**
-     * The closing price of the security at the end of the most recent trading day.
+     * The closing price of the security, in cents, at the end of the most recent trading day. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
@@ -2238,7 +2536,7 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'account_name'?: string;
     /**
-     * The amount of the investment transaction
+     * The amount of the investment transaction, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
@@ -2250,7 +2548,7 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'description': string;
     /**
-     * The fees associated with the investment transaction
+     * The fees associated with the investment transaction, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
@@ -2274,13 +2572,19 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'type': FinancialConnectionsInvestmentTransactionTypeEnum;
     /**
+     *
+     * @type {FinancialConnectionsInvestmentTransactionSubtype}
+     * @memberof FinancialConnectionsInvestmentTransaction
+     */
+    'subtype'?: FinancialConnectionsInvestmentTransactionSubtype;
+    /**
      * The number of units of the security involved in this transaction
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
     'quantity': number;
     /**
-     * The price of the security involved in this transaction
+     * The price of the security involved in this transaction, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
@@ -2302,6 +2606,63 @@ export declare const FinancialConnectionsInvestmentTransactionTypeEnum: {
     readonly Minus: "-";
 };
 export type FinancialConnectionsInvestmentTransactionTypeEnum = typeof FinancialConnectionsInvestmentTransactionTypeEnum[keyof typeof FinancialConnectionsInvestmentTransactionTypeEnum];
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const FinancialConnectionsInvestmentTransactionSubtype: {
+    readonly AccountFee: "account_fee";
+    readonly Adjustment: "adjustment";
+    readonly Assignment: "assignment";
+    readonly Buy: "buy";
+    readonly BuyToCover: "buy_to_cover";
+    readonly Contribution: "contribution";
+    readonly Deposit: "deposit";
+    readonly Distribution: "distribution";
+    readonly Dividend: "dividend";
+    readonly DividendReinvestment: "dividend_reinvestment";
+    readonly Exercise: "exercise";
+    readonly Expire: "expire";
+    readonly FundFee: "fund_fee";
+    readonly Interest: "interest";
+    readonly InterestReceivable: "interest_receivable";
+    readonly InterestReinvestment: "interest_reinvestment";
+    readonly LegalFee: "legal_fee";
+    readonly LoanPayment: "loan_payment";
+    readonly LongTermCapitalGain: "long_term_capital_gain";
+    readonly LongTermCapitalGainReinvestment: "long_term_capital_gain_reinvestment";
+    readonly ManagementFee: "management_fee";
+    readonly MarginExpense: "margin_expense";
+    readonly Merger: "merger";
+    readonly MiscellaneousFee: "miscellaneous_fee";
+    readonly NonQualifiedDividend: "non_qualified_dividend";
+    readonly NonResidentTax: "non_resident_tax";
+    readonly PendingCredit: "pending_credit";
+    readonly PendingDebit: "pending_debit";
+    readonly QualifiedDividend: "qualified_dividend";
+    readonly Rebalance: "rebalance";
+    readonly ReturnOfPrincipal: "return_of_principal";
+    readonly Request: "request";
+    readonly Sell: "sell";
+    readonly SellShort: "sell_short";
+    readonly Send: "send";
+    readonly ShortTermCapitalGain: "short_term_capital_gain";
+    readonly ShortTermCapitalGainReinvestment: "short_term_capital_gain_reinvestment";
+    readonly SpinOff: "spin_off";
+    readonly Split: "split";
+    readonly StockDistribution: "stock_distribution";
+    readonly Tax: "tax";
+    readonly TaxWithheld: "tax_withheld";
+    readonly Trade: "trade";
+    readonly Transfer: "transfer";
+    readonly TransferFee: "transfer_fee";
+    readonly TrustFee: "trust_fee";
+    readonly UnqualifiedGain: "unqualified_gain";
+    readonly Withdrawal: "withdrawal";
+    readonly Minus: "-";
+};
+export type FinancialConnectionsInvestmentTransactionSubtype = typeof FinancialConnectionsInvestmentTransactionSubtype[keyof typeof FinancialConnectionsInvestmentTransactionSubtype];
 /**
  *
  * @export
@@ -2657,6 +3018,8 @@ export declare const FuseApiErrorCode: {
     readonly EntityNotFound: "entity_not_found";
     readonly SessionNotFound: "session_not_found";
     readonly FinancialInstitutionNotFound: "financial_institution_not_found";
+    readonly SpendPowerNotFound: "spend_power_not_found";
+    readonly SpendPowerCustomizationNotFound: "spend_power_customization_not_found";
     readonly MissingAccessToken: "missing_access_token";
     readonly MissingPlaidClientIdHeader: "missing_plaid_client_id_header";
     readonly MissingPlaidSecretHeader: "missing_plaid_secret_header";
@@ -2886,6 +3249,25 @@ export interface GetEntityResponse {
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetEntityResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface GetFinanceScoreResponse
+ */
+export interface GetFinanceScoreResponse {
+    /**
+     * A value between 0 and 1 where 1 is a perfect finance score and 0 is the worst finance score.
+     * @type {number}
+     * @memberof GetFinanceScoreResponse
+     */
+    'finance_score': number;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinanceScoreResponse
      */
     'request_id': string;
 }
@@ -3285,25 +3667,25 @@ export interface GetInvestmentTransactionsRequest {
      * @type {string}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'start_date'?: string;
+    'start_date': string;
     /**
      * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
      * @type {string}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'end_date'?: string;
+    'end_date': string;
     /**
      * Specify current page.
      * @type {number}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'page'?: number;
+    'page': number;
     /**
      * Number of items per page.
      * @type {number}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'records_per_page'?: number;
+    'records_per_page': number;
     /**
      *
      * @type {GetInvestmentTransactionsRequestOptions}
@@ -3390,6 +3772,25 @@ export interface GetLiabilitiesResponse {
 /**
  *
  * @export
+ * @interface GetSpendPowerCustomizationResponse
+ */
+export interface GetSpendPowerCustomizationResponse {
+    /**
+     *
+     * @type {SpendPowerCustomization}
+     * @memberof GetSpendPowerCustomizationResponse
+     */
+    'spend_power_customization': SpendPowerCustomization;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetSpendPowerCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
  * @interface GetSpendPowerResponse
  */
 export interface GetSpendPowerResponse {
@@ -3406,6 +3807,82 @@ export interface GetSpendPowerResponse {
      */
     'request_id': string;
 }
+/**
+ *
+ * @export
+ * @interface InAppTransactionEvent
+ */
+export interface InAppTransactionEvent {
+    /**
+     * ID of the transaction
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'id': string;
+    /**
+     *
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'event_type': InAppTransactionEventEventTypeEnum;
+    /**
+     *
+     * @type {InAppTransactionEventStatus}
+     * @memberof InAppTransactionEvent
+     */
+    'status': InAppTransactionEventStatus;
+    /**
+     * The running balance of the account after the transaction has occurred, in cents.
+     * @type {number}
+     * @memberof InAppTransactionEvent
+     */
+    'balance'?: number;
+    /**
+     *
+     * @type {number}
+     * @memberof InAppTransactionEvent
+     */
+    'amount': number;
+    /**
+     *
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'merchant_name': string;
+    /**
+     *
+     * @type {TransactionEventType}
+     * @memberof InAppTransactionEvent
+     */
+    'transaction_type': TransactionEventType;
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'iso_currency_code'?: string;
+    /**
+     * Datetime of the transaction In ISO-8601 format
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'timestamp': string;
+}
+export declare const InAppTransactionEventEventTypeEnum: {
+    readonly InAppTransaction: "in_app_transaction";
+};
+export type InAppTransactionEventEventTypeEnum = typeof InAppTransactionEventEventTypeEnum[keyof typeof InAppTransactionEventEventTypeEnum];
+/**
+ *
+ * @export
+ * @enum {string}
+ */
+export declare const InAppTransactionEventStatus: {
+    readonly Pending: "pending";
+    readonly Succeeded: "succeeded";
+    readonly Failed: "failed";
+};
+export type InAppTransactionEventStatus = typeof InAppTransactionEventStatus[keyof typeof InAppTransactionEventStatus];
 /**
  * The input data for the financial connections to be migrated into the unified Fuse API.
  * @export
@@ -3646,31 +4123,31 @@ export interface SpendPower {
      */
     'customization_id': string;
     /**
-     * The amount, in cents, of the users spend limit.
+     * The total limit for the current timeframe, in cents.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'spend_limit': number;
+    /**
+     * The total current spend in the current timeframe, in cents, without factoring in pending payments.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'current_spend': number;
+    /**
+     * The total unpaid amount, in cents, from all timeframes.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'pending_payments_amount': number;
+    /**
+     * The ISO-4217 currency code of the transaction
      * @type {string}
      * @memberof SpendPower
      */
-    'spend_limit': string;
+    'iso_currency_code': string;
     /**
-     * The amount, in cents, that the user has already spent.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'current_spend': string;
-    /**
-     * The accumulative amount, in cents, of all the combined pending payments.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'pending_payments_amount': string;
-    /**
-     * The currency.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'currency': string;
-    /**
-     * The datetime of when the spend power was most recently updated.
+     * The datetime of when the spend power was most recently updated, in ISO-8601 format.
      * @type {string}
      * @memberof SpendPower
      */
@@ -3683,30 +4160,41 @@ export interface SpendPower {
  */
 export interface SpendPowerCustomization {
     /**
-     * The timeframe to base the spend power on.
+     * The id of the spend power customization
      * @type {string}
      * @memberof SpendPowerCustomization
      */
-    'timeframe': SpendPowerCustomizationTimeframeEnum;
+    'id': string;
+    /**
+     *
+     * @type {SpendPowerTimeFrame}
+     * @memberof SpendPowerCustomization
+     */
+    'timeframe': SpendPowerTimeFrame;
     /**
      * The minimum allowed limit for the spend power, in cents.
-     * @type {string}
+     * @type {number}
      * @memberof SpendPowerCustomization
      */
-    'min_limit': string;
+    'min_limit': number;
     /**
      * The maximum allowed limit for the spend power, in cents.
-     * @type {string}
+     * @type {number}
      * @memberof SpendPowerCustomization
      */
-    'max_limit': string;
+    'max_limit': number;
 }
-export declare const SpendPowerCustomizationTimeframeEnum: {
+/**
+ * The timeframe to base the spend power on.
+ * @export
+ * @enum {string}
+ */
+export declare const SpendPowerTimeFrame: {
     readonly Daily: "daily";
     readonly Weekly: "weekly";
     readonly Monthly: "monthly";
 };
-export type SpendPowerCustomizationTimeframeEnum = typeof SpendPowerCustomizationTimeframeEnum[keyof typeof SpendPowerCustomizationTimeframeEnum];
+export type SpendPowerTimeFrame = typeof SpendPowerTimeFrame[keyof typeof SpendPowerTimeFrame];
 /**
  *
  * @export
@@ -3826,7 +4314,7 @@ export interface Transaction {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents associated with the transaction. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
+     * Amount in cents associated with the transaction. The format of this value is a double.  Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
      * @type {number}
      * @memberof Transaction
      */
@@ -4525,6 +5013,194 @@ export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof Transa
 /**
  *
  * @export
+ * @interface TransactionCategory
+ */
+export interface TransactionCategory {
+    /**
+     *
+     * @type {TransactionCategoryPrimary}
+     * @memberof TransactionCategory
+     */
+    'primary': TransactionCategoryPrimary;
+    /**
+     *
+     * @type {TransactionCategoryDetailed}
+     * @memberof TransactionCategory
+     */
+    'detailed': TransactionCategoryDetailed;
+}
+/**
+ * Detailed transaction category
+ * @export
+ * @enum {string}
+ */
+export declare const TransactionCategoryDetailed: {
+    readonly AutoInsurance: "auto_insurance";
+    readonly AutoPayment: "auto_payment";
+    readonly Gas: "gas";
+    readonly Parking: "parking";
+    readonly PublicTransportation: "public_transportation";
+    readonly ServiceAndParts: "service_and_parts";
+    readonly DomainNames: "domain_names";
+    readonly FraudProtection: "fraud_protection";
+    readonly HomePhone: "home_phone";
+    readonly Hosting: "hosting";
+    readonly Internet: "internet";
+    readonly MobilePhone: "mobile_phone";
+    readonly Television: "television";
+    readonly Utilities: "utilities";
+    readonly Advertising: "advertising";
+    readonly Legal: "legal";
+    readonly OfficeSupplies: "office_supplies";
+    readonly Printing: "printing";
+    readonly Shipping: "shipping";
+    readonly BooksAndSupplies: "books_and_supplies";
+    readonly StudentLoan: "student_loan";
+    readonly Tuition: "tuition";
+    readonly Amusement: "amusement";
+    readonly Arts: "arts";
+    readonly MoviesAndDvds: "movies_and_dvds";
+    readonly Music: "music";
+    readonly NewspapersAndMagazines: "newspapers_and_magazines";
+    readonly AtmFee: "atm_fee";
+    readonly BankingFee: "banking_fee";
+    readonly FinanceCharge: "finance_charge";
+    readonly LateFee: "late_fee";
+    readonly ServiceFee: "service_fee";
+    readonly TradeCommissions: "trade_commissions";
+    readonly FinancialAdvisor: "financial_advisor";
+    readonly LifeInsurance: "life_insurance";
+    readonly AlcoholAndBars: "alcohol_and_bars";
+    readonly CoffeeShops: "coffee_shops";
+    readonly FastFood: "fast_food";
+    readonly Groceries: "groceries";
+    readonly Restaurants: "restaurants";
+    readonly Charity: "charity";
+    readonly Gift: "gift";
+    readonly Dentist: "dentist";
+    readonly Doctor: "doctor";
+    readonly Eyecare: "eyecare";
+    readonly Gym: "gym";
+    readonly HealthInsurance: "health_insurance";
+    readonly Pharmacy: "pharmacy";
+    readonly Sports: "sports";
+    readonly Furnishings: "furnishings";
+    readonly HomeImprovement: "home_improvement";
+    readonly HomeInsurance: "home_insurance";
+    readonly HomeServices: "home_services";
+    readonly HomeSupplies: "home_supplies";
+    readonly LawnAndGarden: "lawn_and_garden";
+    readonly MortgageAndRent: "mortgage_and_rent";
+    readonly Bonus: "bonus";
+    readonly InterestIncome: "interest_income";
+    readonly Paycheck: "paycheck";
+    readonly Reimbursement: "reimbursement";
+    readonly RentalIncome: "rental_income";
+    readonly ReturnedPurchase: "returned_purchase";
+    readonly Buy: "buy";
+    readonly Deposit: "deposit";
+    readonly DividendAndCapGains: "dividend_and_cap_gains";
+    readonly Sell: "sell";
+    readonly Withdrawal: "withdrawal";
+    readonly Allowance: "allowance";
+    readonly BabySupplies: "baby_supplies";
+    readonly BabysitterAndDaycare: "babysitter_and_daycare";
+    readonly ChildSupport: "child_support";
+    readonly KidsActivities: "kids_activities";
+    readonly Toys: "toys";
+    readonly Hair: "hair";
+    readonly Laundry: "laundry";
+    readonly SpaAndMassage: "spa_and_massage";
+    readonly PetFoodAndSupplies: "pet_food_and_supplies";
+    readonly PetGrooming: "pet_grooming";
+    readonly Veterinary: "veterinary";
+    readonly Books: "books";
+    readonly Clothing: "clothing";
+    readonly Hobbies: "hobbies";
+    readonly SportingGoods: "sporting_goods";
+    readonly FederalTax: "federal_tax";
+    readonly LocalTax: "local_tax";
+    readonly PropertyTax: "property_tax";
+    readonly SalesTax: "sales_tax";
+    readonly StateTax: "state_tax";
+    readonly CreditCardPayment: "credit_card_payment";
+    readonly TransferForCashSpending: "transfer_for_cash_spending";
+    readonly MortgagePayment: "mortgage_payment";
+    readonly AirTravel: "air_travel";
+    readonly Hotel: "hotel";
+    readonly RentalCarAndTaxi: "rental_car_and_taxi";
+    readonly Vacation: "vacation";
+    readonly Cash: "cash";
+    readonly Check: "check";
+};
+export type TransactionCategoryDetailed = typeof TransactionCategoryDetailed[keyof typeof TransactionCategoryDetailed];
+/**
+ * Primary transaction category
+ * @export
+ * @enum {string}
+ */
+export declare const TransactionCategoryPrimary: {
+    readonly AutoAndTransport: "auto_and_transport";
+    readonly BillsAndUtilities: "bills_and_utilities";
+    readonly BusinessServices: "business_services";
+    readonly Education: "education";
+    readonly Entertainment: "entertainment";
+    readonly FeesAndCharges: "fees_and_charges";
+    readonly Financial: "financial";
+    readonly FoodAndDining: "food_and_dining";
+    readonly GiftsAndDonations: "gifts_and_donations";
+    readonly HealthAndFitness: "health_and_fitness";
+    readonly Home: "home";
+    readonly Income: "income";
+    readonly Investments: "investments";
+    readonly Kids: "kids";
+    readonly PersonalCare: "personal_care";
+    readonly Pets: "pets";
+    readonly Shopping: "shopping";
+    readonly Taxes: "taxes";
+    readonly Transfer: "transfer";
+    readonly Travel: "travel";
+    readonly Uncategorized: "uncategorized";
+};
+export type TransactionCategoryPrimary = typeof TransactionCategoryPrimary[keyof typeof TransactionCategoryPrimary];
+/**
+ * Type of the transaction, ie loan
+ * @export
+ * @enum {string}
+ */
+export declare const TransactionEventType: {
+    readonly Ach: "ach";
+    readonly Adjustment: "adjustment";
+    readonly Atm: "atm";
+    readonly BankCharge: "bank_charge";
+    readonly BillPayment: "bill_payment";
+    readonly CardPayment: "card_payment";
+    readonly Cash: "cash";
+    readonly Cashback: "cashback";
+    readonly Charge: "charge";
+    readonly Cheque: "cheque";
+    readonly Credit: "credit";
+    readonly Debit: "debit";
+    readonly Deposit: "deposit";
+    readonly DigitalPayment: "digital_payment";
+    readonly DirectDebit: "direct_debit";
+    readonly Fee: "fee";
+    readonly InStore: "in_store";
+    readonly Interest: "interest";
+    readonly Online: "online";
+    readonly Other: "other";
+    readonly Payment: "payment";
+    readonly Purchase: "purchase";
+    readonly StandingOrder: "standing_order";
+    readonly Transaction: "transaction";
+    readonly Transfer: "transfer";
+    readonly Wire: "wire";
+    readonly Withdrawal: "withdrawal";
+};
+export type TransactionEventType = typeof TransactionEventType[keyof typeof TransactionEventType];
+/**
+ *
+ * @export
  * @interface TransactionMerchant
  */
 export interface TransactionMerchant {
@@ -4535,6 +5211,48 @@ export interface TransactionMerchant {
      */
     'name'?: string;
 }
+/**
+ *
+ * @export
+ * @interface TransactionToEnrich
+ */
+export interface TransactionToEnrich {
+    /**
+     * A unique ID for the transaction that to help you tie data back to your systems.
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'id': string;
+    /**
+     * The name of the merchant.
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'merchant_name': string;
+    /**
+     * The merchant category code.
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'mcc'?: string;
+    /**
+     * The amount of the transaction in cents, in the currency of the account.
+     * @type {number}
+     * @memberof TransactionToEnrich
+     */
+    'amount'?: number;
+    /**
+     * The type of the transaction
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'type'?: TransactionToEnrichTypeEnum;
+}
+export declare const TransactionToEnrichTypeEnum: {
+    readonly Debit: "debit";
+    readonly Credit: "credit";
+};
+export type TransactionToEnrichTypeEnum = typeof TransactionToEnrichTypeEnum[keyof typeof TransactionToEnrichTypeEnum];
 /**
  *
  * @export
@@ -4600,6 +5318,31 @@ export interface UpdateEntityResponse {
 /**
  *
  * @export
+ * @interface UpdateSpendPowerCustomizationRequest
+ */
+export interface UpdateSpendPowerCustomizationRequest {
+    /**
+     *
+     * @type {SpendPowerTimeFrame}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'timeframe'?: SpendPowerTimeFrame;
+    /**
+     * The minimum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'min_limit'?: number;
+    /**
+     * The maximum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'max_limit'?: number;
+}
+/**
+ *
+ * @export
  * @interface UpdateSpendPowerCustomizationResponse
  */
 export interface UpdateSpendPowerCustomizationResponse {
@@ -4616,6 +5359,47 @@ export interface UpdateSpendPowerCustomizationResponse {
      */
     'request_id': string;
 }
+/**
+ *
+ * @export
+ * @interface UpdatedBalanceEvent
+ */
+export interface UpdatedBalanceEvent {
+    /**
+     *
+     * @type {string}
+     * @memberof UpdatedBalanceEvent
+     */
+    'event_type': UpdatedBalanceEventEventTypeEnum;
+    /**
+     * The current balance of the account factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof UpdatedBalanceEvent
+     */
+    'available'?: number;
+    /**
+     * The current balance of the account without factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof UpdatedBalanceEvent
+     */
+    'current'?: number;
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof UpdatedBalanceEvent
+     */
+    'iso_currency_code': string;
+    /**
+     * Datetime that the balance is accurate for In ISO-8601 format
+     * @type {string}
+     * @memberof UpdatedBalanceEvent
+     */
+    'timestamp': string;
+}
+export declare const UpdatedBalanceEventEventTypeEnum: {
+    readonly UpdatedBalance: "updated_balance";
+};
+export type UpdatedBalanceEventEventTypeEnum = typeof UpdatedBalanceEventEventTypeEnum[keyof typeof UpdatedBalanceEventEventTypeEnum];
 /**
  *
  * @export
@@ -4715,12 +5499,12 @@ export type WebhookType = typeof WebhookType[keyof typeof WebhookType];
 export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) => {
     /**
      *
-     * @param {string} spendPowerId
-     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {string} accountId
+     * @param {AddAccountEventsRequest} [addAccountEventsRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addSpendPowerTransaction: (spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    addAccountEvents: (accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -4751,11 +5535,11 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     createSpendPower: (createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSpendPowerCustomization: (body?: SpendPowerCustomization, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    createSpendPowerCustomization: (createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Delete a financial connection
@@ -4764,6 +5548,15 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     deleteFinancialConnection: (financialConnectionIdToDelete: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {EnrichTransactionsRequest} [enrichTransactionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    enrichTransactions: (fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
@@ -4786,6 +5579,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     getEntity: (entityId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Get finance score
+     * @param {string} accountId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinanceScore: (accountId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get financial connection details
@@ -4867,6 +5668,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
+     * @summary Get spend power
      * @param {string} spendPowerId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -4897,11 +5699,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     syncFinancialConnectionsData: (body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @summary Update spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateSpendPowerCustomization: (body?: SpendPowerCustomization, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    updateSpendPowerCustomization: (spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get liabilities
@@ -4918,12 +5722,12 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
 export declare const FuseApiFp: (configuration?: Configuration) => {
     /**
      *
-     * @param {string} spendPowerId
-     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {string} accountId
+     * @param {AddAccountEventsRequest} [addAccountEventsRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddSpendPowerTransactionResponse>>;
+    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddAccountEventsResponse>>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -4954,11 +5758,11 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerResponse>>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerCustomizationResponse>>;
+    createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerCustomizationResponse>>;
     /**
      *
      * @summary Delete a financial connection
@@ -4967,6 +5771,15 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>>;
+    /**
+     *
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {EnrichTransactionsRequest} [enrichTransactionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrichTransactionsResponse>>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
@@ -4989,6 +5802,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     getEntity(entityId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>>;
+    /**
+     *
+     * @summary Get finance score
+     * @param {string} accountId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinanceScore(accountId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinanceScoreResponse>>;
     /**
      *
      * @summary Get financial connection details
@@ -5070,6 +5891,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
     /**
      *
+     * @summary Get spend power
      * @param {string} spendPowerId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -5100,11 +5922,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @summary Update spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateSpendPowerCustomizationResponse>>;
+    updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateSpendPowerCustomizationResponse>>;
     /**
      *
      * @summary Get liabilities
@@ -5121,12 +5945,12 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
 export declare const FuseApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
     /**
      *
-     * @param {string} spendPowerId
-     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {string} accountId
+     * @param {AddAccountEventsRequest} [addAccountEventsRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: any): AxiosPromise<AddSpendPowerTransactionResponse>;
+    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: any): AxiosPromise<AddAccountEventsResponse>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -5157,11 +5981,11 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: any): AxiosPromise<CreateSpendPowerResponse>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSpendPowerCustomization(body?: SpendPowerCustomization, options?: any): AxiosPromise<CreateSpendPowerCustomizationResponse>;
+    createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: any): AxiosPromise<CreateSpendPowerCustomizationResponse>;
     /**
      *
      * @summary Delete a financial connection
@@ -5170,6 +5994,15 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     deleteFinancialConnection(financialConnectionIdToDelete: string, options?: any): AxiosPromise<DeleteFinancialConnectionResponse>;
+    /**
+     *
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {EnrichTransactionsRequest} [enrichTransactionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: any): AxiosPromise<EnrichTransactionsResponse>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
@@ -5192,6 +6025,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     getEntity(entityId: string, options?: any): AxiosPromise<GetEntityResponse>;
+    /**
+     *
+     * @summary Get finance score
+     * @param {string} accountId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getFinanceScore(accountId: string, options?: any): AxiosPromise<GetFinanceScoreResponse>;
     /**
      *
      * @summary Get financial connection details
@@ -5273,6 +6114,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse>;
     /**
      *
+     * @summary Get spend power
      * @param {string} spendPowerId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -5303,11 +6145,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @summary Update spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: any): AxiosPromise<UpdateSpendPowerCustomizationResponse>;
+    updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: any): AxiosPromise<UpdateSpendPowerCustomizationResponse>;
     /**
      *
      * @summary Get liabilities
@@ -5326,13 +6170,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
 export declare class FuseApi extends BaseAPI {
     /**
      *
-     * @param {string} spendPowerId
-     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest]
+     * @param {string} accountId
+     * @param {AddAccountEventsRequest} [addAccountEventsRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AddSpendPowerTransactionResponse, any>>;
+    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AddAccountEventsResponse, any>>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -5367,12 +6211,12 @@ export declare class FuseApi extends BaseAPI {
     createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerResponse, any>>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    createSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerCustomizationResponse, any>>;
+    createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerCustomizationResponse, any>>;
     /**
      *
      * @summary Delete a financial connection
@@ -5382,6 +6226,16 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteFinancialConnectionResponse, any>>;
+    /**
+     *
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {EnrichTransactionsRequest} [enrichTransactionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<EnrichTransactionsResponse, any>>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
@@ -5407,6 +6261,15 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     getEntity(entityId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetEntityResponse, any>>;
+    /**
+     *
+     * @summary Get finance score
+     * @param {string} accountId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getFinanceScore(accountId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinanceScoreResponse, any>>;
     /**
      *
      * @summary Get financial connection details
@@ -5498,6 +6361,7 @@ export declare class FuseApi extends BaseAPI {
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
     /**
      *
+     * @summary Get spend power
      * @param {string} spendPowerId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -5532,12 +6396,14 @@ export declare class FuseApi extends BaseAPI {
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
     /**
      *
-     * @param {SpendPowerCustomization} [body]
+     * @summary Update spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateSpendPowerCustomizationResponse, any>>;
+    updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateSpendPowerCustomizationResponse, any>>;
     /**
      *
      * @summary Get liabilities
@@ -5555,30 +6421,24 @@ export declare class FuseApi extends BaseAPI {
 export declare const SpendPowerApiAxiosParamCreator: (configuration?: Configuration) => {
     /**
      *
+     * @summary Delete spend power customization
      * @param {string} spendPowerId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
-     * @param {string} [plaidClientId]
-     * @param {string} [plaidSecret]
-     * @param {string} [tellerApplicationId]
-     * @param {string} [tellerCertificate]
-     * @param {string} [tellerPrivateKey]
-     * @param {string} [tellerTokenSigningKey]
-     * @param {string} [tellerSigningSecret]
-     * @param {string} [mxClientId]
-     * @param {string} [mxApiKey]
-     * @param {string} [snaptradeClientId]
-     * @param {string} [snaptradeConsumerKey]
-     * @param {string} [flinksCustomerId]
-     * @param {string} [flinksUsInstanceId]
-     * @param {string} [flinksCaInstanceId]
-     * @param {string} [finicityPartnerId]
-     * @param {string} [finicityPartnerSecret]
-     * @param {string} [finicityAppKey]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteSpendPower: (spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    deleteSpendPower: (spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Get spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSpendPowerCustomization: (spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
 };
 /**
  * SpendPowerApi - functional programming interface
@@ -5587,30 +6447,24 @@ export declare const SpendPowerApiAxiosParamCreator: (configuration?: Configurat
 export declare const SpendPowerApiFp: (configuration?: Configuration) => {
     /**
      *
+     * @summary Delete spend power customization
      * @param {string} spendPowerId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
-     * @param {string} [plaidClientId]
-     * @param {string} [plaidSecret]
-     * @param {string} [tellerApplicationId]
-     * @param {string} [tellerCertificate]
-     * @param {string} [tellerPrivateKey]
-     * @param {string} [tellerTokenSigningKey]
-     * @param {string} [tellerSigningSecret]
-     * @param {string} [mxClientId]
-     * @param {string} [mxApiKey]
-     * @param {string} [snaptradeClientId]
-     * @param {string} [snaptradeConsumerKey]
-     * @param {string} [flinksCustomerId]
-     * @param {string} [flinksUsInstanceId]
-     * @param {string} [flinksCaInstanceId]
-     * @param {string} [finicityPartnerId]
-     * @param {string} [finicityPartnerSecret]
-     * @param {string} [finicityAppKey]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteSpendPowerResponse>>;
+    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteSpendPowerResponse>>;
+    /**
+     *
+     * @summary Get spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSpendPowerCustomizationResponse>>;
 };
 /**
  * SpendPowerApi - factory interface
@@ -5619,30 +6473,24 @@ export declare const SpendPowerApiFp: (configuration?: Configuration) => {
 export declare const SpendPowerApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
     /**
      *
+     * @summary Delete spend power customization
      * @param {string} spendPowerId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
-     * @param {string} [plaidClientId]
-     * @param {string} [plaidSecret]
-     * @param {string} [tellerApplicationId]
-     * @param {string} [tellerCertificate]
-     * @param {string} [tellerPrivateKey]
-     * @param {string} [tellerTokenSigningKey]
-     * @param {string} [tellerSigningSecret]
-     * @param {string} [mxClientId]
-     * @param {string} [mxApiKey]
-     * @param {string} [snaptradeClientId]
-     * @param {string} [snaptradeConsumerKey]
-     * @param {string} [flinksCustomerId]
-     * @param {string} [flinksUsInstanceId]
-     * @param {string} [flinksCaInstanceId]
-     * @param {string} [finicityPartnerId]
-     * @param {string} [finicityPartnerSecret]
-     * @param {string} [finicityAppKey]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: any): AxiosPromise<DeleteSpendPowerResponse>;
+    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<DeleteSpendPowerResponse>;
+    /**
+     *
+     * @summary Get spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<GetSpendPowerCustomizationResponse>;
 };
 /**
  * SpendPowerApi - object-oriented interface
@@ -5653,29 +6501,24 @@ export declare const SpendPowerApiFactory: (configuration?: Configuration, baseP
 export declare class SpendPowerApi extends BaseAPI {
     /**
      *
+     * @summary Delete spend power customization
      * @param {string} spendPowerId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
-     * @param {string} [plaidClientId]
-     * @param {string} [plaidSecret]
-     * @param {string} [tellerApplicationId]
-     * @param {string} [tellerCertificate]
-     * @param {string} [tellerPrivateKey]
-     * @param {string} [tellerTokenSigningKey]
-     * @param {string} [tellerSigningSecret]
-     * @param {string} [mxClientId]
-     * @param {string} [mxApiKey]
-     * @param {string} [snaptradeClientId]
-     * @param {string} [snaptradeConsumerKey]
-     * @param {string} [flinksCustomerId]
-     * @param {string} [flinksUsInstanceId]
-     * @param {string} [flinksCaInstanceId]
-     * @param {string} [finicityPartnerId]
-     * @param {string} [finicityPartnerSecret]
-     * @param {string} [finicityAppKey]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SpendPowerApi
      */
-    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteSpendPowerResponse, any>>;
+    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteSpendPowerResponse, any>>;
+    /**
+     *
+     * @summary Get spend power customization
+     * @param {string} spendPowerCustomizationId
+     * @param {string} fuseClientId
+     * @param {string} fuseApiKey
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SpendPowerApi
+     */
+    getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetSpendPowerCustomizationResponse, any>>;
 }

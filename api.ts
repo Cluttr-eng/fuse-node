@@ -198,53 +198,38 @@ export type AccountType = typeof AccountType[keyof typeof AccountType];
 /**
  * 
  * @export
- * @interface AddSpendPowerTransactionRequest
+ * @interface AddAccountEventsRequest
  */
-export interface AddSpendPowerTransactionRequest {
+export interface AddAccountEventsRequest {
     /**
-     * Id of the transaction
-     * @type {string}
-     * @memberof AddSpendPowerTransactionRequest
+     * 
+     * @type {Array<AddAccountEventsRequestEventsInner>}
+     * @memberof AddAccountEventsRequest
      */
-    'id': string;
-    /**
-     * The status of the transaction. This will be either pending, posted or cancelled.
-     * @type {string}
-     * @memberof AddSpendPowerTransactionRequest
-     */
-    'status': AddSpendPowerTransactionRequestStatusEnum;
-    /**
-     * The amount of the transaction, in cents. Use positive numbers to represent money going out and negative numbers to represent money coming in.
-     * @type {string}
-     * @memberof AddSpendPowerTransactionRequest
-     */
-    'amount'?: string;
+    'events': Array<AddAccountEventsRequestEventsInner>;
 }
-
-export const AddSpendPowerTransactionRequestStatusEnum = {
-    Pending: 'pending',
-    Posted: 'posted',
-    Cancelled: 'cancelled'
-} as const;
-
-export type AddSpendPowerTransactionRequestStatusEnum = typeof AddSpendPowerTransactionRequestStatusEnum[keyof typeof AddSpendPowerTransactionRequestStatusEnum];
+/**
+ * @type AddAccountEventsRequestEventsInner
+ * @export
+ */
+export type AddAccountEventsRequestEventsInner = ExternalTransactionEvent | InAppTransactionEvent | UpdatedBalanceEvent;
 
 /**
  * 
  * @export
- * @interface AddSpendPowerTransactionResponse
+ * @interface AddAccountEventsResponse
  */
-export interface AddSpendPowerTransactionResponse {
+export interface AddAccountEventsResponse {
     /**
      * Response message
      * @type {string}
-     * @memberof AddSpendPowerTransactionResponse
+     * @memberof AddAccountEventsResponse
      */
     'message': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
-     * @memberof AddSpendPowerTransactionResponse
+     * @memberof AddAccountEventsResponse
      */
     'request_id': string;
 }
@@ -422,7 +407,7 @@ export interface AssetReportTransaction {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents associated with the transaction. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
+     * Amount in cents associated with the transaction. The format of this value is a double. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
      * @type {number}
      * @memberof AssetReportTransaction
      */
@@ -1094,7 +1079,8 @@ export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStat
 
 export const CountryCode = {
     Us: 'US',
-    Ca: 'CA'
+    Ca: 'CA',
+    In: 'IN'
 } as const;
 
 export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
@@ -1378,7 +1364,7 @@ export interface CreateSessionRequest {
      */
     'entity': Entity;
     /**
-     * The fuse access token for an existing account integration. This will perform the process to reconnect an existing disconnected account.
+     * The fuse access token for an existing financial connection. This will perform the process to reconnect an existing disconnected account.
      * @type {string}
      * @memberof CreateSessionRequest
      */
@@ -1418,6 +1404,33 @@ export interface CreateSessionResponse {
 /**
  * 
  * @export
+ * @interface CreateSpendPowerCustomizationRequest
+ */
+export interface CreateSpendPowerCustomizationRequest {
+    /**
+     * 
+     * @type {SpendPowerTimeFrame}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'timeframe': SpendPowerTimeFrame;
+    /**
+     * The minimum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'min_limit': number;
+    /**
+     * The maximum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'max_limit': number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface CreateSpendPowerCustomizationResponse
  */
 export interface CreateSpendPowerCustomizationResponse {
@@ -1441,19 +1454,19 @@ export interface CreateSpendPowerCustomizationResponse {
  */
 export interface CreateSpendPowerRequest {
     /**
-     * Access token for authentication
+     * A unique ID representing the bank account that this spend power is calculated for. Typically this will be a bank connection account ID from your application. It is currently used as a means of connecting events to the spend power.
      * @type {string}
      * @memberof CreateSpendPowerRequest
      */
-    'access_token': string;
+    'account_id': string;
     /**
-     * The remote account id to create the spend power for.
+     * The ISO-4217 currency code of the transaction
      * @type {string}
      * @memberof CreateSpendPowerRequest
      */
-    'remote_account_id': string;
+    'iso_currency_code': string;
     /**
-     * The spend power customization id.
+     * The spend power customization id. This is used to determine the timeframe and other metadata for the spend power.
      * @type {string}
      * @memberof CreateSpendPowerRequest
      */
@@ -1466,7 +1479,7 @@ export interface CreateSpendPowerRequest {
  */
 export interface CreateSpendPowerResponse {
     /**
-     * The id of the created spend power
+     * The id of the created spend power.
      * @type {string}
      * @memberof CreateSpendPowerResponse
      */
@@ -1529,17 +1542,161 @@ export interface DeleteFinancialConnectionResponse {
  */
 export interface DeleteSpendPowerResponse {
     /**
-     * 
-     * @type {SpendPower}
+     * The id of the deleted spend power
+     * @type {string}
      * @memberof DeleteSpendPowerResponse
      */
-    'spend_power': SpendPower;
+    'id': string;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof DeleteSpendPowerResponse
      */
     'request_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface EnrichTransactionsRequest
+ */
+export interface EnrichTransactionsRequest {
+    /**
+     * 
+     * @type {Array<TransactionToEnrich>}
+     * @memberof EnrichTransactionsRequest
+     */
+    'transactions': Array<TransactionToEnrich>;
+}
+/**
+ * 
+ * @export
+ * @interface EnrichTransactionsResponse
+ */
+export interface EnrichTransactionsResponse {
+    /**
+     * The enriched transactions.
+     * @type {Array<EnrichedTransaction>}
+     * @memberof EnrichTransactionsResponse
+     */
+    'enriched_transactions'?: Array<EnrichedTransaction>;
+}
+/**
+ * 
+ * @export
+ * @interface EnrichedTransaction
+ */
+export interface EnrichedTransaction {
+    /**
+     * A original ID for the transaction that to help you tie data back to your systems.
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'id': string;
+    /**
+     * The original or enhanced name of the merchant.
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {EnrichedTransactionLogo}
+     * @memberof EnrichedTransaction
+     */
+    'logo'?: EnrichedTransactionLogo;
+    /**
+     * The amount of the transaction in cents, in the currency of the account.
+     * @type {number}
+     * @memberof EnrichedTransaction
+     */
+    'amount'?: number;
+    /**
+     * 
+     * @type {TransactionCategory}
+     * @memberof EnrichedTransaction
+     */
+    'category'?: TransactionCategory;
+    /**
+     * Whether the transaction is a bill pay.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_bill_pay'?: boolean;
+    /**
+     * Whether the transaction is a direct deposit.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_direct_deposit'?: boolean;
+    /**
+     * Whether the transaction is a an expense
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_expense'?: boolean;
+    /**
+     * Whether the transaction is a fee.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_fee'?: boolean;
+    /**
+     * Whether the transaction is income.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_income'?: boolean;
+    /**
+     * Whether the transaction is international.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_international'?: boolean;
+    /**
+     * This indicates whether the transaction represents an overdraft fee.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_overdraft_fee'?: boolean;
+    /**
+     * Whether the transaction is a payroll advance.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_payroll_advance'?: boolean;
+    /**
+     * Whether the transaction is a subscription.
+     * @type {boolean}
+     * @memberof EnrichedTransaction
+     */
+    'is_subscription'?: boolean;
+    /**
+     * The type of transaction
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'type'?: EnrichedTransactionTypeEnum;
+}
+
+export const EnrichedTransactionTypeEnum = {
+    Debit: 'debit',
+    Credit: 'credit'
+} as const;
+
+export type EnrichedTransactionTypeEnum = typeof EnrichedTransactionTypeEnum[keyof typeof EnrichedTransactionTypeEnum];
+
+/**
+ * 
+ * @export
+ * @interface EnrichedTransactionLogo
+ */
+export interface EnrichedTransactionLogo {
+    /**
+     * The URL of the logo.
+     * @type {string}
+     * @memberof EnrichedTransactionLogo
+     */
+    'url'?: string;
 }
 /**
  * 
@@ -1565,6 +1722,71 @@ export interface Entity {
      * @memberof Entity
      */
     'email'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface EvalSpendPowerRequest
+ */
+export interface EvalSpendPowerRequest {
+    /**
+     * The size of the window for training
+     * @type {number}
+     * @memberof EvalSpendPowerRequest
+     */
+    'window_size': number;
+    /**
+     * 
+     * @type {SpendPowerTimeFrame}
+     * @memberof EvalSpendPowerRequest
+     */
+    'time_frame': SpendPowerTimeFrame;
+    /**
+     * 
+     * @type {Array<EvalSpendPowerRequestEventsInner>}
+     * @memberof EvalSpendPowerRequest
+     */
+    'events': Array<EvalSpendPowerRequestEventsInner>;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface EvalSpendPowerRequestEventsInner
+ */
+export interface EvalSpendPowerRequestEventsInner {
+    /**
+     * The id of the account that event belongs to
+     * @type {string}
+     * @memberof EvalSpendPowerRequestEventsInner
+     */
+    'account_id': string;
+    /**
+     * 
+     * @type {AddAccountEventsRequestEventsInner}
+     * @memberof EvalSpendPowerRequestEventsInner
+     */
+    'event': AddAccountEventsRequestEventsInner;
+}
+/**
+ * 
+ * @export
+ * @interface EvalSpendPowerResponse
+ */
+export interface EvalSpendPowerResponse {
+    /**
+     * The mean absolute overestimation error for the data
+     * @type {number}
+     * @memberof EvalSpendPowerResponse
+     */
+    'mean_absolute_overestimation_error'?: number;
+    /**
+     * The mean absolute underestimation error for the data
+     * @type {number}
+     * @memberof EvalSpendPowerResponse
+     */
+    'mean_absolute_underestimation_error'?: number;
 }
 /**
  * 
@@ -1604,6 +1826,94 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
      */
     'request_id': string;
 }
+/**
+ * 
+ * @export
+ * @interface ExternalTransactionEvent
+ */
+export interface ExternalTransactionEvent {
+    /**
+     * ID of the transaction
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'event_type': ExternalTransactionEventEventTypeEnum;
+    /**
+     * 
+     * @type {ExternalTransactionEventStatus}
+     * @memberof ExternalTransactionEvent
+     */
+    'status': ExternalTransactionEventStatus;
+    /**
+     * The running balance of the account after the transaction has occurred, in cents
+     * @type {number}
+     * @memberof ExternalTransactionEvent
+     */
+    'balance'?: number;
+    /**
+     * Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof ExternalTransactionEvent
+     */
+    'amount': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'merchant_name': string;
+    /**
+     * 
+     * @type {TransactionEventType}
+     * @memberof ExternalTransactionEvent
+     */
+    'transaction_type': TransactionEventType;
+    /**
+     * 
+     * @type {TransactionCategory}
+     * @memberof ExternalTransactionEvent
+     */
+    'category': TransactionCategory;
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'iso_currency_code': string;
+    /**
+     * Datetime of the transaction In ISO-8601 format
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'timestamp': string;
+}
+
+export const ExternalTransactionEventEventTypeEnum = {
+    ExternalTransaction: 'external_transaction'
+} as const;
+
+export type ExternalTransactionEventEventTypeEnum = typeof ExternalTransactionEventEventTypeEnum[keyof typeof ExternalTransactionEventEventTypeEnum];
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const ExternalTransactionEventStatus = {
+    Pending: 'pending',
+    Posted: 'posted'
+} as const;
+
+export type ExternalTransactionEventStatus = typeof ExternalTransactionEventStatus[keyof typeof ExternalTransactionEventStatus];
+
+
 /**
  * 
  * @export
@@ -1814,13 +2124,13 @@ export interface FinancialConnectionsAccountBalance {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents after factoring in pending balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
+     * Amount in cents after factoring in pending balances. The format of this value is a double. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
     'available'?: number;
     /**
-     * Amount in cents without factoring in pending balances
+     * Amount in cents without factoring in pending balances. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
@@ -1845,13 +2155,13 @@ export interface FinancialConnectionsAccountBalance {
  */
 export interface FinancialConnectionsAccountCachedBalance {
     /**
-     * The amount of funds available to be withdrawn from the account, as determined by the financial institution Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
+     * The amount of funds available, in cents, to be withdrawn from the account, as determined by the financial institution. The format of this value is a double. Available balance may be cached and is not guaranteed to be up-to-date in realtime unless the value was returned by /financial_connections/balances. For accounts with credit features, the available funds generally equal the credit limit. Some institutions may not provide an available balance calculation. If this is the case, Fuse will return a null value for the available balance. To ensure you have the most accurate information, we recommend obtaining the current balance by using \'balance.available || balance.current\'.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
     'available'?: number;
     /**
-     * Amount without factoring in pending balances
+     * Amount without factoring in pending balances, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
@@ -2112,13 +2422,13 @@ export interface FinancialConnectionsHolding {
      */
     'remote_account_id': string;
     /**
-     * The original total value of the holding when it was purchased.
+     * The original total value of the holding, in cents, when it was purchased. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
     'cost_basis': number;
     /**
-     * The current market value of the holding.
+     * The current market value of the holding, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
@@ -2130,7 +2440,7 @@ export interface FinancialConnectionsHolding {
      */
     'quantity': number;
     /**
-     * The price of the security as provided by the financial institution managing the holding.
+     * The price of the security, in cents, as provided by the financial institution managing the holding. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsHolding
      */
@@ -2179,7 +2489,7 @@ export interface FinancialConnectionsInvestmentSecurity {
      */
     'cusip'?: string;
     /**
-     * The closing price of the security at the end of the most recent trading day.
+     * The closing price of the security, in cents, at the end of the most recent trading day. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentSecurity
      */
@@ -2287,7 +2597,7 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'account_name'?: string;
     /**
-     * The amount of the investment transaction
+     * The amount of the investment transaction, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
@@ -2299,7 +2609,7 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'description': string;
     /**
-     * The fees associated with the investment transaction
+     * The fees associated with the investment transaction, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
@@ -2323,13 +2633,19 @@ export interface FinancialConnectionsInvestmentTransaction {
      */
     'type': FinancialConnectionsInvestmentTransactionTypeEnum;
     /**
+     * 
+     * @type {FinancialConnectionsInvestmentTransactionSubtype}
+     * @memberof FinancialConnectionsInvestmentTransaction
+     */
+    'subtype'?: FinancialConnectionsInvestmentTransactionSubtype;
+    /**
      * The number of units of the security involved in this transaction
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
     'quantity': number;
     /**
-     * The price of the security involved in this transaction
+     * The price of the security involved in this transaction, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsInvestmentTransaction
      */
@@ -2353,6 +2669,67 @@ export const FinancialConnectionsInvestmentTransactionTypeEnum = {
 } as const;
 
 export type FinancialConnectionsInvestmentTransactionTypeEnum = typeof FinancialConnectionsInvestmentTransactionTypeEnum[keyof typeof FinancialConnectionsInvestmentTransactionTypeEnum];
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const FinancialConnectionsInvestmentTransactionSubtype = {
+    AccountFee: 'account_fee',
+    Adjustment: 'adjustment',
+    Assignment: 'assignment',
+    Buy: 'buy',
+    BuyToCover: 'buy_to_cover',
+    Contribution: 'contribution',
+    Deposit: 'deposit',
+    Distribution: 'distribution',
+    Dividend: 'dividend',
+    DividendReinvestment: 'dividend_reinvestment',
+    Exercise: 'exercise',
+    Expire: 'expire',
+    FundFee: 'fund_fee',
+    Interest: 'interest',
+    InterestReceivable: 'interest_receivable',
+    InterestReinvestment: 'interest_reinvestment',
+    LegalFee: 'legal_fee',
+    LoanPayment: 'loan_payment',
+    LongTermCapitalGain: 'long_term_capital_gain',
+    LongTermCapitalGainReinvestment: 'long_term_capital_gain_reinvestment',
+    ManagementFee: 'management_fee',
+    MarginExpense: 'margin_expense',
+    Merger: 'merger',
+    MiscellaneousFee: 'miscellaneous_fee',
+    NonQualifiedDividend: 'non_qualified_dividend',
+    NonResidentTax: 'non_resident_tax',
+    PendingCredit: 'pending_credit',
+    PendingDebit: 'pending_debit',
+    QualifiedDividend: 'qualified_dividend',
+    Rebalance: 'rebalance',
+    ReturnOfPrincipal: 'return_of_principal',
+    Request: 'request',
+    Sell: 'sell',
+    SellShort: 'sell_short',
+    Send: 'send',
+    ShortTermCapitalGain: 'short_term_capital_gain',
+    ShortTermCapitalGainReinvestment: 'short_term_capital_gain_reinvestment',
+    SpinOff: 'spin_off',
+    Split: 'split',
+    StockDistribution: 'stock_distribution',
+    Tax: 'tax',
+    TaxWithheld: 'tax_withheld',
+    Trade: 'trade',
+    Transfer: 'transfer',
+    TransferFee: 'transfer_fee',
+    TrustFee: 'trust_fee',
+    UnqualifiedGain: 'unqualified_gain',
+    Withdrawal: 'withdrawal',
+    Minus: '-'
+} as const;
+
+export type FinancialConnectionsInvestmentTransactionSubtype = typeof FinancialConnectionsInvestmentTransactionSubtype[keyof typeof FinancialConnectionsInvestmentTransactionSubtype];
+
 
 /**
  * 
@@ -2723,6 +3100,8 @@ export const FuseApiErrorCode = {
     EntityNotFound: 'entity_not_found',
     SessionNotFound: 'session_not_found',
     FinancialInstitutionNotFound: 'financial_institution_not_found',
+    SpendPowerNotFound: 'spend_power_not_found',
+    SpendPowerCustomizationNotFound: 'spend_power_customization_not_found',
     MissingAccessToken: 'missing_access_token',
     MissingPlaidClientIdHeader: 'missing_plaid_client_id_header',
     MissingPlaidSecretHeader: 'missing_plaid_secret_header',
@@ -2969,6 +3348,25 @@ export interface GetEntityResponse {
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof GetEntityResponse
+     */
+    'request_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetFinanceScoreResponse
+ */
+export interface GetFinanceScoreResponse {
+    /**
+     * A value between 0 and 1 where 1 is a perfect finance score and 0 is the worst finance score.
+     * @type {number}
+     * @memberof GetFinanceScoreResponse
+     */
+    'finance_score': number;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinanceScoreResponse
      */
     'request_id': string;
 }
@@ -3368,25 +3766,25 @@ export interface GetInvestmentTransactionsRequest {
      * @type {string}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'start_date'?: string;
+    'start_date': string;
     /**
      * The latest date for which data should be returned. Dates should be formatted as YYYY-MM-DD.
      * @type {string}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'end_date'?: string;
+    'end_date': string;
     /**
      * Specify current page.
      * @type {number}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'page'?: number;
+    'page': number;
     /**
      * Number of items per page.
      * @type {number}
      * @memberof GetInvestmentTransactionsRequest
      */
-    'records_per_page'?: number;
+    'records_per_page': number;
     /**
      * 
      * @type {GetInvestmentTransactionsRequestOptions}
@@ -3473,6 +3871,25 @@ export interface GetLiabilitiesResponse {
 /**
  * 
  * @export
+ * @interface GetSpendPowerCustomizationResponse
+ */
+export interface GetSpendPowerCustomizationResponse {
+    /**
+     * 
+     * @type {SpendPowerCustomization}
+     * @memberof GetSpendPowerCustomizationResponse
+     */
+    'spend_power_customization': SpendPowerCustomization;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetSpendPowerCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ * 
+ * @export
  * @interface GetSpendPowerResponse
  */
 export interface GetSpendPowerResponse {
@@ -3489,6 +3906,89 @@ export interface GetSpendPowerResponse {
      */
     'request_id': string;
 }
+/**
+ * 
+ * @export
+ * @interface InAppTransactionEvent
+ */
+export interface InAppTransactionEvent {
+    /**
+     * ID of the transaction
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'event_type': InAppTransactionEventEventTypeEnum;
+    /**
+     * 
+     * @type {InAppTransactionEventStatus}
+     * @memberof InAppTransactionEvent
+     */
+    'status': InAppTransactionEventStatus;
+    /**
+     * The running balance of the account after the transaction has occurred, in cents.
+     * @type {number}
+     * @memberof InAppTransactionEvent
+     */
+    'balance'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof InAppTransactionEvent
+     */
+    'amount': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'merchant_name': string;
+    /**
+     * 
+     * @type {TransactionEventType}
+     * @memberof InAppTransactionEvent
+     */
+    'transaction_type': TransactionEventType;
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'iso_currency_code'?: string;
+    /**
+     * Datetime of the transaction In ISO-8601 format
+     * @type {string}
+     * @memberof InAppTransactionEvent
+     */
+    'timestamp': string;
+}
+
+export const InAppTransactionEventEventTypeEnum = {
+    InAppTransaction: 'in_app_transaction'
+} as const;
+
+export type InAppTransactionEventEventTypeEnum = typeof InAppTransactionEventEventTypeEnum[keyof typeof InAppTransactionEventEventTypeEnum];
+
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const InAppTransactionEventStatus = {
+    Pending: 'pending',
+    Succeeded: 'succeeded',
+    Failed: 'failed'
+} as const;
+
+export type InAppTransactionEventStatus = typeof InAppTransactionEventStatus[keyof typeof InAppTransactionEventStatus];
+
+
 /**
  * The input data for the financial connections to be migrated into the unified Fuse API.
  * @export
@@ -3736,31 +4236,31 @@ export interface SpendPower {
      */
     'customization_id': string;
     /**
-     * The amount, in cents, of the users spend limit.
+     * The total limit for the current timeframe, in cents.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'spend_limit': number;
+    /**
+     * The total current spend in the current timeframe, in cents, without factoring in pending payments.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'current_spend': number;
+    /**
+     * The total unpaid amount, in cents, from all timeframes.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'pending_payments_amount': number;
+    /**
+     * The ISO-4217 currency code of the transaction
      * @type {string}
      * @memberof SpendPower
      */
-    'spend_limit': string;
+    'iso_currency_code': string;
     /**
-     * The amount, in cents, that the user has already spent.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'current_spend': string;
-    /**
-     * The accumulative amount, in cents, of all the combined pending payments.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'pending_payments_amount': string;
-    /**
-     * The currency.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'currency': string;
-    /**
-     * The datetime of when the spend power was most recently updated.
+     * The datetime of when the spend power was most recently updated, in ISO-8601 format.
      * @type {string}
      * @memberof SpendPower
      */
@@ -3773,32 +4273,46 @@ export interface SpendPower {
  */
 export interface SpendPowerCustomization {
     /**
-     * The timeframe to base the spend power on.
+     * The id of the spend power customization
      * @type {string}
      * @memberof SpendPowerCustomization
      */
-    'timeframe': SpendPowerCustomizationTimeframeEnum;
+    'id': string;
+    /**
+     * 
+     * @type {SpendPowerTimeFrame}
+     * @memberof SpendPowerCustomization
+     */
+    'timeframe': SpendPowerTimeFrame;
     /**
      * The minimum allowed limit for the spend power, in cents.
-     * @type {string}
+     * @type {number}
      * @memberof SpendPowerCustomization
      */
-    'min_limit': string;
+    'min_limit': number;
     /**
      * The maximum allowed limit for the spend power, in cents.
-     * @type {string}
+     * @type {number}
      * @memberof SpendPowerCustomization
      */
-    'max_limit': string;
+    'max_limit': number;
 }
 
-export const SpendPowerCustomizationTimeframeEnum = {
+
+/**
+ * The timeframe to base the spend power on.
+ * @export
+ * @enum {string}
+ */
+
+export const SpendPowerTimeFrame = {
     Daily: 'daily',
     Weekly: 'weekly',
     Monthly: 'monthly'
 } as const;
 
-export type SpendPowerCustomizationTimeframeEnum = typeof SpendPowerCustomizationTimeframeEnum[keyof typeof SpendPowerCustomizationTimeframeEnum];
+export type SpendPowerTimeFrame = typeof SpendPowerTimeFrame[keyof typeof SpendPowerTimeFrame];
+
 
 /**
  * 
@@ -3919,7 +4433,7 @@ export interface Transaction {
      */
     'remote_account_id': string;
     /**
-     * Amount in cents associated with the transaction. Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
+     * Amount in cents associated with the transaction. The format of this value is a double.  Positive values when money moves out of the account; negative values when money moves in. For example, debit card purchases are positive; credit card payments, direct deposits, and refunds are negative.
      * @type {number}
      * @memberof Transaction
      */
@@ -4623,6 +5137,208 @@ export type TransactionTypeEnum = typeof TransactionTypeEnum[keyof typeof Transa
 /**
  * 
  * @export
+ * @interface TransactionCategory
+ */
+export interface TransactionCategory {
+    /**
+     * 
+     * @type {TransactionCategoryPrimary}
+     * @memberof TransactionCategory
+     */
+    'primary': TransactionCategoryPrimary;
+    /**
+     * 
+     * @type {TransactionCategoryDetailed}
+     * @memberof TransactionCategory
+     */
+    'detailed': TransactionCategoryDetailed;
+}
+
+
+/**
+ * Detailed transaction category
+ * @export
+ * @enum {string}
+ */
+
+export const TransactionCategoryDetailed = {
+    AutoInsurance: 'auto_insurance',
+    AutoPayment: 'auto_payment',
+    Gas: 'gas',
+    Parking: 'parking',
+    PublicTransportation: 'public_transportation',
+    ServiceAndParts: 'service_and_parts',
+    DomainNames: 'domain_names',
+    FraudProtection: 'fraud_protection',
+    HomePhone: 'home_phone',
+    Hosting: 'hosting',
+    Internet: 'internet',
+    MobilePhone: 'mobile_phone',
+    Television: 'television',
+    Utilities: 'utilities',
+    Advertising: 'advertising',
+    Legal: 'legal',
+    OfficeSupplies: 'office_supplies',
+    Printing: 'printing',
+    Shipping: 'shipping',
+    BooksAndSupplies: 'books_and_supplies',
+    StudentLoan: 'student_loan',
+    Tuition: 'tuition',
+    Amusement: 'amusement',
+    Arts: 'arts',
+    MoviesAndDvds: 'movies_and_dvds',
+    Music: 'music',
+    NewspapersAndMagazines: 'newspapers_and_magazines',
+    AtmFee: 'atm_fee',
+    BankingFee: 'banking_fee',
+    FinanceCharge: 'finance_charge',
+    LateFee: 'late_fee',
+    ServiceFee: 'service_fee',
+    TradeCommissions: 'trade_commissions',
+    FinancialAdvisor: 'financial_advisor',
+    LifeInsurance: 'life_insurance',
+    AlcoholAndBars: 'alcohol_and_bars',
+    CoffeeShops: 'coffee_shops',
+    FastFood: 'fast_food',
+    Groceries: 'groceries',
+    Restaurants: 'restaurants',
+    Charity: 'charity',
+    Gift: 'gift',
+    Dentist: 'dentist',
+    Doctor: 'doctor',
+    Eyecare: 'eyecare',
+    Gym: 'gym',
+    HealthInsurance: 'health_insurance',
+    Pharmacy: 'pharmacy',
+    Sports: 'sports',
+    Furnishings: 'furnishings',
+    HomeImprovement: 'home_improvement',
+    HomeInsurance: 'home_insurance',
+    HomeServices: 'home_services',
+    HomeSupplies: 'home_supplies',
+    LawnAndGarden: 'lawn_and_garden',
+    MortgageAndRent: 'mortgage_and_rent',
+    Bonus: 'bonus',
+    InterestIncome: 'interest_income',
+    Paycheck: 'paycheck',
+    Reimbursement: 'reimbursement',
+    RentalIncome: 'rental_income',
+    ReturnedPurchase: 'returned_purchase',
+    Buy: 'buy',
+    Deposit: 'deposit',
+    DividendAndCapGains: 'dividend_and_cap_gains',
+    Sell: 'sell',
+    Withdrawal: 'withdrawal',
+    Allowance: 'allowance',
+    BabySupplies: 'baby_supplies',
+    BabysitterAndDaycare: 'babysitter_and_daycare',
+    ChildSupport: 'child_support',
+    KidsActivities: 'kids_activities',
+    Toys: 'toys',
+    Hair: 'hair',
+    Laundry: 'laundry',
+    SpaAndMassage: 'spa_and_massage',
+    PetFoodAndSupplies: 'pet_food_and_supplies',
+    PetGrooming: 'pet_grooming',
+    Veterinary: 'veterinary',
+    Books: 'books',
+    Clothing: 'clothing',
+    Hobbies: 'hobbies',
+    SportingGoods: 'sporting_goods',
+    FederalTax: 'federal_tax',
+    LocalTax: 'local_tax',
+    PropertyTax: 'property_tax',
+    SalesTax: 'sales_tax',
+    StateTax: 'state_tax',
+    CreditCardPayment: 'credit_card_payment',
+    TransferForCashSpending: 'transfer_for_cash_spending',
+    MortgagePayment: 'mortgage_payment',
+    AirTravel: 'air_travel',
+    Hotel: 'hotel',
+    RentalCarAndTaxi: 'rental_car_and_taxi',
+    Vacation: 'vacation',
+    Cash: 'cash',
+    Check: 'check'
+} as const;
+
+export type TransactionCategoryDetailed = typeof TransactionCategoryDetailed[keyof typeof TransactionCategoryDetailed];
+
+
+/**
+ * Primary transaction category
+ * @export
+ * @enum {string}
+ */
+
+export const TransactionCategoryPrimary = {
+    AutoAndTransport: 'auto_and_transport',
+    BillsAndUtilities: 'bills_and_utilities',
+    BusinessServices: 'business_services',
+    Education: 'education',
+    Entertainment: 'entertainment',
+    FeesAndCharges: 'fees_and_charges',
+    Financial: 'financial',
+    FoodAndDining: 'food_and_dining',
+    GiftsAndDonations: 'gifts_and_donations',
+    HealthAndFitness: 'health_and_fitness',
+    Home: 'home',
+    Income: 'income',
+    Investments: 'investments',
+    Kids: 'kids',
+    PersonalCare: 'personal_care',
+    Pets: 'pets',
+    Shopping: 'shopping',
+    Taxes: 'taxes',
+    Transfer: 'transfer',
+    Travel: 'travel',
+    Uncategorized: 'uncategorized'
+} as const;
+
+export type TransactionCategoryPrimary = typeof TransactionCategoryPrimary[keyof typeof TransactionCategoryPrimary];
+
+
+/**
+ * Type of the transaction, ie loan
+ * @export
+ * @enum {string}
+ */
+
+export const TransactionEventType = {
+    Ach: 'ach',
+    Adjustment: 'adjustment',
+    Atm: 'atm',
+    BankCharge: 'bank_charge',
+    BillPayment: 'bill_payment',
+    CardPayment: 'card_payment',
+    Cash: 'cash',
+    Cashback: 'cashback',
+    Charge: 'charge',
+    Cheque: 'cheque',
+    Credit: 'credit',
+    Debit: 'debit',
+    Deposit: 'deposit',
+    DigitalPayment: 'digital_payment',
+    DirectDebit: 'direct_debit',
+    Fee: 'fee',
+    InStore: 'in_store',
+    Interest: 'interest',
+    Online: 'online',
+    Other: 'other',
+    Payment: 'payment',
+    Purchase: 'purchase',
+    StandingOrder: 'standing_order',
+    Transaction: 'transaction',
+    Transfer: 'transfer',
+    Wire: 'wire',
+    Withdrawal: 'withdrawal'
+} as const;
+
+export type TransactionEventType = typeof TransactionEventType[keyof typeof TransactionEventType];
+
+
+/**
+ * 
+ * @export
  * @interface TransactionMerchant
  */
 export interface TransactionMerchant {
@@ -4633,6 +5349,51 @@ export interface TransactionMerchant {
      */
     'name'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface TransactionToEnrich
+ */
+export interface TransactionToEnrich {
+    /**
+     * A unique ID for the transaction that to help you tie data back to your systems.
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'id': string;
+    /**
+     * The name of the merchant.
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'merchant_name': string;
+    /**
+     * The merchant category code.
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'mcc'?: string;
+    /**
+     * The amount of the transaction in cents, in the currency of the account.
+     * @type {number}
+     * @memberof TransactionToEnrich
+     */
+    'amount'?: number;
+    /**
+     * The type of the transaction
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'type'?: TransactionToEnrichTypeEnum;
+}
+
+export const TransactionToEnrichTypeEnum = {
+    Debit: 'debit',
+    Credit: 'credit'
+} as const;
+
+export type TransactionToEnrichTypeEnum = typeof TransactionToEnrichTypeEnum[keyof typeof TransactionToEnrichTypeEnum];
+
 /**
  * 
  * @export
@@ -4698,6 +5459,33 @@ export interface UpdateEntityResponse {
 /**
  * 
  * @export
+ * @interface UpdateSpendPowerCustomizationRequest
+ */
+export interface UpdateSpendPowerCustomizationRequest {
+    /**
+     * 
+     * @type {SpendPowerTimeFrame}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'timeframe'?: SpendPowerTimeFrame;
+    /**
+     * The minimum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'min_limit'?: number;
+    /**
+     * The maximum allowed limit for the spend power, in cents.
+     * @type {number}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'max_limit'?: number;
+}
+
+
+/**
+ * 
+ * @export
  * @interface UpdateSpendPowerCustomizationResponse
  */
 export interface UpdateSpendPowerCustomizationResponse {
@@ -4714,6 +5502,50 @@ export interface UpdateSpendPowerCustomizationResponse {
      */
     'request_id': string;
 }
+/**
+ * 
+ * @export
+ * @interface UpdatedBalanceEvent
+ */
+export interface UpdatedBalanceEvent {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdatedBalanceEvent
+     */
+    'event_type': UpdatedBalanceEventEventTypeEnum;
+    /**
+     * The current balance of the account factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof UpdatedBalanceEvent
+     */
+    'available'?: number;
+    /**
+     * The current balance of the account without factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof UpdatedBalanceEvent
+     */
+    'current'?: number;
+    /**
+     * The ISO-4217 currency code.
+     * @type {string}
+     * @memberof UpdatedBalanceEvent
+     */
+    'iso_currency_code': string;
+    /**
+     * Datetime that the balance is accurate for In ISO-8601 format
+     * @type {string}
+     * @memberof UpdatedBalanceEvent
+     */
+    'timestamp': string;
+}
+
+export const UpdatedBalanceEventEventTypeEnum = {
+    UpdatedBalance: 'updated_balance'
+} as const;
+
+export type UpdatedBalanceEventEventTypeEnum = typeof UpdatedBalanceEventEventTypeEnum[keyof typeof UpdatedBalanceEventEventTypeEnum];
+
 /**
  * 
  * @export
@@ -4826,16 +5658,16 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
     return {
         /**
          * 
-         * @param {string} spendPowerId 
-         * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest] 
+         * @param {string} accountId 
+         * @param {AddAccountEventsRequest} [addAccountEventsRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSpendPowerTransaction: async (spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'spendPowerId' is not null or undefined
-            assertParamExists('addSpendPowerTransaction', 'spendPowerId', spendPowerId)
-            const localVarPath = `/v1/financial_connections/spend-power/{spend_power_id}/transaction`
-                .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
+        addAccountEvents: async (accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'accountId' is not null or undefined
+            assertParamExists('addAccountEvents', 'accountId', accountId)
+            const localVarPath = `/v1/accounts/{account_id}/events`
+                .replace(`{${"account_id"}}`, encodeURIComponent(String(accountId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4860,7 +5692,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(addSpendPowerTransactionRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(addAccountEventsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4991,7 +5823,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @throws {RequiredError}
          */
         createSpendPower: async (createSpendPowerRequest?: CreateSpendPowerRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/financial_connections/spend-power`;
+            const localVarPath = `/v1/spend_power`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5025,12 +5857,12 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {SpendPowerCustomization} [body] 
+         * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSpendPowerCustomization: async (body?: SpendPowerCustomization, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/financial_connections/spend-power/customization`;
+        createSpendPowerCustomization: async (createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/spend_power/customization`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5055,7 +5887,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createSpendPowerCustomizationRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5096,6 +5928,59 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} fuseClientId 
+         * @param {string} fuseApiKey 
+         * @param {EnrichTransactionsRequest} [enrichTransactionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        enrichTransactions: async (fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fuseClientId' is not null or undefined
+            assertParamExists('enrichTransactions', 'fuseClientId', fuseClientId)
+            // verify required parameter 'fuseApiKey' is not null or undefined
+            assertParamExists('enrichTransactions', 'fuseApiKey', fuseApiKey)
+            const localVarPath = `/v1/transactions/enrich`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+            if (fuseClientId != null) {
+                localVarHeaderParameter['Fuse-Client-Id'] = String(fuseClientId);
+            }
+
+            if (fuseApiKey != null) {
+                localVarHeaderParameter['Fuse-Api-Key'] = String(fuseApiKey);
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(enrichTransactionsRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5192,6 +6077,46 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             assertParamExists('getEntity', 'entityId', entityId)
             const localVarPath = `/v1/entities/{entity_id}`
                 .replace(`{${"entity_id"}}`, encodeURIComponent(String(entityId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get finance score
+         * @param {string} accountId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinanceScore: async (accountId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'accountId' is not null or undefined
+            assertParamExists('getFinanceScore', 'accountId', accountId)
+            const localVarPath = `/v1/accounts/{account_id}/finance_score`
+                .replace(`{${"account_id"}}`, encodeURIComponent(String(accountId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5635,6 +6560,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @summary Get spend power
          * @param {string} spendPowerId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -5642,7 +6568,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         getSpendPower: async (spendPowerId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'spendPowerId' is not null or undefined
             assertParamExists('getSpendPower', 'spendPowerId', spendPowerId)
-            const localVarPath = `/v1/financial_connections/spend-power/{spend_power_id}`
+            const localVarPath = `/v1/spend_power/{spend_power_id}`
                 .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -5795,12 +6721,17 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {SpendPowerCustomization} [body] 
+         * @summary Update spend power customization
+         * @param {string} spendPowerCustomizationId 
+         * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpendPowerCustomization: async (body?: SpendPowerCustomization, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/financial_connections/spend-power/customization/update`;
+        updateSpendPowerCustomization: async (spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'spendPowerCustomizationId' is not null or undefined
+            assertParamExists('updateSpendPowerCustomization', 'spendPowerCustomizationId', spendPowerCustomizationId)
+            const localVarPath = `/v1/spend_power/customization/{spend_power_customization_id}`
+                .replace(`{${"spend_power_customization_id"}}`, encodeURIComponent(String(spendPowerCustomizationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -5825,7 +6756,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateSpendPowerCustomizationRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -5886,13 +6817,13 @@ export const FuseApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {string} spendPowerId 
-         * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest] 
+         * @param {string} accountId 
+         * @param {AddAccountEventsRequest} [addAccountEventsRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddSpendPowerTransactionResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options);
+        async addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddAccountEventsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.addAccountEvents(accountId, addAccountEventsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5937,12 +6868,12 @@ export const FuseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {SpendPowerCustomization} [body] 
+         * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerCustomizationResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createSpendPowerCustomization(body, options);
+        async createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerCustomizationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createSpendPowerCustomization(createSpendPowerCustomizationRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5954,6 +6885,18 @@ export const FuseApiFp = function(configuration?: Configuration) {
          */
         async deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFinancialConnection(financialConnectionIdToDelete, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} fuseClientId 
+         * @param {string} fuseApiKey 
+         * @param {EnrichTransactionsRequest} [enrichTransactionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrichTransactionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -5985,6 +6928,17 @@ export const FuseApiFp = function(configuration?: Configuration) {
          */
         async getEntity(entityId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getEntity(entityId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get finance score
+         * @param {string} accountId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getFinanceScore(accountId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinanceScoreResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getFinanceScore(accountId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -6098,6 +7052,7 @@ export const FuseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary Get spend power
          * @param {string} spendPowerId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6140,12 +7095,14 @@ export const FuseApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {SpendPowerCustomization} [body] 
+         * @summary Update spend power customization
+         * @param {string} spendPowerCustomizationId 
+         * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateSpendPowerCustomizationResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateSpendPowerCustomization(body, options);
+        async updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateSpendPowerCustomizationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -6171,13 +7128,13 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
     return {
         /**
          * 
-         * @param {string} spendPowerId 
-         * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest] 
+         * @param {string} accountId 
+         * @param {AddAccountEventsRequest} [addAccountEventsRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: any): AxiosPromise<AddSpendPowerTransactionResponse> {
-            return localVarFp.addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options).then((request) => request(axios, basePath));
+        addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: any): AxiosPromise<AddAccountEventsResponse> {
+            return localVarFp.addAccountEvents(accountId, addAccountEventsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -6217,12 +7174,12 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @param {SpendPowerCustomization} [body] 
+         * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSpendPowerCustomization(body?: SpendPowerCustomization, options?: any): AxiosPromise<CreateSpendPowerCustomizationResponse> {
-            return localVarFp.createSpendPowerCustomization(body, options).then((request) => request(axios, basePath));
+        createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: any): AxiosPromise<CreateSpendPowerCustomizationResponse> {
+            return localVarFp.createSpendPowerCustomization(createSpendPowerCustomizationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6233,6 +7190,17 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         deleteFinancialConnection(financialConnectionIdToDelete: string, options?: any): AxiosPromise<DeleteFinancialConnectionResponse> {
             return localVarFp.deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} fuseClientId 
+         * @param {string} fuseApiKey 
+         * @param {EnrichTransactionsRequest} [enrichTransactionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: any): AxiosPromise<EnrichTransactionsResponse> {
+            return localVarFp.enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * API to exchange a public token for an access token and financial connection id
@@ -6261,6 +7229,16 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         getEntity(entityId: string, options?: any): AxiosPromise<GetEntityResponse> {
             return localVarFp.getEntity(entityId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get finance score
+         * @param {string} accountId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFinanceScore(accountId: string, options?: any): AxiosPromise<GetFinanceScoreResponse> {
+            return localVarFp.getFinanceScore(accountId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6363,6 +7341,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @summary Get spend power
          * @param {string} spendPowerId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -6401,12 +7380,14 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @param {SpendPowerCustomization} [body] 
+         * @summary Update spend power customization
+         * @param {string} spendPowerCustomizationId 
+         * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: any): AxiosPromise<UpdateSpendPowerCustomizationResponse> {
-            return localVarFp.updateSpendPowerCustomization(body, options).then((request) => request(axios, basePath));
+        updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: any): AxiosPromise<UpdateSpendPowerCustomizationResponse> {
+            return localVarFp.updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -6430,14 +7411,14 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
 export class FuseApi extends BaseAPI {
     /**
      * 
-     * @param {string} spendPowerId 
-     * @param {AddSpendPowerTransactionRequest} [addSpendPowerTransactionRequest] 
+     * @param {string} accountId 
+     * @param {AddAccountEventsRequest} [addAccountEventsRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public addSpendPowerTransaction(spendPowerId: string, addSpendPowerTransactionRequest?: AddSpendPowerTransactionRequest, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).addSpendPowerTransaction(spendPowerId, addSpendPowerTransactionRequest, options).then((request) => request(this.axios, this.basePath));
+    public addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).addAccountEvents(accountId, addAccountEventsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6486,13 +7467,13 @@ export class FuseApi extends BaseAPI {
 
     /**
      * 
-     * @param {SpendPowerCustomization} [body] 
+     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public createSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).createSpendPowerCustomization(body, options).then((request) => request(this.axios, this.basePath));
+    public createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).createSpendPowerCustomization(createSpendPowerCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6505,6 +7486,19 @@ export class FuseApi extends BaseAPI {
      */
     public deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} fuseClientId 
+     * @param {string} fuseApiKey 
+     * @param {EnrichTransactionsRequest} [enrichTransactionsRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6539,6 +7533,18 @@ export class FuseApi extends BaseAPI {
      */
     public getEntity(entityId: string, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).getEntity(entityId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get finance score
+     * @param {string} accountId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public getFinanceScore(accountId: string, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getFinanceScore(accountId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6662,6 +7668,7 @@ export class FuseApi extends BaseAPI {
 
     /**
      * 
+     * @summary Get spend power
      * @param {string} spendPowerId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -6708,13 +7715,15 @@ export class FuseApi extends BaseAPI {
 
     /**
      * 
-     * @param {SpendPowerCustomization} [body] 
+     * @summary Update spend power customization
+     * @param {string} spendPowerCustomizationId 
+     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public updateSpendPowerCustomization(body?: SpendPowerCustomization, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).updateSpendPowerCustomization(body, options).then((request) => request(this.axios, this.basePath));
+    public updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6739,37 +7748,21 @@ export const SpendPowerApiAxiosParamCreator = function (configuration?: Configur
     return {
         /**
          * 
+         * @summary Delete spend power customization
          * @param {string} spendPowerId 
          * @param {string} fuseClientId 
          * @param {string} fuseApiKey 
-         * @param {string} [plaidClientId] 
-         * @param {string} [plaidSecret] 
-         * @param {string} [tellerApplicationId] 
-         * @param {string} [tellerCertificate] 
-         * @param {string} [tellerPrivateKey] 
-         * @param {string} [tellerTokenSigningKey] 
-         * @param {string} [tellerSigningSecret] 
-         * @param {string} [mxClientId] 
-         * @param {string} [mxApiKey] 
-         * @param {string} [snaptradeClientId] 
-         * @param {string} [snaptradeConsumerKey] 
-         * @param {string} [flinksCustomerId] 
-         * @param {string} [flinksUsInstanceId] 
-         * @param {string} [flinksCaInstanceId] 
-         * @param {string} [finicityPartnerId] 
-         * @param {string} [finicityPartnerSecret] 
-         * @param {string} [finicityAppKey] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteSpendPower: async (spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteSpendPower: async (spendPowerId: string, fuseClientId: string, fuseApiKey: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'spendPowerId' is not null or undefined
             assertParamExists('deleteSpendPower', 'spendPowerId', spendPowerId)
             // verify required parameter 'fuseClientId' is not null or undefined
             assertParamExists('deleteSpendPower', 'fuseClientId', fuseClientId)
             // verify required parameter 'fuseApiKey' is not null or undefined
             assertParamExists('deleteSpendPower', 'fuseApiKey', fuseApiKey)
-            const localVarPath = `/v1/financial_connections/spend-power/{spend_power_id}`
+            const localVarPath = `/v1/spend_power/{spend_power_id}`
                 .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6796,72 +7789,58 @@ export const SpendPowerApiAxiosParamCreator = function (configuration?: Configur
                 localVarHeaderParameter['Fuse-Api-Key'] = String(fuseApiKey);
             }
 
-            if (plaidClientId != null) {
-                localVarHeaderParameter['Plaid-Client-Id'] = String(plaidClientId);
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary Get spend power customization
+         * @param {string} spendPowerCustomizationId 
+         * @param {string} fuseClientId 
+         * @param {string} fuseApiKey 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSpendPowerCustomization: async (spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'spendPowerCustomizationId' is not null or undefined
+            assertParamExists('getSpendPowerCustomization', 'spendPowerCustomizationId', spendPowerCustomizationId)
+            // verify required parameter 'fuseClientId' is not null or undefined
+            assertParamExists('getSpendPowerCustomization', 'fuseClientId', fuseClientId)
+            // verify required parameter 'fuseApiKey' is not null or undefined
+            assertParamExists('getSpendPowerCustomization', 'fuseApiKey', fuseApiKey)
+            const localVarPath = `/v1/spend_power/customization/{spend_power_customization_id}`
+                .replace(`{${"spend_power_customization_id"}}`, encodeURIComponent(String(spendPowerCustomizationId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
             }
 
-            if (plaidSecret != null) {
-                localVarHeaderParameter['Plaid-Secret'] = String(plaidSecret);
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+            if (fuseClientId != null) {
+                localVarHeaderParameter['Fuse-Client-Id'] = String(fuseClientId);
             }
 
-            if (tellerApplicationId != null) {
-                localVarHeaderParameter['Teller-Application-Id'] = String(tellerApplicationId);
-            }
-
-            if (tellerCertificate != null) {
-                localVarHeaderParameter['Teller-Certificate'] = String(tellerCertificate);
-            }
-
-            if (tellerPrivateKey != null) {
-                localVarHeaderParameter['Teller-Private-Key'] = String(tellerPrivateKey);
-            }
-
-            if (tellerTokenSigningKey != null) {
-                localVarHeaderParameter['Teller-Token-Signing-Key'] = String(tellerTokenSigningKey);
-            }
-
-            if (tellerSigningSecret != null) {
-                localVarHeaderParameter['Teller-Signing-Secret'] = String(tellerSigningSecret);
-            }
-
-            if (mxClientId != null) {
-                localVarHeaderParameter['Mx-Client-Id'] = String(mxClientId);
-            }
-
-            if (mxApiKey != null) {
-                localVarHeaderParameter['Mx-Api-Key'] = String(mxApiKey);
-            }
-
-            if (snaptradeClientId != null) {
-                localVarHeaderParameter['Snaptrade-Client-Id'] = String(snaptradeClientId);
-            }
-
-            if (snaptradeConsumerKey != null) {
-                localVarHeaderParameter['Snaptrade-Consumer-Key'] = String(snaptradeConsumerKey);
-            }
-
-            if (flinksCustomerId != null) {
-                localVarHeaderParameter['Flinks-Customer-Id'] = String(flinksCustomerId);
-            }
-
-            if (flinksUsInstanceId != null) {
-                localVarHeaderParameter['Flinks-Us-Instance-Id'] = String(flinksUsInstanceId);
-            }
-
-            if (flinksCaInstanceId != null) {
-                localVarHeaderParameter['Flinks-Ca-Instance-Id'] = String(flinksCaInstanceId);
-            }
-
-            if (finicityPartnerId != null) {
-                localVarHeaderParameter['Finicity-Partner-Id'] = String(finicityPartnerId);
-            }
-
-            if (finicityPartnerSecret != null) {
-                localVarHeaderParameter['Finicity-Partner-Secret'] = String(finicityPartnerSecret);
-            }
-
-            if (finicityAppKey != null) {
-                localVarHeaderParameter['Finicity-App-Key'] = String(finicityAppKey);
+            if (fuseApiKey != null) {
+                localVarHeaderParameter['Fuse-Api-Key'] = String(fuseApiKey);
             }
 
 
@@ -6887,31 +7866,28 @@ export const SpendPowerApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary Delete spend power customization
          * @param {string} spendPowerId 
          * @param {string} fuseClientId 
          * @param {string} fuseApiKey 
-         * @param {string} [plaidClientId] 
-         * @param {string} [plaidSecret] 
-         * @param {string} [tellerApplicationId] 
-         * @param {string} [tellerCertificate] 
-         * @param {string} [tellerPrivateKey] 
-         * @param {string} [tellerTokenSigningKey] 
-         * @param {string} [tellerSigningSecret] 
-         * @param {string} [mxClientId] 
-         * @param {string} [mxApiKey] 
-         * @param {string} [snaptradeClientId] 
-         * @param {string} [snaptradeConsumerKey] 
-         * @param {string} [flinksCustomerId] 
-         * @param {string} [flinksUsInstanceId] 
-         * @param {string} [flinksCaInstanceId] 
-         * @param {string} [finicityPartnerId] 
-         * @param {string} [finicityPartnerSecret] 
-         * @param {string} [finicityAppKey] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteSpendPowerResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options);
+        async deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteSpendPowerResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @summary Get spend power customization
+         * @param {string} spendPowerCustomizationId 
+         * @param {string} fuseClientId 
+         * @param {string} fuseApiKey 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSpendPowerCustomizationResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -6926,31 +7902,27 @@ export const SpendPowerApiFactory = function (configuration?: Configuration, bas
     return {
         /**
          * 
+         * @summary Delete spend power customization
          * @param {string} spendPowerId 
          * @param {string} fuseClientId 
          * @param {string} fuseApiKey 
-         * @param {string} [plaidClientId] 
-         * @param {string} [plaidSecret] 
-         * @param {string} [tellerApplicationId] 
-         * @param {string} [tellerCertificate] 
-         * @param {string} [tellerPrivateKey] 
-         * @param {string} [tellerTokenSigningKey] 
-         * @param {string} [tellerSigningSecret] 
-         * @param {string} [mxClientId] 
-         * @param {string} [mxApiKey] 
-         * @param {string} [snaptradeClientId] 
-         * @param {string} [snaptradeConsumerKey] 
-         * @param {string} [flinksCustomerId] 
-         * @param {string} [flinksUsInstanceId] 
-         * @param {string} [flinksCaInstanceId] 
-         * @param {string} [finicityPartnerId] 
-         * @param {string} [finicityPartnerSecret] 
-         * @param {string} [finicityAppKey] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: any): AxiosPromise<DeleteSpendPowerResponse> {
-            return localVarFp.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options).then((request) => request(axios, basePath));
+        deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<DeleteSpendPowerResponse> {
+            return localVarFp.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Get spend power customization
+         * @param {string} spendPowerCustomizationId 
+         * @param {string} fuseClientId 
+         * @param {string} fuseApiKey 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<GetSpendPowerCustomizationResponse> {
+            return localVarFp.getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -6964,32 +7936,30 @@ export const SpendPowerApiFactory = function (configuration?: Configuration, bas
 export class SpendPowerApi extends BaseAPI {
     /**
      * 
+     * @summary Delete spend power customization
      * @param {string} spendPowerId 
      * @param {string} fuseClientId 
      * @param {string} fuseApiKey 
-     * @param {string} [plaidClientId] 
-     * @param {string} [plaidSecret] 
-     * @param {string} [tellerApplicationId] 
-     * @param {string} [tellerCertificate] 
-     * @param {string} [tellerPrivateKey] 
-     * @param {string} [tellerTokenSigningKey] 
-     * @param {string} [tellerSigningSecret] 
-     * @param {string} [mxClientId] 
-     * @param {string} [mxApiKey] 
-     * @param {string} [snaptradeClientId] 
-     * @param {string} [snaptradeConsumerKey] 
-     * @param {string} [flinksCustomerId] 
-     * @param {string} [flinksUsInstanceId] 
-     * @param {string} [flinksCaInstanceId] 
-     * @param {string} [finicityPartnerId] 
-     * @param {string} [finicityPartnerSecret] 
-     * @param {string} [finicityAppKey] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SpendPowerApi
      */
-    public deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, plaidClientId?: string, plaidSecret?: string, tellerApplicationId?: string, tellerCertificate?: string, tellerPrivateKey?: string, tellerTokenSigningKey?: string, tellerSigningSecret?: string, mxClientId?: string, mxApiKey?: string, snaptradeClientId?: string, snaptradeConsumerKey?: string, flinksCustomerId?: string, flinksUsInstanceId?: string, flinksCaInstanceId?: string, finicityPartnerId?: string, finicityPartnerSecret?: string, finicityAppKey?: string, options?: AxiosRequestConfig) {
-        return SpendPowerApiFp(this.configuration).deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, plaidClientId, plaidSecret, tellerApplicationId, tellerCertificate, tellerPrivateKey, tellerTokenSigningKey, tellerSigningSecret, mxClientId, mxApiKey, snaptradeClientId, snaptradeConsumerKey, flinksCustomerId, flinksUsInstanceId, flinksCaInstanceId, finicityPartnerId, finicityPartnerSecret, finicityAppKey, options).then((request) => request(this.axios, this.basePath));
+    public deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) {
+        return SpendPowerApiFp(this.configuration).deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Get spend power customization
+     * @param {string} spendPowerCustomizationId 
+     * @param {string} fuseClientId 
+     * @param {string} fuseApiKey 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SpendPowerApi
+     */
+    public getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) {
+        return SpendPowerApiFp(this.configuration).getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
