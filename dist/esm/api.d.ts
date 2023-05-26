@@ -1273,6 +1273,12 @@ export interface CreateLinkTokenRequestTellerConfig {
      * @memberof CreateLinkTokenRequestTellerConfig
      */
     'selectAccount'?: CreateLinkTokenRequestTellerConfigSelectAccountEnum;
+    /**
+     *
+     * @type {CreateLinkTokenRequestTellerConfigAccountFilter}
+     * @memberof CreateLinkTokenRequestTellerConfig
+     */
+    'accountFilter'?: CreateLinkTokenRequestTellerConfigAccountFilter;
 }
 export declare const CreateLinkTokenRequestTellerConfigSelectAccountEnum: {
     readonly Disabled: "disabled";
@@ -1280,6 +1286,70 @@ export declare const CreateLinkTokenRequestTellerConfigSelectAccountEnum: {
     readonly Multiple: "multiple";
 };
 export type CreateLinkTokenRequestTellerConfigSelectAccountEnum = typeof CreateLinkTokenRequestTellerConfigSelectAccountEnum[keyof typeof CreateLinkTokenRequestTellerConfigSelectAccountEnum];
+/**
+ * Filter the types of account returned by Teller when enrolling a customer
+ * @export
+ * @interface CreateLinkTokenRequestTellerConfigAccountFilter
+ */
+export interface CreateLinkTokenRequestTellerConfigAccountFilter {
+    /**
+     *
+     * @type {CreateLinkTokenRequestTellerConfigAccountFilterDepository}
+     * @memberof CreateLinkTokenRequestTellerConfigAccountFilter
+     */
+    'depository'?: CreateLinkTokenRequestTellerConfigAccountFilterDepository;
+    /**
+     *
+     * @type {CreateLinkTokenRequestTellerConfigAccountFilterCredit}
+     * @memberof CreateLinkTokenRequestTellerConfigAccountFilter
+     */
+    'credit'?: CreateLinkTokenRequestTellerConfigAccountFilterCredit;
+}
+/**
+ * @type CreateLinkTokenRequestTellerConfigAccountFilterCredit
+ * @export
+ */
+export type CreateLinkTokenRequestTellerConfigAccountFilterCredit = CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOf | string;
+/**
+ *
+ * @export
+ * @interface CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOf
+ */
+export interface CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOf {
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOf
+     */
+    'subtypes'?: Array<CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum>;
+}
+export declare const CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum: {
+    readonly CreditCard: "credit_card";
+};
+export type CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum = typeof CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum[keyof typeof CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum];
+/**
+ * @type CreateLinkTokenRequestTellerConfigAccountFilterDepository
+ * @export
+ */
+export type CreateLinkTokenRequestTellerConfigAccountFilterDepository = CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOf | string;
+/**
+ *
+ * @export
+ * @interface CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOf
+ */
+export interface CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOf {
+    /**
+     *
+     * @type {Array<string>}
+     * @memberof CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOf
+     */
+    'subtypes'?: Array<CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum>;
+}
+export declare const CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum: {
+    readonly Checking: "checking";
+    readonly Savings: "savings";
+};
+export type CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum = typeof CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum[keyof typeof CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum];
 /**
  *
  * @export
@@ -1735,17 +1805,29 @@ export interface EvalSpendPowerRequestEventsInner {
  */
 export interface EvalSpendPowerResponse {
     /**
-     * The mean absolute overestimation error for the data
+     *
      * @type {number}
      * @memberof EvalSpendPowerResponse
      */
-    'mean_absolute_overestimation_error'?: number;
+    'mean_granted_above_failed_payments'?: number;
     /**
-     * The mean absolute underestimation error for the data
+     *
      * @type {number}
      * @memberof EvalSpendPowerResponse
      */
-    'mean_absolute_underestimation_error'?: number;
+    'mean_granted_below_failed_payments'?: number;
+    /**
+     *
+     * @type {number}
+     * @memberof EvalSpendPowerResponse
+     */
+    'mean_predicted_limits'?: number;
+    /**
+     *
+     * @type {number}
+     * @memberof EvalSpendPowerResponse
+     */
+    'mean_successful_payments'?: number;
 }
 /**
  *
@@ -1866,6 +1948,428 @@ export declare const ExternalTransactionEventStatus: {
     readonly Posted: "posted";
 };
 export type ExternalTransactionEventStatus = typeof ExternalTransactionEventStatus[keyof typeof ExternalTransactionEventStatus];
+/**
+ *
+ * @export
+ * @interface FinQLComparisonFeature
+ */
+export interface FinQLComparisonFeature {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLComparisonFeature
+     */
+    'merchant_a'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLComparisonFeature
+     */
+    'merchant_b'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLComparisonFeature
+     */
+    'comparison_metric'?: string;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLComparisonFeature
+     */
+    'value_a'?: number;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLComparisonFeature
+     */
+    'value_b'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinQLFeatures
+ */
+export interface FinQLFeatures {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLFeatures
+     */
+    'text'?: string;
+    /**
+     *
+     * @type {FinQLIndividualMerchantFeature}
+     * @memberof FinQLFeatures
+     */
+    'individual_merchant'?: FinQLIndividualMerchantFeature;
+    /**
+     *
+     * @type {Array<FinQLTimeBasedFeatureInner>}
+     * @memberof FinQLFeatures
+     */
+    'time_based'?: Array<FinQLTimeBasedFeatureInner>;
+    /**
+     *
+     * @type {FinQLInterestFeature}
+     * @memberof FinQLFeatures
+     */
+    'interest'?: FinQLInterestFeature;
+    /**
+     *
+     * @type {FinQLFrequencyFeature}
+     * @memberof FinQLFeatures
+     */
+    'frequency'?: FinQLFrequencyFeature;
+    /**
+     *
+     * @type {Array<FinQLTrendFeatureInner>}
+     * @memberof FinQLFeatures
+     */
+    'trend'?: Array<FinQLTrendFeatureInner>;
+    /**
+     *
+     * @type {Array<FinQLTopMerchantsFeatureInner>}
+     * @memberof FinQLFeatures
+     */
+    'top_merchants'?: Array<FinQLTopMerchantsFeatureInner>;
+    /**
+     *
+     * @type {FinQLComparisonFeature}
+     * @memberof FinQLFeatures
+     */
+    'comparison'?: FinQLComparisonFeature;
+    /**
+     *
+     * @type {Array<FinQLMerchantCategoriesFeatureInner>}
+     * @memberof FinQLFeatures
+     */
+    'merchant_categories'?: Array<FinQLMerchantCategoriesFeatureInner>;
+    /**
+     * This field is system-determined and designed to intelligently deduce the most suitable data type for the response based on the input prompt. Its purpose is to provide an adaptable response structure, ensuring optimal relevance and utility to the prompt, even when no specific feature has been explicitly requested.
+     * @type {object}
+     * @memberof FinQLFeatures
+     */
+    'inferred'?: object;
+}
+/**
+ * Features to return in the response. If left blank, a suitable feature will be returned.
+ * @export
+ * @interface FinQLFeaturesRequest
+ */
+export interface FinQLFeaturesRequest {
+    /**
+     * This feature provides a basic string response containing textual information related to the query. It can be used for generic responses or when specific data structures are not necessary.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'text'?: boolean;
+    /**
+     * This feature provides information about a specific merchant, including the merchant\'s name and a numerical value related to the merchant. This could represent various metrics, such as total purchases made at that merchant, amount spent, or visits.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'individual_merchant'?: boolean;
+    /**
+     * This feature gives a list of data entries representing numerical values for different time periods. It can be used to show trends, values or events over time.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'time_based'?: boolean;
+    /**
+     * This feature provides an interest level represented as a percentage. It could reflect the account holder\'s level of interest in a certain merchant, product, or category, based on their transactional behavior.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'interest'?: boolean;
+    /**
+     * This feature provides information about the frequency of a certain event or action. It includes a specification of the time unit (day, month, or year) and the total number of occurrences in that time unit.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'frequency'?: boolean;
+    /**
+     * This feature presents a list of data entries showing trends over different time periods. Each entry includes a time period, the trend during that period, and the percentage change.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'trend'?: boolean;
+    /**
+     * This feature provides a list of top merchants based on a particular metric. Each entry in the list includes the merchant\'s rank, the merchant\'s name, and a numerical value representing the metric.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'top_merchants'?: boolean;
+    /**
+     * This feature provides a comparison between two entities. Each comparison includes the names of both entities, the metric being compared, and the numerical values for each merchant.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'comparison'?: boolean;
+    /**
+     * This feature provides a list of data entries for different categories of merchants. Each category contains a list of merchants and corresponding numerical values. This could represent various metrics such as total purchases, amount spent, or visits for each merchant within the category.
+     * @type {boolean}
+     * @memberof FinQLFeaturesRequest
+     */
+    'merchant_categories'?: boolean;
+}
+/**
+ *
+ * @export
+ * @interface FinQLFrequencyFeature
+ */
+export interface FinQLFrequencyFeature {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLFrequencyFeature
+     */
+    'frequency'?: FinQLFrequencyFeatureFrequencyEnum;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLFrequencyFeature
+     */
+    'total_occurrences'?: number;
+}
+export declare const FinQLFrequencyFeatureFrequencyEnum: {
+    readonly Day: "day";
+    readonly Month: "month";
+    readonly Year: "year";
+};
+export type FinQLFrequencyFeatureFrequencyEnum = typeof FinQLFrequencyFeatureFrequencyEnum[keyof typeof FinQLFrequencyFeatureFrequencyEnum];
+/**
+ *
+ * @export
+ * @interface FinQLIndividualMerchantFeature
+ */
+export interface FinQLIndividualMerchantFeature {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLIndividualMerchantFeature
+     */
+    'merchant'?: string;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLIndividualMerchantFeature
+     */
+    'value'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinQLInterestFeature
+ */
+export interface FinQLInterestFeature {
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLInterestFeature
+     */
+    'interest_level'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinQLMerchantCategoriesFeatureInner
+ */
+export interface FinQLMerchantCategoriesFeatureInner {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLMerchantCategoriesFeatureInner
+     */
+    'category'?: string;
+    /**
+     *
+     * @type {Array<FinQLMerchantCategoriesFeatureInnerResultInner>}
+     * @memberof FinQLMerchantCategoriesFeatureInner
+     */
+    'result'?: Array<FinQLMerchantCategoriesFeatureInnerResultInner>;
+}
+/**
+ *
+ * @export
+ * @interface FinQLMerchantCategoriesFeatureInnerResultInner
+ */
+export interface FinQLMerchantCategoriesFeatureInnerResultInner {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
+     */
+    'merchant'?: string;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
+     */
+    'value'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinQLPromptRequest
+ */
+export interface FinQLPromptRequest {
+    /**
+     * Description of the search in natural language.
+     * @type {string}
+     * @memberof FinQLPromptRequest
+     */
+    'prompt': string;
+    /**
+     * ID of account to be queried
+     * @type {string}
+     * @memberof FinQLPromptRequest
+     */
+    'account_id': string;
+    /**
+     *
+     * @type {FinQLFeaturesRequest}
+     * @memberof FinQLPromptRequest
+     */
+    'features'?: FinQLFeaturesRequest;
+}
+/**
+ *
+ * @export
+ * @interface FinQLPromptResponse
+ */
+export interface FinQLPromptResponse {
+    /**
+     *
+     * @type {FinQLFeatures}
+     * @memberof FinQLPromptResponse
+     */
+    'features'?: FinQLFeatures;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof FinQLPromptResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface FinQLTimeBasedFeatureInner
+ */
+export interface FinQLTimeBasedFeatureInner {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLTimeBasedFeatureInner
+     */
+    'time_period'?: string;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLTimeBasedFeatureInner
+     */
+    'value'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinQLTopMerchantsFeatureInner
+ */
+export interface FinQLTopMerchantsFeatureInner {
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLTopMerchantsFeatureInner
+     */
+    'rank'?: number;
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLTopMerchantsFeatureInner
+     */
+    'merchant'?: string;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLTopMerchantsFeatureInner
+     */
+    'value'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinQLTrendFeatureInner
+ */
+export interface FinQLTrendFeatureInner {
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLTrendFeatureInner
+     */
+    'time_period'?: string;
+    /**
+     *
+     * @type {string}
+     * @memberof FinQLTrendFeatureInner
+     */
+    'trend'?: string;
+    /**
+     *
+     * @type {number}
+     * @memberof FinQLTrendFeatureInner
+     */
+    'change_percentage'?: number;
+}
+/**
+ *
+ * @export
+ * @interface FinanceScore
+ */
+export interface FinanceScore {
+    /**
+     * The likelihood of a credit default. A higher score implies lower risk. The finance score and all finance score metrics are values between 0 and 1. This value is calculated by the weighted sum of the metrics below.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'value': number;
+    /**
+     * This quantifies a user\'s monthly savings habits. A lower score represents minimal savings, while a higher score indicates a user who consistently sets aside a substantial portion of their income.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'savings_score': number;
+    /**
+     * This assesses the consistency of a user\'s monthly spending. A lower score indicates variable monthly expenditure, while a higher score represents consistent spending habits.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'expense_stability_score': number;
+    /**
+     * This measures the regularity of a user\'s financial activity over a period of time. A lower score suggests limited activity, while a higher score is indicative of regular daily transactions over a long period of time.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'activity_age_score': number;
+    /**
+     * This evaluates the stability of a user\'s income. A lower score suggests inconsistent or low income, while a higher score represents high, consistent income.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'income_score': number;
+    /**
+     * This evaluates a user\'s loan repayment behaviour. A lower score is assigned to those without loan payments, while a higher score denotes consistent loan payments, such as a mortgage.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'loan_payments_score': number;
+    /**
+     * This quantifies a user\'s ability to repay debts. A lower score corresponds to missed payments, while a higher score signifies consistent debt repayment.
+     * @type {number}
+     * @memberof FinanceScore
+     */
+    'repayments_score': number;
+}
 /**
  *
  * @export
@@ -2016,7 +2520,7 @@ export interface FinancialConnectionsAccount {
      */
     'remote_id': string;
     /**
-     * Uniquely identifies this account across all accounts associated with your organization. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
+     * Uniquely identifies this account across all accounts for a single financial connection. Used for reconnection deduplication. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof FinancialConnectionsAccount
      */
@@ -2057,6 +2561,12 @@ export interface FinancialConnectionsAccount {
      * @memberof FinancialConnectionsAccount
      */
     'balance': FinancialConnectionsAccountCachedBalance;
+    /**
+     *
+     * @type {any}
+     * @memberof FinancialConnectionsAccount
+     */
+    'remote_data': any;
 }
 /**
  *
@@ -2144,6 +2654,12 @@ export interface FinancialConnectionsAccountDetails {
      * @memberof FinancialConnectionsAccountDetails
      */
     'ach': FinancialConnectionsAccountDetailsAch;
+    /**
+     *
+     * @type {any}
+     * @memberof FinancialConnectionsAccountDetails
+     */
+    'remote_data': any;
 }
 /**
  *
@@ -2202,7 +2718,7 @@ export interface FinancialConnectionsAccountLiability {
      */
     'remote_id': string;
     /**
-     * Uniquely identifies this account across all accounts associated with your organization. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
+     * Uniquely identifies this account across all accounts for a single financial connection. Used for reconnection deduplication. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof FinancialConnectionsAccountLiability
      */
@@ -2243,6 +2759,12 @@ export interface FinancialConnectionsAccountLiability {
      * @memberof FinancialConnectionsAccountLiability
      */
     'balance': FinancialConnectionsAccountCachedBalance;
+    /**
+     *
+     * @type {any}
+     * @memberof FinancialConnectionsAccountLiability
+     */
+    'remote_data': any;
     /**
      * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
      * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
@@ -3259,11 +3781,11 @@ export interface GetEntityResponse {
  */
 export interface GetFinanceScoreResponse {
     /**
-     * A value between 0 and 1 where 1 is a perfect finance score and 0 is the worst finance score.
-     * @type {number}
+     *
+     * @type {FinanceScore}
      * @memberof GetFinanceScoreResponse
      */
-    'finance_score': number;
+    'finance_score': FinanceScore;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -4152,6 +4674,18 @@ export interface SpendPower {
      * @memberof SpendPower
      */
     'last_updated': string;
+    /**
+     *
+     * @type {FinanceScore}
+     * @memberof SpendPower
+     */
+    'finance_score': FinanceScore;
+    /**
+     * Predicted balance for the timeframe.
+     * @type {number}
+     * @memberof SpendPower
+     */
+    'predicted_balance': number;
 }
 /**
  *
@@ -4307,6 +4841,12 @@ export interface Transaction {
      * @memberof Transaction
      */
     'remote_id': string;
+    /**
+     * Uniquely identifies this account across all transactions for a single financial connection. Used for reconnection deduplication. This field may or may not be present depending on if a transaction can be uniquely identified. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
+     * @type {string}
+     * @memberof Transaction
+     */
+    'fingerprint'?: string;
     /**
      * Remote Account Id of the transaction, ie Plaid Account Id
      * @type {string}
@@ -5565,6 +6105,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+     * @summary FinQL Prompt
+     * @param {FinQLPromptRequest} [finQLPromptRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    finQLPrompt: (finQLPromptRequest?: FinQLPromptRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -5788,6 +6336,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
     /**
+     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+     * @summary FinQL Prompt
+     * @param {FinQLPromptRequest} [finQLPromptRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    finQLPrompt(finQLPromptRequest?: FinQLPromptRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FinQLPromptResponse>>;
+    /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
@@ -6010,6 +6566,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>;
+    /**
+     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+     * @summary FinQL Prompt
+     * @param {FinQLPromptRequest} [finQLPromptRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    finQLPrompt(finQLPromptRequest?: FinQLPromptRequest, options?: any): AxiosPromise<FinQLPromptResponse>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -6244,6 +6808,15 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
+    /**
+     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+     * @summary FinQL Prompt
+     * @param {FinQLPromptRequest} [finQLPromptRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    finQLPrompt(finQLPromptRequest?: FinQLPromptRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<FinQLPromptResponse, any>>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]

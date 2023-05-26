@@ -826,6 +826,13 @@ export const CreateLinkTokenRequestTellerConfigSelectAccountEnum = {
     Single: 'single',
     Multiple: 'multiple'
 };
+export const CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum = {
+    CreditCard: 'credit_card'
+};
+export const CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum = {
+    Checking: 'checking',
+    Savings: 'savings'
+};
 export const EnrichedTransactionTypeEnum = {
     Debit: 'debit',
     Credit: 'credit'
@@ -841,6 +848,11 @@ export const ExternalTransactionEventEventTypeEnum = {
 export const ExternalTransactionEventStatus = {
     Pending: 'pending',
     Posted: 'posted'
+};
+export const FinQLFrequencyFeatureFrequencyEnum = {
+    Day: 'day',
+    Month: 'month',
+    Year: 'year'
 };
 export const FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
@@ -2220,6 +2232,38 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+         * @summary FinQL Prompt
+         * @param {FinQLPromptRequest} [finQLPromptRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        finQLPrompt: (finQLPromptRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/finql/prompt`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = serializeDataIfNeeded(finQLPromptRequest, localVarRequestOptions, configuration);
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -2973,6 +3017,19 @@ export const FuseApiFp = function (configuration) {
             });
         },
         /**
+         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+         * @summary FinQL Prompt
+         * @param {FinQLPromptRequest} [finQLPromptRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        finQLPrompt(finQLPromptRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.finQLPrompt(finQLPromptRequest, options);
+                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            });
+        },
+        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -3312,6 +3369,16 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+         * @summary FinQL Prompt
+         * @param {FinQLPromptRequest} [finQLPromptRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        finQLPrompt(finQLPromptRequest, options) {
+            return localVarFp.finQLPrompt(finQLPromptRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -3601,6 +3668,17 @@ export class FuseApi extends BaseAPI {
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
         return FuseApiFp(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
+     * @summary FinQL Prompt
+     * @param {FinQLPromptRequest} [finQLPromptRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    finQLPrompt(finQLPromptRequest, options) {
+        return FuseApiFp(this.configuration).finQLPrompt(finQLPromptRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
