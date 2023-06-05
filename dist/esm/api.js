@@ -199,7 +199,7 @@ export const Aggregator = {
     Mx: 'mx',
     Snaptrade: 'snaptrade',
     Flinks: 'flinks',
-    Finicity: 'finicity'
+    Mono: 'mono'
 };
 export const AssetReportTransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
@@ -819,7 +819,11 @@ export const AssetReportTransactionStatusEnum = {
 export const CountryCode = {
     Us: 'US',
     Ca: 'CA',
-    In: 'IN'
+    In: 'IN',
+    Ng: 'NG',
+    Gh: 'GH',
+    Ke: 'KE',
+    Za: 'ZA'
 };
 export const CreateLinkTokenRequestTellerConfigSelectAccountEnum = {
     Disabled: 'disabled',
@@ -849,7 +853,22 @@ export const ExternalTransactionEventStatus = {
     Pending: 'pending',
     Posted: 'posted'
 };
-export const FinQLFrequencyFeatureFrequencyEnum = {
+/**
+ * Feature to return in the response. See response for a description of each feature.
+ * @export
+ * @enum {string}
+ */
+export const FinQLFeatureRequest = {
+    Text: 'text',
+    IndividualMerchant: 'individual_merchant',
+    TimeBased: 'time_based',
+    Interest: 'interest',
+    Frequency: 'frequency',
+    TopMerchants: 'top_merchants',
+    Comparison: 'comparison',
+    MerchantCategories: 'merchant_categories'
+};
+export const FinQLFrequencyFeatureTimePeriodEnum = {
     Day: 'day',
     Month: 'month',
     Year: 'year'
@@ -1014,6 +1033,9 @@ export const FuseApiErrorCode = {
     MissingFlinksUsCustomerIdHeader: 'missing_flinks_us_customer_id_header',
     MissingFlinksCaInstanceIdHeader: 'missing_flinks_ca_instance_id_header',
     MissingFlinksUsInstanceIdHeader: 'missing_flinks_us_instance_id_header',
+    MissingMonoPublicKeyHeader: 'missing_mono_public_key_header',
+    MissingMonoSecretKeyHeader: 'missing_mono_secret_key_header',
+    MissingMonoWebhookSecretHeader: 'missing_mono_webhook_secret_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -1733,6 +1755,26 @@ export const TransactionTypeEnum = {
  * @enum {string}
  */
 export const TransactionCategoryDetailed = {
+    AutoAndTransport: 'auto_and_transport',
+    BillsAndUtilities: 'bills_and_utilities',
+    BusinessServices: 'business_services',
+    Education: 'education',
+    Entertainment: 'entertainment',
+    FeesAndCharges: 'fees_and_charges',
+    Financial: 'financial',
+    FoodAndDining: 'food_and_dining',
+    GiftsAndDonations: 'gifts_and_donations',
+    HealthAndFitness: 'health_and_fitness',
+    Home: 'home',
+    Income: 'income',
+    Investments: 'investments',
+    Kids: 'kids',
+    PersonalCare: 'personal_care',
+    Pets: 'pets',
+    Shopping: 'shopping',
+    Taxes: 'taxes',
+    Transfer: 'transfer',
+    Travel: 'travel',
     AutoInsurance: 'auto_insurance',
     AutoPayment: 'auto_payment',
     Gas: 'gas',
@@ -1829,7 +1871,8 @@ export const TransactionCategoryDetailed = {
     RentalCarAndTaxi: 'rental_car_and_taxi',
     Vacation: 'vacation',
     Cash: 'cash',
-    Check: 'check'
+    Check: 'check',
+    Uncategorized: 'uncategorized'
 };
 /**
  * Primary transaction category
@@ -1914,7 +1957,8 @@ export const WebhookSource = {
     Teller: 'teller',
     Mx: 'mx',
     Fuse: 'fuse',
-    Snaptrade: 'snaptrade'
+    Snaptrade: 'snaptrade',
+    Mono: 'mono'
 };
 /**
  *
