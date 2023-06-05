@@ -245,7 +245,7 @@ export const Aggregator = {
     Mx: 'mx',
     Snaptrade: 'snaptrade',
     Flinks: 'flinks',
-    Finicity: 'finicity'
+    Mono: 'mono'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -1080,7 +1080,11 @@ export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStat
 export const CountryCode = {
     Us: 'US',
     Ca: 'CA',
-    In: 'IN'
+    In: 'IN',
+    Ng: 'NG',
+    Gh: 'GH',
+    Ke: 'KE',
+    Za: 'ZA'
 } as const;
 
 export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
@@ -1503,6 +1507,12 @@ export interface CreateSpendPowerCustomizationRequest {
      * @memberof CreateSpendPowerCustomizationRequest
      */
     'max_limit': number;
+    /**
+     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
+     * @type {number}
+     * @memberof CreateSpendPowerCustomizationRequest
+     */
+    'risk_tolerance': number;
 }
 
 
@@ -1671,6 +1681,12 @@ export interface EnrichedTransaction {
      */
     'id': string;
     /**
+     * A Fuse defined, unique ID for the merchant associated with this transaction.
+     * @type {string}
+     * @memberof EnrichedTransaction
+     */
+    'merchant_id'?: string;
+    /**
      * The original or enhanced name of the merchant.
      * @type {string}
      * @memberof EnrichedTransaction
@@ -1678,10 +1694,10 @@ export interface EnrichedTransaction {
     'name'?: string;
     /**
      * 
-     * @type {EnrichedTransactionLogo}
+     * @type {MerchantLogo}
      * @memberof EnrichedTransaction
      */
-    'logo'?: EnrichedTransactionLogo;
+    'logo'?: MerchantLogo;
     /**
      * The amount of the transaction in cents, in the currency of the account.
      * @type {number}
@@ -1763,19 +1779,6 @@ export const EnrichedTransactionTypeEnum = {
 
 export type EnrichedTransactionTypeEnum = typeof EnrichedTransactionTypeEnum[keyof typeof EnrichedTransactionTypeEnum];
 
-/**
- * 
- * @export
- * @interface EnrichedTransactionLogo
- */
-export interface EnrichedTransactionLogo {
-    /**
-     * The URL of the logo.
-     * @type {string}
-     * @memberof EnrichedTransactionLogo
-     */
-    'url'?: string;
-}
 /**
  * 
  * @export
@@ -1941,23 +1944,17 @@ export interface ExternalTransactionEvent {
      */
     'status': ExternalTransactionEventStatus;
     /**
-     * The running balance of the account after the transaction has occurred, in cents
-     * @type {number}
-     * @memberof ExternalTransactionEvent
-     */
-    'balance'?: number;
-    /**
      * Use positive values to represent money going out and negative to represent money going in.
      * @type {number}
      * @memberof ExternalTransactionEvent
      */
     'amount': number;
     /**
-     * 
+     * The ISO-4217 currency code.
      * @type {string}
      * @memberof ExternalTransactionEvent
      */
-    'merchant_name': string;
+    'iso_currency_code': string;
     /**
      * 
      * @type {TransactionEventType}
@@ -1966,22 +1963,22 @@ export interface ExternalTransactionEvent {
     'transaction_type': TransactionEventType;
     /**
      * 
-     * @type {TransactionCategory}
-     * @memberof ExternalTransactionEvent
-     */
-    'category': TransactionCategory;
-    /**
-     * The ISO-4217 currency code.
      * @type {string}
      * @memberof ExternalTransactionEvent
      */
-    'iso_currency_code': string;
+    'merchant_name': string;
     /**
      * Datetime of the transaction In ISO-8601 format
      * @type {string}
      * @memberof ExternalTransactionEvent
      */
     'timestamp': string;
+    /**
+     * The running balance of the account after the transaction has occurred, in cents
+     * @type {number}
+     * @memberof ExternalTransactionEvent
+     */
+    'balance'?: number;
 }
 
 export const ExternalTransactionEventEventTypeEnum = {
@@ -2012,16 +2009,16 @@ export type ExternalTransactionEventStatus = typeof ExternalTransactionEventStat
 export interface FinQLComparisonFeature {
     /**
      * 
-     * @type {string}
+     * @type {Merchant}
      * @memberof FinQLComparisonFeature
      */
-    'merchant_a'?: string;
+    'merchant_a'?: Merchant;
     /**
      * 
-     * @type {string}
+     * @type {Merchant}
      * @memberof FinQLComparisonFeature
      */
-    'merchant_b'?: string;
+    'merchant_b'?: Merchant;
     /**
      * 
      * @type {string}
@@ -2030,145 +2027,147 @@ export interface FinQLComparisonFeature {
     'comparison_metric'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof FinQLComparisonFeature
      */
-    'value_a'?: number;
+    'value_a'?: string;
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof FinQLComparisonFeature
      */
-    'value_b'?: number;
+    'value_b'?: string;
+}
+/**
+ * @type FinQLFeature
+ * @export
+ */
+export type FinQLFeature = FinQLFeatureOneOf | FinQLFeatureOneOf1 | FinQLFeatureOneOf2 | FinQLFeatureOneOf3 | FinQLFeatureOneOf4 | FinQLFeatureOneOf5 | FinQLFeatureOneOf6 | FinQLFeatureOneOf7;
+
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf
+ */
+export interface FinQLFeatureOneOf {
+    /**
+     * 
+     * @type {string}
+     * @memberof FinQLFeatureOneOf
+     */
+    'text'?: string;
 }
 /**
  * 
  * @export
- * @interface FinQLFeatures
+ * @interface FinQLFeatureOneOf1
  */
-export interface FinQLFeatures {
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLFeatures
-     */
-    'text'?: string;
+export interface FinQLFeatureOneOf1 {
     /**
      * 
      * @type {FinQLIndividualMerchantFeature}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf1
      */
     'individual_merchant'?: FinQLIndividualMerchantFeature;
+}
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf2
+ */
+export interface FinQLFeatureOneOf2 {
     /**
      * 
      * @type {Array<FinQLTimeBasedFeatureInner>}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf2
      */
     'time_based'?: Array<FinQLTimeBasedFeatureInner>;
+}
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf3
+ */
+export interface FinQLFeatureOneOf3 {
     /**
      * 
      * @type {FinQLInterestFeature}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf3
      */
     'interest'?: FinQLInterestFeature;
+}
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf4
+ */
+export interface FinQLFeatureOneOf4 {
     /**
      * 
      * @type {FinQLFrequencyFeature}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf4
      */
     'frequency'?: FinQLFrequencyFeature;
-    /**
-     * 
-     * @type {Array<FinQLTrendFeatureInner>}
-     * @memberof FinQLFeatures
-     */
-    'trend'?: Array<FinQLTrendFeatureInner>;
+}
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf5
+ */
+export interface FinQLFeatureOneOf5 {
     /**
      * 
      * @type {Array<FinQLTopMerchantsFeatureInner>}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf5
      */
     'top_merchants'?: Array<FinQLTopMerchantsFeatureInner>;
+}
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf6
+ */
+export interface FinQLFeatureOneOf6 {
     /**
      * 
      * @type {FinQLComparisonFeature}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf6
      */
     'comparison'?: FinQLComparisonFeature;
+}
+/**
+ * 
+ * @export
+ * @interface FinQLFeatureOneOf7
+ */
+export interface FinQLFeatureOneOf7 {
     /**
      * 
      * @type {Array<FinQLMerchantCategoriesFeatureInner>}
-     * @memberof FinQLFeatures
+     * @memberof FinQLFeatureOneOf7
      */
     'merchant_categories'?: Array<FinQLMerchantCategoriesFeatureInner>;
-    /**
-     * This field is system-determined and designed to intelligently deduce the most suitable data type for the response based on the input prompt. Its purpose is to provide an adaptable response structure, ensuring optimal relevance and utility to the prompt, even when no specific feature has been explicitly requested.
-     * @type {object}
-     * @memberof FinQLFeatures
-     */
-    'inferred'?: object;
 }
 /**
- * Features to return in the response. If left blank, a suitable feature will be returned.
+ * Feature to return in the response. See response for a description of each feature.
  * @export
- * @interface FinQLFeaturesRequest
+ * @enum {string}
  */
-export interface FinQLFeaturesRequest {
-    /**
-     * This feature provides a basic string response containing textual information related to the query. It can be used for generic responses or when specific data structures are not necessary.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'text'?: boolean;
-    /**
-     * This feature provides information about a specific merchant, including the merchant\'s name and a numerical value related to the merchant. This could represent various metrics, such as total purchases made at that merchant, amount spent, or visits.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'individual_merchant'?: boolean;
-    /**
-     * This feature gives a list of data entries representing numerical values for different time periods. It can be used to show trends, values or events over time.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'time_based'?: boolean;
-    /**
-     * This feature provides an interest level represented as a percentage. It could reflect the account holder\'s level of interest in a certain merchant, product, or category, based on their transactional behavior.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'interest'?: boolean;
-    /**
-     * This feature provides information about the frequency of a certain event or action. It includes a specification of the time unit (day, month, or year) and the total number of occurrences in that time unit.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'frequency'?: boolean;
-    /**
-     * This feature presents a list of data entries showing trends over different time periods. Each entry includes a time period, the trend during that period, and the percentage change.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'trend'?: boolean;
-    /**
-     * This feature provides a list of top merchants based on a particular metric. Each entry in the list includes the merchant\'s rank, the merchant\'s name, and a numerical value representing the metric.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'top_merchants'?: boolean;
-    /**
-     * This feature provides a comparison between two entities. Each comparison includes the names of both entities, the metric being compared, and the numerical values for each merchant.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'comparison'?: boolean;
-    /**
-     * This feature provides a list of data entries for different categories of merchants. Each category contains a list of merchants and corresponding numerical values. This could represent various metrics such as total purchases, amount spent, or visits for each merchant within the category.
-     * @type {boolean}
-     * @memberof FinQLFeaturesRequest
-     */
-    'merchant_categories'?: boolean;
-}
+
+export const FinQLFeatureRequest = {
+    Text: 'text',
+    IndividualMerchant: 'individual_merchant',
+    TimeBased: 'time_based',
+    Interest: 'interest',
+    Frequency: 'frequency',
+    TopMerchants: 'top_merchants',
+    Comparison: 'comparison',
+    MerchantCategories: 'merchant_categories'
+} as const;
+
+export type FinQLFeatureRequest = typeof FinQLFeatureRequest[keyof typeof FinQLFeatureRequest];
+
+
 /**
  * 
  * @export
@@ -2180,22 +2179,22 @@ export interface FinQLFrequencyFeature {
      * @type {string}
      * @memberof FinQLFrequencyFeature
      */
-    'frequency'?: FinQLFrequencyFeatureFrequencyEnum;
+    'time_period'?: FinQLFrequencyFeatureTimePeriodEnum;
     /**
      * 
      * @type {number}
      * @memberof FinQLFrequencyFeature
      */
-    'total_occurrences'?: number;
+    'frequency'?: number;
 }
 
-export const FinQLFrequencyFeatureFrequencyEnum = {
+export const FinQLFrequencyFeatureTimePeriodEnum = {
     Day: 'day',
     Month: 'month',
     Year: 'year'
 } as const;
 
-export type FinQLFrequencyFeatureFrequencyEnum = typeof FinQLFrequencyFeatureFrequencyEnum[keyof typeof FinQLFrequencyFeatureFrequencyEnum];
+export type FinQLFrequencyFeatureTimePeriodEnum = typeof FinQLFrequencyFeatureTimePeriodEnum[keyof typeof FinQLFrequencyFeatureTimePeriodEnum];
 
 /**
  * 
@@ -2205,16 +2204,16 @@ export type FinQLFrequencyFeatureFrequencyEnum = typeof FinQLFrequencyFeatureFre
 export interface FinQLIndividualMerchantFeature {
     /**
      * 
+     * @type {Merchant}
+     * @memberof FinQLIndividualMerchantFeature
+     */
+    'merchant'?: Merchant;
+    /**
+     * 
      * @type {string}
      * @memberof FinQLIndividualMerchantFeature
      */
-    'merchant'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLIndividualMerchantFeature
-     */
-    'value'?: number;
+    'value'?: string;
 }
 /**
  * 
@@ -2256,16 +2255,16 @@ export interface FinQLMerchantCategoriesFeatureInner {
 export interface FinQLMerchantCategoriesFeatureInnerResultInner {
     /**
      * 
+     * @type {Merchant}
+     * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
+     */
+    'merchant'?: Merchant;
+    /**
+     * 
      * @type {string}
      * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
      */
-    'merchant'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
-     */
-    'value'?: number;
+    'value'?: string;
 }
 /**
  * 
@@ -2287,11 +2286,13 @@ export interface FinQLPromptRequest {
     'account_id': string;
     /**
      * 
-     * @type {FinQLFeaturesRequest}
+     * @type {FinQLFeatureRequest}
      * @memberof FinQLPromptRequest
      */
-    'features'?: FinQLFeaturesRequest;
+    'feature': FinQLFeatureRequest;
 }
+
+
 /**
  * 
  * @export
@@ -2300,10 +2301,10 @@ export interface FinQLPromptRequest {
 export interface FinQLPromptResponse {
     /**
      * 
-     * @type {FinQLFeatures}
+     * @type {FinQLFeature}
      * @memberof FinQLPromptResponse
      */
-    'features'?: FinQLFeatures;
+    'feature'?: FinQLFeature;
     /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
@@ -2344,41 +2345,16 @@ export interface FinQLTopMerchantsFeatureInner {
     'rank'?: number;
     /**
      * 
+     * @type {Merchant}
+     * @memberof FinQLTopMerchantsFeatureInner
+     */
+    'merchant'?: Merchant;
+    /**
+     * 
      * @type {string}
      * @memberof FinQLTopMerchantsFeatureInner
      */
-    'merchant'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLTopMerchantsFeatureInner
-     */
-    'value'?: number;
-}
-/**
- * 
- * @export
- * @interface FinQLTrendFeatureInner
- */
-export interface FinQLTrendFeatureInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLTrendFeatureInner
-     */
-    'time_period'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLTrendFeatureInner
-     */
-    'trend'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLTrendFeatureInner
-     */
-    'change_percentage'?: number;
+    'value'?: string;
 }
 /**
  * 
@@ -2502,6 +2478,24 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'mx'?: FinancialConnectionDetailsMx;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsSnaptrade}
+     * @memberof FinancialConnectionDetails
+     */
+    'snaptrade'?: FinancialConnectionDetailsSnaptrade;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsFlinks}
+     * @memberof FinancialConnectionDetails
+     */
+    'flinks'?: FinancialConnectionDetailsFlinks;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsMono}
+     * @memberof FinancialConnectionDetails
+     */
+    'mono'?: FinancialConnectionDetailsMono;
 }
 
 export const FinancialConnectionDetailsConnectionStatusEnum = {
@@ -2512,6 +2506,32 @@ export const FinancialConnectionDetailsConnectionStatusEnum = {
 
 export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
 
+/**
+ * Data needed to query data from Flinks
+ * @export
+ * @interface FinancialConnectionDetailsFlinks
+ */
+export interface FinancialConnectionDetailsFlinks {
+    /**
+     * Login Id for Flinks
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFlinks
+     */
+    'login_id': string;
+}
+/**
+ * Data needed to query data from Mono
+ * @export
+ * @interface FinancialConnectionDetailsMono
+ */
+export interface FinancialConnectionDetailsMono {
+    /**
+     * Account Id for Mono
+     * @type {string}
+     * @memberof FinancialConnectionDetailsMono
+     */
+    'account_id': string;
+}
 /**
  * Data needed to query data from MX
  * @export
@@ -2549,6 +2569,31 @@ export interface FinancialConnectionDetailsPlaid {
      * @memberof FinancialConnectionDetailsPlaid
      */
     'item_id': string;
+}
+/**
+ * Data needed to query data from SnapTrade
+ * @export
+ * @interface FinancialConnectionDetailsSnaptrade
+ */
+export interface FinancialConnectionDetailsSnaptrade {
+    /**
+     * Brokerage Authorization Id for SnapTrade
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSnaptrade
+     */
+    'brokerage_authorization_id': string;
+    /**
+     * User id for SnapTrade
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSnaptrade
+     */
+    'user_id': string;
+    /**
+     * User secret for SnapTrade
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSnaptrade
+     */
+    'user_secret': string;
 }
 /**
  * Data needed to query data from Teller
@@ -3650,6 +3695,9 @@ export const FuseApiErrorCode = {
     MissingFlinksUsCustomerIdHeader: 'missing_flinks_us_customer_id_header',
     MissingFlinksCaInstanceIdHeader: 'missing_flinks_ca_instance_id_header',
     MissingFlinksUsInstanceIdHeader: 'missing_flinks_us_instance_id_header',
+    MissingMonoPublicKeyHeader: 'missing_mono_public_key_header',
+    MissingMonoSecretKeyHeader: 'missing_mono_secret_key_header',
+    MissingMonoWebhookSecretHeader: 'missing_mono_webhook_secret_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -4464,23 +4512,17 @@ export interface InAppTransactionEvent {
      */
     'status': InAppTransactionEventStatus;
     /**
-     * The running balance of the account after the transaction has occurred, in cents.
-     * @type {number}
-     * @memberof InAppTransactionEvent
-     */
-    'balance'?: number;
-    /**
      * 
      * @type {number}
      * @memberof InAppTransactionEvent
      */
     'amount': number;
     /**
-     * 
+     * The ISO-4217 currency code.
      * @type {string}
      * @memberof InAppTransactionEvent
      */
-    'merchant_name': string;
+    'iso_currency_code': string;
     /**
      * 
      * @type {TransactionEventType}
@@ -4488,17 +4530,23 @@ export interface InAppTransactionEvent {
      */
     'transaction_type': TransactionEventType;
     /**
-     * The ISO-4217 currency code.
+     * 
      * @type {string}
      * @memberof InAppTransactionEvent
      */
-    'iso_currency_code'?: string;
+    'merchant_name': string;
     /**
      * Datetime of the transaction In ISO-8601 format
      * @type {string}
      * @memberof InAppTransactionEvent
      */
     'timestamp': string;
+    /**
+     * The running balance of the account after the transaction has occurred, in cents.
+     * @type {number}
+     * @memberof InAppTransactionEvent
+     */
+    'balance'?: number;
 }
 
 export const InAppTransactionEventEventTypeEnum = {
@@ -4522,6 +4570,44 @@ export const InAppTransactionEventStatus = {
 export type InAppTransactionEventStatus = typeof InAppTransactionEventStatus[keyof typeof InAppTransactionEventStatus];
 
 
+/**
+ * 
+ * @export
+ * @interface Merchant
+ */
+export interface Merchant {
+    /**
+     * A Fuse defined, unique ID for the merchant associated with this transaction.
+     * @type {string}
+     * @memberof Merchant
+     */
+    'id': string;
+    /**
+     * The name of the merchant.
+     * @type {string}
+     * @memberof Merchant
+     */
+    'name': string;
+    /**
+     * 
+     * @type {MerchantLogo}
+     * @memberof Merchant
+     */
+    'logo'?: MerchantLogo;
+}
+/**
+ * 
+ * @export
+ * @interface MerchantLogo
+ */
+export interface MerchantLogo {
+    /**
+     * The URL of the logo.
+     * @type {string}
+     * @memberof MerchantLogo
+     */
+    'url'?: string;
+}
 /**
  * The input data for the financial connections to be migrated into the unified Fuse API.
  * @export
@@ -4841,6 +4927,12 @@ export interface SpendPowerCustomization {
      * @memberof SpendPowerCustomization
      */
     'max_limit': number;
+    /**
+     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
+     * @type {number}
+     * @memberof SpendPowerCustomization
+     */
+    'risk_tolerance'?: number;
 }
 
 
@@ -5713,6 +5805,26 @@ export interface TransactionCategory {
  */
 
 export const TransactionCategoryDetailed = {
+    AutoAndTransport: 'auto_and_transport',
+    BillsAndUtilities: 'bills_and_utilities',
+    BusinessServices: 'business_services',
+    Education: 'education',
+    Entertainment: 'entertainment',
+    FeesAndCharges: 'fees_and_charges',
+    Financial: 'financial',
+    FoodAndDining: 'food_and_dining',
+    GiftsAndDonations: 'gifts_and_donations',
+    HealthAndFitness: 'health_and_fitness',
+    Home: 'home',
+    Income: 'income',
+    Investments: 'investments',
+    Kids: 'kids',
+    PersonalCare: 'personal_care',
+    Pets: 'pets',
+    Shopping: 'shopping',
+    Taxes: 'taxes',
+    Transfer: 'transfer',
+    Travel: 'travel',
     AutoInsurance: 'auto_insurance',
     AutoPayment: 'auto_payment',
     Gas: 'gas',
@@ -5809,7 +5921,8 @@ export const TransactionCategoryDetailed = {
     RentalCarAndTaxi: 'rental_car_and_taxi',
     Vacation: 'vacation',
     Cash: 'cash',
-    Check: 'check'
+    Check: 'check',
+    Uncategorized: 'uncategorized'
 } as const;
 
 export type TransactionCategoryDetailed = typeof TransactionCategoryDetailed[keyof typeof TransactionCategoryDetailed];
@@ -5925,7 +6038,7 @@ export interface TransactionToEnrich {
      */
     'mcc'?: string;
     /**
-     * The amount of the transaction in cents, in the currency of the account.
+     * The amount of the transaction in cents, in the currency of the account. 
      * @type {number}
      * @memberof TransactionToEnrich
      */
@@ -6031,6 +6144,12 @@ export interface UpdateSpendPowerCustomizationRequest {
      * @memberof UpdateSpendPowerCustomizationRequest
      */
     'max_limit'?: number;
+    /**
+     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
+     * @type {number}
+     * @memberof UpdateSpendPowerCustomizationRequest
+     */
+    'risk_tolerance'?: number;
 }
 
 
@@ -6066,18 +6185,6 @@ export interface UpdatedBalanceEvent {
      */
     'event_type': UpdatedBalanceEventEventTypeEnum;
     /**
-     * The current balance of the account factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
-     * @type {number}
-     * @memberof UpdatedBalanceEvent
-     */
-    'available'?: number;
-    /**
-     * The current balance of the account without factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
-     * @type {number}
-     * @memberof UpdatedBalanceEvent
-     */
-    'current'?: number;
-    /**
      * The ISO-4217 currency code.
      * @type {string}
      * @memberof UpdatedBalanceEvent
@@ -6089,6 +6196,18 @@ export interface UpdatedBalanceEvent {
      * @memberof UpdatedBalanceEvent
      */
     'timestamp': string;
+    /**
+     * The current balance of the account factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof UpdatedBalanceEvent
+     */
+    'available'?: number;
+    /**
+     * The current balance of the account without factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * @type {number}
+     * @memberof UpdatedBalanceEvent
+     */
+    'current'?: number;
 }
 
 export const UpdatedBalanceEventEventTypeEnum = {
@@ -6177,7 +6296,8 @@ export const WebhookSource = {
     Teller: 'teller',
     Mx: 'mx',
     Fuse: 'fuse',
-    Snaptrade: 'snaptrade'
+    Snaptrade: 'snaptrade',
+    Mono: 'mono'
 } as const;
 
 export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
