@@ -1,6 +1,6 @@
 {
   "name": "fuse-node",
-  "version": "1.0.64",
+  "version": "1.0.65",
   "description": "OpenAPI client for fuse-node",
   "author": "OpenAPI-Generator Contributors",
   "repository": {
