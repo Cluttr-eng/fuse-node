@@ -32,10 +32,15 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
 export const AccountSubtype = {
     Checking: 'checking',
     Savings: 'savings',
+    CheckingOrSavings: 'checking_or_savings',
+    BusinessCheckingOrSavings: 'business_checking_or_savings',
+    BusinessSavings: 'business_savings',
     MoneyMarket: 'money_market',
     CertificateOfDeposit: 'certificate_of_deposit',
     Treasury: 'treasury',
     CreditCard: 'credit_card',
+    DebitCard: 'debit_card',
+    Bonds: 'bonds',
     Hsa: 'hsa',
     Paypal: 'paypal',
     Prepaid: 'prepaid',
@@ -57,7 +62,10 @@ export const AccountSubtype = {
     _401K: '401_k',
     _403B: '403_b',
     _457B: '457_b',
+    Funds: 'funds',
     Brokerage: 'brokerage',
+    Securities: 'securities',
+    Stocks: 'stocks',
     CashIsa: 'cash_isa',
     CryptoExchange: 'crypto_exchange',
     EducationSavingAccount: 'education_saving_account',
@@ -169,7 +177,10 @@ export const AccountSubtype = {
     WholeLife: 'whole_life',
     AccidentalDeathAndDismemberment: 'accidental_death_and_dismemberment',
     VariableUniversalLife: 'variable_universal_life',
-    Other: 'other'
+    Revolving: 'revolving',
+    Other: 'other',
+    TimeDeposit: 'time_deposit',
+    Minus: '-'
 } as const;
 
 export type AccountSubtype = typeof AccountSubtype[keyof typeof AccountSubtype];
@@ -245,7 +256,9 @@ export const Aggregator = {
     Mx: 'mx',
     Snaptrade: 'snaptrade',
     Flinks: 'flinks',
-    Mono: 'mono'
+    Mono: 'mono',
+    Truelayer: 'truelayer',
+    Finverse: 'finverse'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -1078,13 +1091,91 @@ export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStat
  */
 
 export const CountryCode = {
-    Us: 'US',
+    Ae: 'AE',
+    Am: 'AM',
+    Ar: 'AR',
+    At: 'AT',
+    Au: 'AU',
+    Bd: 'BD',
+    Be: 'BE',
+    Bh: 'BH',
+    Bm: 'BM',
+    Bn: 'BN',
+    Br: 'BR',
+    Bw: 'BW',
     Ca: 'CA',
-    In: 'IN',
-    Ng: 'NG',
+    Ch: 'CH',
+    Ci: 'CI',
+    Cl: 'CL',
+    Cm: 'CM',
+    Cn: 'CN',
+    Co: 'CO',
+    Cz: 'CZ',
+    De: 'DE',
+    Dz: 'DZ',
+    Eg: 'EG',
+    Es: 'ES',
+    Fi: 'FI',
+    Fk: 'FK',
+    Fr: 'FR',
+    Gb: 'GB',
+    Gg: 'GG',
     Gh: 'GH',
+    Gm: 'GM',
+    Gr: 'GR',
+    Hk: 'HK',
+    Id: 'ID',
+    Ie: 'IE',
+    Il: 'IL',
+    Im: 'IM',
+    In: 'IN',
+    It: 'IT',
+    Je: 'JE',
+    Jo: 'JO',
+    Jp: 'JP',
     Ke: 'KE',
-    Za: 'ZA'
+    Kh: 'KH',
+    Kr: 'KR',
+    Kw: 'KW',
+    La: 'LA',
+    Lb: 'LB',
+    Lk: 'LK',
+    Lt: 'LT',
+    Lu: 'LU',
+    Mc: 'MC',
+    Mo: 'MO',
+    Mt: 'MT',
+    Mu: 'MU',
+    Mv: 'MV',
+    Mx: 'MX',
+    My: 'MY',
+    Ng: 'NG',
+    Nl: 'NL',
+    Np: 'NP',
+    Nz: 'NZ',
+    Om: 'OM',
+    Pe: 'PE',
+    Ph: 'PH',
+    Pk: 'PK',
+    Pl: 'PL',
+    Pt: 'PT',
+    Qa: 'QA',
+    Ru: 'RU',
+    Sa: 'SA',
+    Se: 'SE',
+    Sg: 'SG',
+    Sl: 'SL',
+    Th: 'TH',
+    Tr: 'TR',
+    Tw: 'TW',
+    Tz: 'TZ',
+    Ug: 'UG',
+    Us: 'US',
+    Uy: 'UY',
+    Vn: 'VN',
+    Za: 'ZA',
+    Zm: 'ZM',
+    Zw: 'ZW'
 } as const;
 
 export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
@@ -1792,17 +1883,23 @@ export interface Entity {
      */
     'id': string;
     /**
-     * Name for the user or business account.
+     * Name for the user or business account. Required for EU connections.
      * @type {string}
      * @memberof Entity
      */
     'name'?: string;
     /**
-     * Email address associated with the user or business account.
+     * Email address associated with the user or business account. One of email/phone is required for EU connections.
      * @type {string}
      * @memberof Entity
      */
     'email'?: string;
+    /**
+     * Phone number associated with the user or business account. One of email/phone is required for EU connections.
+     * @type {string}
+     * @memberof Entity
+     */
+    'phone'?: string;
 }
 /**
  * 
@@ -2496,6 +2593,18 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'mono'?: FinancialConnectionDetailsMono;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsTruelayer}
+     * @memberof FinancialConnectionDetails
+     */
+    'truelayer'?: FinancialConnectionDetailsTruelayer;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsFinverse}
+     * @memberof FinancialConnectionDetails
+     */
+    'finverse'?: FinancialConnectionDetailsFinverse;
 }
 
 export const FinancialConnectionDetailsConnectionStatusEnum = {
@@ -2506,6 +2615,25 @@ export const FinancialConnectionDetailsConnectionStatusEnum = {
 
 export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
 
+/**
+ * Data needed to query data from Finverse
+ * @export
+ * @interface FinancialConnectionDetailsFinverse
+ */
+export interface FinancialConnectionDetailsFinverse {
+    /**
+     * Access token for Finverse
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFinverse
+     */
+    'access_token': string;
+    /**
+     * Login Identity Id for Finverse
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFinverse
+     */
+    'login_identity_id'?: string;
+}
 /**
  * Data needed to query data from Flinks
  * @export
@@ -2613,6 +2741,19 @@ export interface FinancialConnectionDetailsTeller {
      * @memberof FinancialConnectionDetailsTeller
      */
     'enrollment_id': string;
+}
+/**
+ * Data needed to query data from TrueLayer
+ * @export
+ * @interface FinancialConnectionDetailsTruelayer
+ */
+export interface FinancialConnectionDetailsTruelayer {
+    /**
+     * Access token for TrueLayer
+     * @type {string}
+     * @memberof FinancialConnectionDetailsTruelayer
+     */
+    'access_token': string;
 }
 /**
  * 
@@ -2765,10 +2906,59 @@ export interface FinancialConnectionsAccountDetails {
     'ach': FinancialConnectionsAccountDetailsAch;
     /**
      * 
+     * @type {FinancialConnectionsAccountDetailsAccountNumber}
+     * @memberof FinancialConnectionsAccountDetails
+     */
+    'account_number'?: FinancialConnectionsAccountDetailsAccountNumber;
+    /**
+     * 
      * @type {any}
      * @memberof FinancialConnectionsAccountDetails
      */
     'remote_data': any;
+}
+/**
+ * 
+ * @export
+ * @interface FinancialConnectionsAccountDetailsAccountNumber
+ */
+export interface FinancialConnectionsAccountDetailsAccountNumber {
+    /**
+     * Unique identifier representing the account, typically referred to as the account number.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'number'?: string;
+    /**
+     * A six-digit number used by banks in the United Kingdom and Ireland to identify the branch where the account is held.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'sort_code'?: string;
+    /**
+     * International Bank Account Number (IBAN) is an internationally agreed system of identifying bank accounts across national borders to facilitate the communication and processing of cross border transactions.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'iban'?: string;
+    /**
+     * SWIFT/BIC code is an international identifier used to distinctively recognize a particular bank during financial transactions, such as money transfers.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'swift_bic'?: string;
+    /**
+     * Bank-State-Branch (BSB) code is a six-digit numerical code used to identify an individual branch of a financial institution in Australia.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'bsb'?: string;
+    /**
+     * Bank Identifier Code (BIC) is an international standard identifier used by banks and financial institutions globally to carry out transactions.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'bic'?: string;
 }
 /**
  * 
@@ -3698,6 +3888,12 @@ export const FuseApiErrorCode = {
     MissingMonoPublicKeyHeader: 'missing_mono_public_key_header',
     MissingMonoSecretKeyHeader: 'missing_mono_secret_key_header',
     MissingMonoWebhookSecretHeader: 'missing_mono_webhook_secret_header',
+    MissingTruelayerClientIdHeader: 'missing_truelayer_client_id_header',
+    MissingTruelayerClientSecretHeader: 'missing_truelayer_client_secret_header',
+    MissingTruelayerRedirectUriHeader: 'missing_truelayer_redirect_uri_header',
+    MissingFinverseClientIdHeader: 'missing_finverse_client_id_header',
+    MissingFinverseClientSecretHeader: 'missing_finverse_client_secret_header',
+    MissingFinverseRedirectUriHeader: 'missing_finverse_redirect_uri_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
@@ -4166,6 +4362,12 @@ export interface GetFinancialConnectionsOwnersResponse {
      * @memberof GetFinancialConnectionsOwnersResponse
      */
     'accounts': Array<GetFinancialConnectionsOwnersResponseAccountsInner>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsOwnersResponse
+     */
+    'request_id': string;
 }
 /**
  * 
@@ -4185,12 +4387,6 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
     'owners': Array<FinancialConnectionsOwner>;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
-     */
-    'request_id': string;
 }
 /**
  * 
@@ -6297,7 +6493,9 @@ export const WebhookSource = {
     Mx: 'mx',
     Fuse: 'fuse',
     Snaptrade: 'snaptrade',
-    Mono: 'mono'
+    Mono: 'mono',
+    Truelayer: 'truelayer',
+    Finverse: 'finverse'
 } as const;
 
 export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
