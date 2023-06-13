@@ -21,10 +21,15 @@ import { BaseAPI } from './base';
 export declare const AccountSubtype: {
     readonly Checking: "checking";
     readonly Savings: "savings";
+    readonly CheckingOrSavings: "checking_or_savings";
+    readonly BusinessCheckingOrSavings: "business_checking_or_savings";
+    readonly BusinessSavings: "business_savings";
     readonly MoneyMarket: "money_market";
     readonly CertificateOfDeposit: "certificate_of_deposit";
     readonly Treasury: "treasury";
     readonly CreditCard: "credit_card";
+    readonly DebitCard: "debit_card";
+    readonly Bonds: "bonds";
     readonly Hsa: "hsa";
     readonly Paypal: "paypal";
     readonly Prepaid: "prepaid";
@@ -46,7 +51,10 @@ export declare const AccountSubtype: {
     readonly _401K: "401_k";
     readonly _403B: "403_b";
     readonly _457B: "457_b";
+    readonly Funds: "funds";
     readonly Brokerage: "brokerage";
+    readonly Securities: "securities";
+    readonly Stocks: "stocks";
     readonly CashIsa: "cash_isa";
     readonly CryptoExchange: "crypto_exchange";
     readonly EducationSavingAccount: "education_saving_account";
@@ -158,7 +166,10 @@ export declare const AccountSubtype: {
     readonly WholeLife: "whole_life";
     readonly AccidentalDeathAndDismemberment: "accidental_death_and_dismemberment";
     readonly VariableUniversalLife: "variable_universal_life";
+    readonly Revolving: "revolving";
     readonly Other: "other";
+    readonly TimeDeposit: "time_deposit";
+    readonly Minus: "-";
 };
 export type AccountSubtype = typeof AccountSubtype[keyof typeof AccountSubtype];
 /**
@@ -226,6 +237,8 @@ export declare const Aggregator: {
     readonly Snaptrade: "snaptrade";
     readonly Flinks: "flinks";
     readonly Mono: "mono";
+    readonly Truelayer: "truelayer";
+    readonly Finverse: "finverse";
 };
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 /**
@@ -1050,13 +1063,91 @@ export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStat
  * @enum {string}
  */
 export declare const CountryCode: {
-    readonly Us: "US";
+    readonly Ae: "AE";
+    readonly Am: "AM";
+    readonly Ar: "AR";
+    readonly At: "AT";
+    readonly Au: "AU";
+    readonly Bd: "BD";
+    readonly Be: "BE";
+    readonly Bh: "BH";
+    readonly Bm: "BM";
+    readonly Bn: "BN";
+    readonly Br: "BR";
+    readonly Bw: "BW";
     readonly Ca: "CA";
-    readonly In: "IN";
-    readonly Ng: "NG";
+    readonly Ch: "CH";
+    readonly Ci: "CI";
+    readonly Cl: "CL";
+    readonly Cm: "CM";
+    readonly Cn: "CN";
+    readonly Co: "CO";
+    readonly Cz: "CZ";
+    readonly De: "DE";
+    readonly Dz: "DZ";
+    readonly Eg: "EG";
+    readonly Es: "ES";
+    readonly Fi: "FI";
+    readonly Fk: "FK";
+    readonly Fr: "FR";
+    readonly Gb: "GB";
+    readonly Gg: "GG";
     readonly Gh: "GH";
+    readonly Gm: "GM";
+    readonly Gr: "GR";
+    readonly Hk: "HK";
+    readonly Id: "ID";
+    readonly Ie: "IE";
+    readonly Il: "IL";
+    readonly Im: "IM";
+    readonly In: "IN";
+    readonly It: "IT";
+    readonly Je: "JE";
+    readonly Jo: "JO";
+    readonly Jp: "JP";
     readonly Ke: "KE";
+    readonly Kh: "KH";
+    readonly Kr: "KR";
+    readonly Kw: "KW";
+    readonly La: "LA";
+    readonly Lb: "LB";
+    readonly Lk: "LK";
+    readonly Lt: "LT";
+    readonly Lu: "LU";
+    readonly Mc: "MC";
+    readonly Mo: "MO";
+    readonly Mt: "MT";
+    readonly Mu: "MU";
+    readonly Mv: "MV";
+    readonly Mx: "MX";
+    readonly My: "MY";
+    readonly Ng: "NG";
+    readonly Nl: "NL";
+    readonly Np: "NP";
+    readonly Nz: "NZ";
+    readonly Om: "OM";
+    readonly Pe: "PE";
+    readonly Ph: "PH";
+    readonly Pk: "PK";
+    readonly Pl: "PL";
+    readonly Pt: "PT";
+    readonly Qa: "QA";
+    readonly Ru: "RU";
+    readonly Sa: "SA";
+    readonly Se: "SE";
+    readonly Sg: "SG";
+    readonly Sl: "SL";
+    readonly Th: "TH";
+    readonly Tr: "TR";
+    readonly Tw: "TW";
+    readonly Tz: "TZ";
+    readonly Ug: "UG";
+    readonly Us: "US";
+    readonly Uy: "UY";
+    readonly Vn: "VN";
     readonly Za: "ZA";
+    readonly Zm: "ZM";
+    readonly Zw: "ZW";
 };
 export type CountryCode = typeof CountryCode[keyof typeof CountryCode];
 /**
@@ -1745,17 +1836,23 @@ export interface Entity {
      */
     'id': string;
     /**
-     * Name for the user or business account.
+     * Name for the user or business account. Required for EU connections.
      * @type {string}
      * @memberof Entity
      */
     'name'?: string;
     /**
-     * Email address associated with the user or business account.
+     * Email address associated with the user or business account. One of email/phone is required for EU connections.
      * @type {string}
      * @memberof Entity
      */
     'email'?: string;
+    /**
+     * Phone number associated with the user or business account. One of email/phone is required for EU connections.
+     * @type {string}
+     * @memberof Entity
+     */
+    'phone'?: string;
 }
 /**
  *
@@ -2430,6 +2527,18 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'mono'?: FinancialConnectionDetailsMono;
+    /**
+     *
+     * @type {FinancialConnectionDetailsTruelayer}
+     * @memberof FinancialConnectionDetails
+     */
+    'truelayer'?: FinancialConnectionDetailsTruelayer;
+    /**
+     *
+     * @type {FinancialConnectionDetailsFinverse}
+     * @memberof FinancialConnectionDetails
+     */
+    'finverse'?: FinancialConnectionDetailsFinverse;
 }
 export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Connected: "connected";
@@ -2437,6 +2546,25 @@ export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Finished: "finished";
 };
 export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
+/**
+ * Data needed to query data from Finverse
+ * @export
+ * @interface FinancialConnectionDetailsFinverse
+ */
+export interface FinancialConnectionDetailsFinverse {
+    /**
+     * Access token for Finverse
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFinverse
+     */
+    'access_token': string;
+    /**
+     * Login Identity Id for Finverse
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFinverse
+     */
+    'login_identity_id'?: string;
+}
 /**
  * Data needed to query data from Flinks
  * @export
@@ -2544,6 +2672,19 @@ export interface FinancialConnectionDetailsTeller {
      * @memberof FinancialConnectionDetailsTeller
      */
     'enrollment_id': string;
+}
+/**
+ * Data needed to query data from TrueLayer
+ * @export
+ * @interface FinancialConnectionDetailsTruelayer
+ */
+export interface FinancialConnectionDetailsTruelayer {
+    /**
+     * Access token for TrueLayer
+     * @type {string}
+     * @memberof FinancialConnectionDetailsTruelayer
+     */
+    'access_token': string;
 }
 /**
  *
@@ -2694,10 +2835,59 @@ export interface FinancialConnectionsAccountDetails {
     'ach': FinancialConnectionsAccountDetailsAch;
     /**
      *
+     * @type {FinancialConnectionsAccountDetailsAccountNumber}
+     * @memberof FinancialConnectionsAccountDetails
+     */
+    'account_number'?: FinancialConnectionsAccountDetailsAccountNumber;
+    /**
+     *
      * @type {any}
      * @memberof FinancialConnectionsAccountDetails
      */
     'remote_data': any;
+}
+/**
+ *
+ * @export
+ * @interface FinancialConnectionsAccountDetailsAccountNumber
+ */
+export interface FinancialConnectionsAccountDetailsAccountNumber {
+    /**
+     * Unique identifier representing the account, typically referred to as the account number.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'number'?: string;
+    /**
+     * A six-digit number used by banks in the United Kingdom and Ireland to identify the branch where the account is held.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'sort_code'?: string;
+    /**
+     * International Bank Account Number (IBAN) is an internationally agreed system of identifying bank accounts across national borders to facilitate the communication and processing of cross border transactions.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'iban'?: string;
+    /**
+     * SWIFT/BIC code is an international identifier used to distinctively recognize a particular bank during financial transactions, such as money transfers.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'swift_bic'?: string;
+    /**
+     * Bank-State-Branch (BSB) code is a six-digit numerical code used to identify an individual branch of a financial institution in Australia.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'bsb'?: string;
+    /**
+     * Bank Identifier Code (BIC) is an international standard identifier used by banks and financial institutions globally to carry out transactions.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountDetailsAccountNumber
+     */
+    'bic'?: string;
 }
 /**
  *
@@ -3598,6 +3788,12 @@ export declare const FuseApiErrorCode: {
     readonly MissingMonoPublicKeyHeader: "missing_mono_public_key_header";
     readonly MissingMonoSecretKeyHeader: "missing_mono_secret_key_header";
     readonly MissingMonoWebhookSecretHeader: "missing_mono_webhook_secret_header";
+    readonly MissingTruelayerClientIdHeader: "missing_truelayer_client_id_header";
+    readonly MissingTruelayerClientSecretHeader: "missing_truelayer_client_secret_header";
+    readonly MissingTruelayerRedirectUriHeader: "missing_truelayer_redirect_uri_header";
+    readonly MissingFinverseClientIdHeader: "missing_finverse_client_id_header";
+    readonly MissingFinverseClientSecretHeader: "missing_finverse_client_secret_header";
+    readonly MissingFinverseRedirectUriHeader: "missing_finverse_redirect_uri_header";
     readonly MissingFuseVerificationHeader: "missing_fuse_verification_header";
     readonly AggregatorError: "aggregator_error";
     readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
@@ -4049,6 +4245,12 @@ export interface GetFinancialConnectionsOwnersResponse {
      * @memberof GetFinancialConnectionsOwnersResponse
      */
     'accounts': Array<GetFinancialConnectionsOwnersResponseAccountsInner>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetFinancialConnectionsOwnersResponse
+     */
+    'request_id': string;
 }
 /**
  *
@@ -4068,12 +4270,6 @@ export interface GetFinancialConnectionsOwnersResponseAccountsInner {
      * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
      */
     'owners': Array<FinancialConnectionsOwner>;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetFinancialConnectionsOwnersResponseAccountsInner
-     */
-    'request_id': string;
 }
 /**
  *
@@ -6130,6 +6326,8 @@ export declare const WebhookSource: {
     readonly Fuse: "fuse";
     readonly Snaptrade: "snaptrade";
     readonly Mono: "mono";
+    readonly Truelayer: "truelayer";
+    readonly Finverse: "finverse";
 };
 export type WebhookSource = typeof WebhookSource[keyof typeof WebhookSource];
 /**
