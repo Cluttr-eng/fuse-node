@@ -239,6 +239,8 @@ export declare const Aggregator: {
     readonly Mono: "mono";
     readonly Truelayer: "truelayer";
     readonly Finverse: "finverse";
+    readonly Basiq: "basiq";
+    readonly Belvo: "belvo";
 };
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
 /**
@@ -2539,6 +2541,18 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'finverse'?: FinancialConnectionDetailsFinverse;
+    /**
+     *
+     * @type {FinancialConnectionDetailsBasiq}
+     * @memberof FinancialConnectionDetails
+     */
+    'basiq'?: FinancialConnectionDetailsBasiq;
+    /**
+     *
+     * @type {FinancialConnectionDetailsBelvo}
+     * @memberof FinancialConnectionDetails
+     */
+    'belvo'?: FinancialConnectionDetailsBelvo;
 }
 export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Connected: "connected";
@@ -2546,6 +2560,44 @@ export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Finished: "finished";
 };
 export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
+/**
+ * Data needed to query data from Basiq
+ * @export
+ * @interface FinancialConnectionDetailsBasiq
+ */
+export interface FinancialConnectionDetailsBasiq {
+    /**
+     * The identifier of the user for Basiq.
+     * @type {string}
+     * @memberof FinancialConnectionDetailsBasiq
+     */
+    'user_id': string;
+    /**
+     * The identifier of the connection for Basiq.
+     * @type {string}
+     * @memberof FinancialConnectionDetailsBasiq
+     */
+    'connection_id': string;
+}
+/**
+ * Data needed to query data from Belvo
+ * @export
+ * @interface FinancialConnectionDetailsBelvo
+ */
+export interface FinancialConnectionDetailsBelvo {
+    /**
+     * The identifier of the link for Belvo.
+     * @type {string}
+     * @memberof FinancialConnectionDetailsBelvo
+     */
+    'link_id': string;
+    /**
+     * The identifier of the institution for Belvo.
+     * @type {string}
+     * @memberof FinancialConnectionDetailsBelvo
+     */
+    'institution'?: string;
+}
 /**
  * Data needed to query data from Finverse
  * @export
@@ -3226,6 +3278,12 @@ export interface FinancialConnectionsInvestmentSecurityExchange {
      * @memberof FinancialConnectionsInvestmentSecurityExchange
      */
     'mic_code'?: string;
+    /**
+     * The suffix of the security\'s ticker symbol.
+     * @type {string}
+     * @memberof FinancialConnectionsInvestmentSecurityExchange
+     */
+    'suffix'?: string;
 }
 /**
  *
@@ -3469,6 +3527,12 @@ export interface FinancialConnectionsOwnerAddressesInner {
  * @interface FinancialConnectionsOwnerAddressesInnerData
  */
 export interface FinancialConnectionsOwnerAddressesInnerData {
+    /**
+     * Full address of the owner
+     * @type {string}
+     * @memberof FinancialConnectionsOwnerAddressesInnerData
+     */
+    'full_address'?: string;
     /**
      * City of the address
      * @type {string}
@@ -3794,6 +3858,9 @@ export declare const FuseApiErrorCode: {
     readonly MissingFinverseClientIdHeader: "missing_finverse_client_id_header";
     readonly MissingFinverseClientSecretHeader: "missing_finverse_client_secret_header";
     readonly MissingFinverseRedirectUriHeader: "missing_finverse_redirect_uri_header";
+    readonly MissingBasiqApiKeyHeader: "missing_basiq_api_key_header";
+    readonly MissingBelvoSecretIdHeader: "missing_belvo_secret_id_header";
+    readonly MissingBelvoSecretPasswordHeader: "missing_belvo_secret_password_header";
     readonly MissingFuseVerificationHeader: "missing_fuse_verification_header";
     readonly AggregatorError: "aggregator_error";
     readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
@@ -5153,7 +5220,7 @@ export interface Transaction {
      */
     'description': string;
     /**
-     * Categories of the transaction, ie Computers and Electronics
+     * Categories of the transaction, i.e., Computers and Electronics. You can download the categories from [here](https://fuse-public-bucket.s3.amazonaws.com/transaction-categories.csv)
      * @type {Array<string>}
      * @memberof Transaction
      */
