@@ -2059,7 +2059,7 @@ export interface ExternalTransactionEvent {
      * @type {TransactionEventType}
      * @memberof ExternalTransactionEvent
      */
-    'transaction_type': TransactionEventType;
+    'transaction_type'?: TransactionEventType;
     /**
      * 
      * @type {string}
@@ -4791,7 +4791,7 @@ export interface InAppTransactionEvent {
      * @type {TransactionEventType}
      * @memberof InAppTransactionEvent
      */
-    'transaction_type': TransactionEventType;
+    'transaction_type'?: TransactionEventType;
     /**
      * 
      * @type {string}
