@@ -216,7 +216,9 @@ exports.Aggregator = {
     Flinks: 'flinks',
     Mono: 'mono',
     Truelayer: 'truelayer',
-    Finverse: 'finverse'
+    Finverse: 'finverse',
+    Basiq: 'basiq',
+    Belvo: 'belvo'
 };
 exports.AssetReportTransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
@@ -1137,6 +1139,9 @@ exports.FuseApiErrorCode = {
     MissingFinverseClientIdHeader: 'missing_finverse_client_id_header',
     MissingFinverseClientSecretHeader: 'missing_finverse_client_secret_header',
     MissingFinverseRedirectUriHeader: 'missing_finverse_redirect_uri_header',
+    MissingBasiqApiKeyHeader: 'missing_basiq_api_key_header',
+    MissingBelvoSecretIdHeader: 'missing_belvo_secret_id_header',
+    MissingBelvoSecretPasswordHeader: 'missing_belvo_secret_password_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
