@@ -41,6 +41,7 @@ export declare const AccountSubtype: {
     readonly Construction: "construction";
     readonly Consumer: "consumer";
     readonly HomeEquity: "home_equity";
+    readonly Foreign: "foreign";
     readonly Loan: "loan";
     readonly Mortgage: "mortgage";
     readonly Overdraft: "overdraft";
@@ -1062,6 +1063,115 @@ export type AssetReportTransactionStatusEnum = typeof AssetReportTransactionStat
 /**
  *
  * @export
+ * @interface ConsumerRiskReport
+ */
+export interface ConsumerRiskReport {
+    /**
+     *
+     * @type {string}
+     * @memberof ConsumerRiskReport
+     */
+    'id': string;
+    /**
+     *
+     * @type {string}
+     * @memberof ConsumerRiskReport
+     */
+    'customization_id': string;
+    /**
+     * The total limit for the current timeframe, in cents.
+     * @type {number}
+     * @memberof ConsumerRiskReport
+     */
+    'spend_limit': number;
+    /**
+     * The total current spend in the current timeframe, in cents, without factoring in pending payments.
+     * @type {number}
+     * @memberof ConsumerRiskReport
+     */
+    'current_spend': number;
+    /**
+     * The total unpaid amount, in cents, from all timeframes.
+     * @type {number}
+     * @memberof ConsumerRiskReport
+     */
+    'pending_payments_amount': number;
+    /**
+     * The ISO-4217 currency code of the transaction
+     * @type {string}
+     * @memberof ConsumerRiskReport
+     */
+    'iso_currency_code': string;
+    /**
+     * The datetime of when the consumer risk report was most recently updated, in ISO-8601 format.
+     * @type {string}
+     * @memberof ConsumerRiskReport
+     */
+    'last_updated': string;
+    /**
+     *
+     * @type {FinanceScore}
+     * @memberof ConsumerRiskReport
+     */
+    'finance_score': FinanceScore;
+    /**
+     * Predicted balance for the timeframe.
+     * @type {number}
+     * @memberof ConsumerRiskReport
+     */
+    'predicted_balance': number;
+}
+/**
+ *
+ * @export
+ * @interface ConsumerRiskReportCustomization
+ */
+export interface ConsumerRiskReportCustomization {
+    /**
+     *
+     * @type {string}
+     * @memberof ConsumerRiskReportCustomization
+     */
+    'id': string;
+    /**
+     *
+     * @type {ConsumerRiskReportTimeFrame}
+     * @memberof ConsumerRiskReportCustomization
+     */
+    'timeframe': ConsumerRiskReportTimeFrame;
+    /**
+     * The minimum allowed limit, in cents.
+     * @type {number}
+     * @memberof ConsumerRiskReportCustomization
+     */
+    'min_limit': number;
+    /**
+     * The maximum allowed limit, in cents.
+     * @type {number}
+     * @memberof ConsumerRiskReportCustomization
+     */
+    'max_limit': number;
+    /**
+     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
+     * @type {number}
+     * @memberof ConsumerRiskReportCustomization
+     */
+    'risk_tolerance'?: number;
+}
+/**
+ * The timeframe to base the consumer risk report on.
+ * @export
+ * @enum {string}
+ */
+export declare const ConsumerRiskReportTimeFrame: {
+    readonly Daily: "daily";
+    readonly Weekly: "weekly";
+    readonly Monthly: "monthly";
+};
+export type ConsumerRiskReportTimeFrame = typeof ConsumerRiskReportTimeFrame[keyof typeof ConsumerRiskReportTimeFrame];
+/**
+ *
+ * @export
  * @enum {string}
  */
 export declare const CountryCode: {
@@ -1195,6 +1305,100 @@ export interface CreateAssetReportResponse {
      * @memberof CreateAssetReportResponse
      */
     'request_id'?: string;
+}
+/**
+ *
+ * @export
+ * @interface CreateConsumerRiskReportCustomizationRequest
+ */
+export interface CreateConsumerRiskReportCustomizationRequest {
+    /**
+     *
+     * @type {ConsumerRiskReportTimeFrame}
+     * @memberof CreateConsumerRiskReportCustomizationRequest
+     */
+    'timeframe': ConsumerRiskReportTimeFrame;
+    /**
+     * The minimum allowed limit, in cents.
+     * @type {number}
+     * @memberof CreateConsumerRiskReportCustomizationRequest
+     */
+    'min_limit': number;
+    /**
+     * The maximum allowed limit, in cents.
+     * @type {number}
+     * @memberof CreateConsumerRiskReportCustomizationRequest
+     */
+    'max_limit': number;
+    /**
+     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
+     * @type {number}
+     * @memberof CreateConsumerRiskReportCustomizationRequest
+     */
+    'risk_tolerance': number;
+}
+/**
+ *
+ * @export
+ * @interface CreateConsumerRiskReportCustomizationResponse
+ */
+export interface CreateConsumerRiskReportCustomizationResponse {
+    /**
+     * The id of the created customization.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportCustomizationResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface CreateConsumerRiskReportRequest
+ */
+export interface CreateConsumerRiskReportRequest {
+    /**
+     * A unique ID representing the bank account that this risk report is calculated for. Typically this will be a bank connection account ID from your application. It is currently used as a means of connecting events to the consumer risk report.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportRequest
+     */
+    'account_id': string;
+    /**
+     * The ISO-4217 currency code of the transaction
+     * @type {string}
+     * @memberof CreateConsumerRiskReportRequest
+     */
+    'iso_currency_code': string;
+    /**
+     * This is used to determine the timeframe and other metadata for the consumer risk report.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportRequest
+     */
+    'customization_id': string;
+}
+/**
+ *
+ * @export
+ * @interface CreateConsumerRiskReportResponse
+ */
+export interface CreateConsumerRiskReportResponse {
+    /**
+     *
+     * @type {string}
+     * @memberof CreateConsumerRiskReportResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportResponse
+     */
+    'request_id': string;
 }
 /**
  *
@@ -1537,100 +1741,6 @@ export interface CreateSessionResponse {
 /**
  *
  * @export
- * @interface CreateSpendPowerCustomizationRequest
- */
-export interface CreateSpendPowerCustomizationRequest {
-    /**
-     *
-     * @type {SpendPowerTimeFrame}
-     * @memberof CreateSpendPowerCustomizationRequest
-     */
-    'timeframe': SpendPowerTimeFrame;
-    /**
-     * The minimum allowed limit for the spend power, in cents.
-     * @type {number}
-     * @memberof CreateSpendPowerCustomizationRequest
-     */
-    'min_limit': number;
-    /**
-     * The maximum allowed limit for the spend power, in cents.
-     * @type {number}
-     * @memberof CreateSpendPowerCustomizationRequest
-     */
-    'max_limit': number;
-    /**
-     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
-     * @type {number}
-     * @memberof CreateSpendPowerCustomizationRequest
-     */
-    'risk_tolerance': number;
-}
-/**
- *
- * @export
- * @interface CreateSpendPowerCustomizationResponse
- */
-export interface CreateSpendPowerCustomizationResponse {
-    /**
-     * The id of the created customization.
-     * @type {string}
-     * @memberof CreateSpendPowerCustomizationResponse
-     */
-    'id': string;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof CreateSpendPowerCustomizationResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
- * @interface CreateSpendPowerRequest
- */
-export interface CreateSpendPowerRequest {
-    /**
-     * A unique ID representing the bank account that this spend power is calculated for. Typically this will be a bank connection account ID from your application. It is currently used as a means of connecting events to the spend power.
-     * @type {string}
-     * @memberof CreateSpendPowerRequest
-     */
-    'account_id': string;
-    /**
-     * The ISO-4217 currency code of the transaction
-     * @type {string}
-     * @memberof CreateSpendPowerRequest
-     */
-    'iso_currency_code': string;
-    /**
-     * The spend power customization id. This is used to determine the timeframe and other metadata for the spend power.
-     * @type {string}
-     * @memberof CreateSpendPowerRequest
-     */
-    'customization_id': string;
-}
-/**
- *
- * @export
- * @interface CreateSpendPowerResponse
- */
-export interface CreateSpendPowerResponse {
-    /**
-     * The id of the created spend power.
-     * @type {string}
-     * @memberof CreateSpendPowerResponse
-     */
-    'id': string;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof CreateSpendPowerResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
  * @interface Currency
  */
 export interface Currency {
@@ -1646,6 +1756,25 @@ export interface Currency {
      * @memberof Currency
      */
     'name'?: string;
+}
+/**
+ *
+ * @export
+ * @interface DeleteConsumerRiskReportResponse
+ */
+export interface DeleteConsumerRiskReportResponse {
+    /**
+     *
+     * @type {string}
+     * @memberof DeleteConsumerRiskReportResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof DeleteConsumerRiskReportResponse
+     */
+    'request_id': string;
 }
 /**
  *
@@ -1669,25 +1798,6 @@ export interface DeleteFinancialConnectionResponse {
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof DeleteFinancialConnectionResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
- * @interface DeleteSpendPowerResponse
- */
-export interface DeleteSpendPowerResponse {
-    /**
-     * The id of the deleted spend power
-     * @type {string}
-     * @memberof DeleteSpendPowerResponse
-     */
-    'id': string;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof DeleteSpendPowerResponse
      */
     'request_id': string;
 }
@@ -1859,75 +1969,75 @@ export interface Entity {
 /**
  *
  * @export
- * @interface EvalSpendPowerRequest
+ * @interface EvalConsumerRiskReportRequest
  */
-export interface EvalSpendPowerRequest {
+export interface EvalConsumerRiskReportRequest {
     /**
      * The size of the window for training
      * @type {number}
-     * @memberof EvalSpendPowerRequest
+     * @memberof EvalConsumerRiskReportRequest
      */
     'window_size': number;
     /**
      *
-     * @type {SpendPowerTimeFrame}
-     * @memberof EvalSpendPowerRequest
+     * @type {ConsumerRiskReportTimeFrame}
+     * @memberof EvalConsumerRiskReportRequest
      */
-    'time_frame': SpendPowerTimeFrame;
+    'time_frame': ConsumerRiskReportTimeFrame;
     /**
      *
-     * @type {Array<EvalSpendPowerRequestEventsInner>}
-     * @memberof EvalSpendPowerRequest
+     * @type {Array<EvalConsumerRiskReportRequestEventsInner>}
+     * @memberof EvalConsumerRiskReportRequest
      */
-    'events': Array<EvalSpendPowerRequestEventsInner>;
+    'events': Array<EvalConsumerRiskReportRequestEventsInner>;
 }
 /**
  *
  * @export
- * @interface EvalSpendPowerRequestEventsInner
+ * @interface EvalConsumerRiskReportRequestEventsInner
  */
-export interface EvalSpendPowerRequestEventsInner {
+export interface EvalConsumerRiskReportRequestEventsInner {
     /**
      * The id of the account that event belongs to
      * @type {string}
-     * @memberof EvalSpendPowerRequestEventsInner
+     * @memberof EvalConsumerRiskReportRequestEventsInner
      */
     'account_id': string;
     /**
      *
      * @type {AddAccountEventsRequestEventsInner}
-     * @memberof EvalSpendPowerRequestEventsInner
+     * @memberof EvalConsumerRiskReportRequestEventsInner
      */
     'event': AddAccountEventsRequestEventsInner;
 }
 /**
  *
  * @export
- * @interface EvalSpendPowerResponse
+ * @interface EvalConsumerRiskReportResponse
  */
-export interface EvalSpendPowerResponse {
+export interface EvalConsumerRiskReportResponse {
     /**
      *
      * @type {number}
-     * @memberof EvalSpendPowerResponse
+     * @memberof EvalConsumerRiskReportResponse
      */
     'mean_granted_above_failed_payments'?: number;
     /**
      *
      * @type {number}
-     * @memberof EvalSpendPowerResponse
+     * @memberof EvalConsumerRiskReportResponse
      */
     'mean_granted_below_failed_payments'?: number;
     /**
      *
      * @type {number}
-     * @memberof EvalSpendPowerResponse
+     * @memberof EvalConsumerRiskReportResponse
      */
     'mean_predicted_limits'?: number;
     /**
      *
      * @type {number}
-     * @memberof EvalSpendPowerResponse
+     * @memberof EvalConsumerRiskReportResponse
      */
     'mean_successful_payments'?: number;
 }
@@ -3832,8 +3942,8 @@ export declare const FuseApiErrorCode: {
     readonly EntityNotFound: "entity_not_found";
     readonly SessionNotFound: "session_not_found";
     readonly FinancialInstitutionNotFound: "financial_institution_not_found";
-    readonly SpendPowerNotFound: "spend_power_not_found";
-    readonly SpendPowerCustomizationNotFound: "spend_power_customization_not_found";
+    readonly ConsumerRiskReportNotFound: "consumer_risk_report_not_found";
+    readonly ConsumerRiskReportCustomizationNotFound: "consumer_risk_report_customization_not_found";
     readonly MissingAccessToken: "missing_access_token";
     readonly MissingPlaidClientIdHeader: "missing_plaid_client_id_header";
     readonly MissingPlaidSecretHeader: "missing_plaid_secret_header";
@@ -4034,6 +4144,44 @@ export interface GetAssetReportRequest {
      * @memberof GetAssetReportRequest
      */
     'asset_report_token': string;
+}
+/**
+ *
+ * @export
+ * @interface GetConsumerRiskReportCustomizationResponse
+ */
+export interface GetConsumerRiskReportCustomizationResponse {
+    /**
+     *
+     * @type {ConsumerRiskReportCustomization}
+     * @memberof GetConsumerRiskReportCustomizationResponse
+     */
+    'consumer_risk_report_customization': ConsumerRiskReportCustomization;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetConsumerRiskReportCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
+ * @interface GetConsumerRiskReportResponse
+ */
+export interface GetConsumerRiskReportResponse {
+    /**
+     *
+     * @type {ConsumerRiskReport}
+     * @memberof GetConsumerRiskReportResponse
+     */
+    'consumer_risk_report': ConsumerRiskReport;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetConsumerRiskReportResponse
+     */
+    'request_id': string;
 }
 /**
  *
@@ -4598,44 +4746,6 @@ export interface GetLiabilitiesResponse {
 /**
  *
  * @export
- * @interface GetSpendPowerCustomizationResponse
- */
-export interface GetSpendPowerCustomizationResponse {
-    /**
-     *
-     * @type {SpendPowerCustomization}
-     * @memberof GetSpendPowerCustomizationResponse
-     */
-    'spend_power_customization': SpendPowerCustomization;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetSpendPowerCustomizationResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
- * @interface GetSpendPowerResponse
- */
-export interface GetSpendPowerResponse {
-    /**
-     *
-     * @type {SpendPower}
-     * @memberof GetSpendPowerResponse
-     */
-    'spend_power': SpendPower;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof GetSpendPowerResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
  * @interface InAppTransactionEvent
  */
 export interface InAppTransactionEvent {
@@ -4968,115 +5078,6 @@ export interface RefreshAssetReportResponse {
      */
     'request_id'?: string;
 }
-/**
- *
- * @export
- * @interface SpendPower
- */
-export interface SpendPower {
-    /**
-     * The id of the spend power
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'id': string;
-    /**
-     * The customization id of the spend power.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'customization_id': string;
-    /**
-     * The total limit for the current timeframe, in cents.
-     * @type {number}
-     * @memberof SpendPower
-     */
-    'spend_limit': number;
-    /**
-     * The total current spend in the current timeframe, in cents, without factoring in pending payments.
-     * @type {number}
-     * @memberof SpendPower
-     */
-    'current_spend': number;
-    /**
-     * The total unpaid amount, in cents, from all timeframes.
-     * @type {number}
-     * @memberof SpendPower
-     */
-    'pending_payments_amount': number;
-    /**
-     * The ISO-4217 currency code of the transaction
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'iso_currency_code': string;
-    /**
-     * The datetime of when the spend power was most recently updated, in ISO-8601 format.
-     * @type {string}
-     * @memberof SpendPower
-     */
-    'last_updated': string;
-    /**
-     *
-     * @type {FinanceScore}
-     * @memberof SpendPower
-     */
-    'finance_score': FinanceScore;
-    /**
-     * Predicted balance for the timeframe.
-     * @type {number}
-     * @memberof SpendPower
-     */
-    'predicted_balance': number;
-}
-/**
- *
- * @export
- * @interface SpendPowerCustomization
- */
-export interface SpendPowerCustomization {
-    /**
-     * The id of the spend power customization
-     * @type {string}
-     * @memberof SpendPowerCustomization
-     */
-    'id': string;
-    /**
-     *
-     * @type {SpendPowerTimeFrame}
-     * @memberof SpendPowerCustomization
-     */
-    'timeframe': SpendPowerTimeFrame;
-    /**
-     * The minimum allowed limit for the spend power, in cents.
-     * @type {number}
-     * @memberof SpendPowerCustomization
-     */
-    'min_limit': number;
-    /**
-     * The maximum allowed limit for the spend power, in cents.
-     * @type {number}
-     * @memberof SpendPowerCustomization
-     */
-    'max_limit': number;
-    /**
-     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
-     * @type {number}
-     * @memberof SpendPowerCustomization
-     */
-    'risk_tolerance'?: number;
-}
-/**
- * The timeframe to base the spend power on.
- * @export
- * @enum {string}
- */
-export declare const SpendPowerTimeFrame: {
-    readonly Daily: "daily";
-    readonly Weekly: "weekly";
-    readonly Monthly: "monthly";
-};
-export type SpendPowerTimeFrame = typeof SpendPowerTimeFrame[keyof typeof SpendPowerTimeFrame];
 /**
  *
  * @export
@@ -6165,6 +6166,56 @@ export type TransactionToEnrichTypeEnum = typeof TransactionToEnrichTypeEnum[key
 /**
  *
  * @export
+ * @interface UpdateConsumerRiskReportCustomizationRequest
+ */
+export interface UpdateConsumerRiskReportCustomizationRequest {
+    /**
+     *
+     * @type {ConsumerRiskReportTimeFrame}
+     * @memberof UpdateConsumerRiskReportCustomizationRequest
+     */
+    'timeframe'?: ConsumerRiskReportTimeFrame;
+    /**
+     * The minimum allowed limit, in cents.
+     * @type {number}
+     * @memberof UpdateConsumerRiskReportCustomizationRequest
+     */
+    'min_limit'?: number;
+    /**
+     * The maximum allowed limit, in cents.
+     * @type {number}
+     * @memberof UpdateConsumerRiskReportCustomizationRequest
+     */
+    'max_limit'?: number;
+    /**
+     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
+     * @type {number}
+     * @memberof UpdateConsumerRiskReportCustomizationRequest
+     */
+    'risk_tolerance'?: number;
+}
+/**
+ *
+ * @export
+ * @interface UpdateConsumerRiskReportCustomizationResponse
+ */
+export interface UpdateConsumerRiskReportCustomizationResponse {
+    /**
+     * The id of the updated customization.
+     * @type {string}
+     * @memberof UpdateConsumerRiskReportCustomizationResponse
+     */
+    'id': string;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof UpdateConsumerRiskReportCustomizationResponse
+     */
+    'request_id': string;
+}
+/**
+ *
+ * @export
  * @interface UpdateEntityRequest
  */
 export interface UpdateEntityRequest {
@@ -6227,56 +6278,6 @@ export interface UpdateEntityResponse {
 /**
  *
  * @export
- * @interface UpdateSpendPowerCustomizationRequest
- */
-export interface UpdateSpendPowerCustomizationRequest {
-    /**
-     *
-     * @type {SpendPowerTimeFrame}
-     * @memberof UpdateSpendPowerCustomizationRequest
-     */
-    'timeframe'?: SpendPowerTimeFrame;
-    /**
-     * The minimum allowed limit for the spend power, in cents.
-     * @type {number}
-     * @memberof UpdateSpendPowerCustomizationRequest
-     */
-    'min_limit'?: number;
-    /**
-     * The maximum allowed limit for the spend power, in cents.
-     * @type {number}
-     * @memberof UpdateSpendPowerCustomizationRequest
-     */
-    'max_limit'?: number;
-    /**
-     * This parameter indicates the risk tolerance associated with spend limits. A high risk tolerance allow for higher limits, increasing both potential gains and losses. A Lower risk tolerance enforces strict limits, reducing the potential for loss but also limiting transaction volume for reliable users.
-     * @type {number}
-     * @memberof UpdateSpendPowerCustomizationRequest
-     */
-    'risk_tolerance'?: number;
-}
-/**
- *
- * @export
- * @interface UpdateSpendPowerCustomizationResponse
- */
-export interface UpdateSpendPowerCustomizationResponse {
-    /**
-     * The id of the updated customization.
-     * @type {string}
-     * @memberof UpdateSpendPowerCustomizationResponse
-     */
-    'id': string;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof UpdateSpendPowerCustomizationResponse
-     */
-    'request_id': string;
-}
-/**
- *
- * @export
  * @interface UpdatedBalanceEvent
  */
 export interface UpdatedBalanceEvent {
@@ -6299,13 +6300,13 @@ export interface UpdatedBalanceEvent {
      */
     'timestamp': string;
     /**
-     * The current balance of the account factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * The current balance of the account factoring in pending transactions.
      * @type {number}
      * @memberof UpdatedBalanceEvent
      */
     'available'?: number;
     /**
-     * The current balance of the account without factoring in pending transactions. Use positive values to represent money going out and negative to represent money going in.
+     * The current balance of the account without factoring in pending transactions.
      * @type {number}
      * @memberof UpdatedBalanceEvent
      */
@@ -6431,6 +6432,20 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     createAssetReport: (createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
+     * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+     * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createConsumerRiskReport: (createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createConsumerRiskReportCustomization: (createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
@@ -6444,20 +6459,6 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     createSession: (createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
-     * Starts the background process that will determine the spend power depending on the customization passed in.
-     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createSpendPower: (createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
-     *
-     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createSpendPowerCustomization: (createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Delete a financial connection
@@ -6497,6 +6498,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @throws {RequiredError}
      */
     getAssetReport: (getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     *
+     * @summary Get consumer risk report
+     * @param {string} consumerRiskReportId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getConsumerRiskReport: (consumerRiskReportId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -6593,14 +6602,6 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      */
     getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
-     *
-     * @summary Get spend power
-     * @param {string} spendPowerId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getSpendPower: (spendPowerId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
-    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -6625,13 +6626,13 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
     syncFinancialConnectionsData: (body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
-     * @summary Update spend power customization
-     * @param {string} spendPowerCustomizationId
-     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+     * @summary Update consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
+     * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateSpendPowerCustomization: (spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    updateConsumerRiskReportCustomization: (consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get liabilities
@@ -6662,6 +6663,20 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
     /**
+     * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+     * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportResponse>>;
+    /**
+     *
+     * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportCustomizationResponse>>;
+    /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
@@ -6675,20 +6690,6 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSessionResponse>>;
-    /**
-     * Starts the background process that will determine the spend power depending on the customization passed in.
-     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerResponse>>;
-    /**
-     *
-     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSpendPowerCustomizationResponse>>;
     /**
      *
      * @summary Delete a financial connection
@@ -6728,6 +6729,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @throws {RequiredError}
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>>;
+    /**
+     *
+     * @summary Get consumer risk report
+     * @param {string} consumerRiskReportId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getConsumerRiskReport(consumerRiskReportId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -6824,14 +6833,6 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
     /**
-     *
-     * @summary Get spend power
-     * @param {string} spendPowerId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getSpendPower(spendPowerId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSpendPowerResponse>>;
-    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -6856,13 +6857,13 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
     /**
      *
-     * @summary Update spend power customization
-     * @param {string} spendPowerCustomizationId
-     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+     * @summary Update consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
+     * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateSpendPowerCustomizationResponse>>;
+    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateConsumerRiskReportCustomizationResponse>>;
     /**
      *
      * @summary Get liabilities
@@ -6893,6 +6894,20 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: any): AxiosPromise<CreateAssetReportResponse>;
     /**
+     * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+     * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: any): AxiosPromise<CreateConsumerRiskReportResponse>;
+    /**
+     *
+     * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: any): AxiosPromise<CreateConsumerRiskReportCustomizationResponse>;
+    /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
@@ -6906,20 +6921,6 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     createSession(createSessionRequest?: CreateSessionRequest, options?: any): AxiosPromise<CreateSessionResponse>;
-    /**
-     * Starts the background process that will determine the spend power depending on the customization passed in.
-     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: any): AxiosPromise<CreateSpendPowerResponse>;
-    /**
-     *
-     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: any): AxiosPromise<CreateSpendPowerCustomizationResponse>;
     /**
      *
      * @summary Delete a financial connection
@@ -6959,6 +6960,14 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse>;
+    /**
+     *
+     * @summary Get consumer risk report
+     * @param {string} consumerRiskReportId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getConsumerRiskReport(consumerRiskReportId: string, options?: any): AxiosPromise<GetConsumerRiskReportResponse>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -7055,14 +7064,6 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse>;
     /**
-     *
-     * @summary Get spend power
-     * @param {string} spendPowerId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     */
-    getSpendPower(spendPowerId: string, options?: any): AxiosPromise<GetSpendPowerResponse>;
-    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -7087,13 +7088,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
     syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse>;
     /**
      *
-     * @summary Update spend power customization
-     * @param {string} spendPowerCustomizationId
-     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+     * @summary Update consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
+     * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: any): AxiosPromise<UpdateSpendPowerCustomizationResponse>;
+    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: any): AxiosPromise<UpdateConsumerRiskReportCustomizationResponse>;
     /**
      *
      * @summary Get liabilities
@@ -7128,6 +7129,22 @@ export declare class FuseApi extends BaseAPI {
      */
     createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
     /**
+     * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+     * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateConsumerRiskReportResponse, any>>;
+    /**
+     *
+     * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateConsumerRiskReportCustomizationResponse, any>>;
+    /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
@@ -7143,22 +7160,6 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSessionResponse, any>>;
-    /**
-     * Starts the background process that will determine the spend power depending on the customization passed in.
-     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    createSpendPower(createSpendPowerRequest?: CreateSpendPowerRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerResponse, any>>;
-    /**
-     *
-     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    createSpendPowerCustomization(createSpendPowerCustomizationRequest?: CreateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSpendPowerCustomizationResponse, any>>;
     /**
      *
      * @summary Delete a financial connection
@@ -7203,6 +7204,15 @@ export declare class FuseApi extends BaseAPI {
      * @memberof FuseApi
      */
     getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<RefreshAssetReportResponse, any>>;
+    /**
+     *
+     * @summary Get consumer risk report
+     * @param {string} consumerRiskReportId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getConsumerRiskReport(consumerRiskReportId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportResponse, any>>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -7311,15 +7321,6 @@ export declare class FuseApi extends BaseAPI {
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
     /**
-     *
-     * @summary Get spend power
-     * @param {string} spendPowerId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    getSpendPower(spendPowerId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetSpendPowerResponse, any>>;
-    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -7347,14 +7348,14 @@ export declare class FuseApi extends BaseAPI {
     syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
     /**
      *
-     * @summary Update spend power customization
-     * @param {string} spendPowerCustomizationId
-     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+     * @summary Update consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
+     * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    updateSpendPowerCustomization(spendPowerCustomizationId: string, updateSpendPowerCustomizationRequest?: UpdateSpendPowerCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateSpendPowerCustomizationResponse, any>>;
+    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateConsumerRiskReportCustomizationResponse, any>>;
     /**
      *
      * @summary Get liabilities
@@ -7366,110 +7367,110 @@ export declare class FuseApi extends BaseAPI {
     v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetLiabilitiesResponse, any>>;
 }
 /**
- * SpendPowerApi - axios parameter creator
+ * RiskReportApi - axios parameter creator
  * @export
  */
-export declare const SpendPowerApiAxiosParamCreator: (configuration?: Configuration) => {
+export declare const RiskReportApiAxiosParamCreator: (configuration?: Configuration) => {
     /**
      *
-     * @summary Delete spend power customization
-     * @param {string} spendPowerId
+     * @summary Delete consumer risk report
+     * @param {string} consumerRiskReportId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteSpendPower: (spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    deleteConsumerRiskReport: (consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
-     * @summary Get spend power customization
-     * @param {string} spendPowerCustomizationId
+     * @summary Get consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getSpendPowerCustomization: (spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getConsumerRiskReportCustomization: (consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
 };
 /**
- * SpendPowerApi - functional programming interface
+ * RiskReportApi - functional programming interface
  * @export
  */
-export declare const SpendPowerApiFp: (configuration?: Configuration) => {
+export declare const RiskReportApiFp: (configuration?: Configuration) => {
     /**
      *
-     * @summary Delete spend power customization
-     * @param {string} spendPowerId
+     * @summary Delete consumer risk report
+     * @param {string} consumerRiskReportId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteSpendPowerResponse>>;
+    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteConsumerRiskReportResponse>>;
     /**
      *
-     * @summary Get spend power customization
-     * @param {string} spendPowerCustomizationId
+     * @summary Get consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetSpendPowerCustomizationResponse>>;
+    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportCustomizationResponse>>;
 };
 /**
- * SpendPowerApi - factory interface
+ * RiskReportApi - factory interface
  * @export
  */
-export declare const SpendPowerApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
+export declare const RiskReportApiFactory: (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) => {
     /**
      *
-     * @summary Delete spend power customization
-     * @param {string} spendPowerId
+     * @summary Delete consumer risk report
+     * @param {string} consumerRiskReportId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<DeleteSpendPowerResponse>;
+    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<DeleteConsumerRiskReportResponse>;
     /**
      *
-     * @summary Get spend power customization
-     * @param {string} spendPowerCustomizationId
+     * @summary Get consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<GetSpendPowerCustomizationResponse>;
+    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: any): AxiosPromise<GetConsumerRiskReportCustomizationResponse>;
 };
 /**
- * SpendPowerApi - object-oriented interface
+ * RiskReportApi - object-oriented interface
  * @export
- * @class SpendPowerApi
+ * @class RiskReportApi
  * @extends {BaseAPI}
  */
-export declare class SpendPowerApi extends BaseAPI {
+export declare class RiskReportApi extends BaseAPI {
     /**
      *
-     * @summary Delete spend power customization
-     * @param {string} spendPowerId
+     * @summary Delete consumer risk report
+     * @param {string} consumerRiskReportId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SpendPowerApi
+     * @memberof RiskReportApi
      */
-    deleteSpendPower(spendPowerId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteSpendPowerResponse, any>>;
+    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteConsumerRiskReportResponse, any>>;
     /**
      *
-     * @summary Get spend power customization
-     * @param {string} spendPowerCustomizationId
+     * @summary Get consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SpendPowerApi
+     * @memberof RiskReportApi
      */
-    getSpendPowerCustomization(spendPowerCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetSpendPowerCustomizationResponse, any>>;
+    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportCustomizationResponse, any>>;
 }
