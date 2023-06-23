@@ -54,6 +54,7 @@ export const AccountSubtype = {
     Construction: 'construction',
     Consumer: 'consumer',
     HomeEquity: 'home_equity',
+    Foreign: 'foreign',
     Loan: 'loan',
     Mortgage: 'mortgage',
     Overdraft: 'overdraft',
@@ -827,6 +828,16 @@ export const AssetReportTransactionStatusEnum = {
     Posted: 'posted'
 };
 /**
+ * The timeframe to base the consumer risk report on.
+ * @export
+ * @enum {string}
+ */
+export const ConsumerRiskReportTimeFrame = {
+    Daily: 'daily',
+    Weekly: 'weekly',
+    Monthly: 'monthly'
+};
+/**
  *
  * @export
  * @enum {string}
@@ -1109,8 +1120,8 @@ export const FuseApiErrorCode = {
     EntityNotFound: 'entity_not_found',
     SessionNotFound: 'session_not_found',
     FinancialInstitutionNotFound: 'financial_institution_not_found',
-    SpendPowerNotFound: 'spend_power_not_found',
-    SpendPowerCustomizationNotFound: 'spend_power_customization_not_found',
+    ConsumerRiskReportNotFound: 'consumer_risk_report_not_found',
+    ConsumerRiskReportCustomizationNotFound: 'consumer_risk_report_customization_not_found',
     MissingAccessToken: 'missing_access_token',
     MissingPlaidClientIdHeader: 'missing_plaid_client_id_header',
     MissingPlaidSecretHeader: 'missing_plaid_secret_header',
@@ -1201,16 +1212,6 @@ export const Product = {
     Transactions: 'transactions',
     Investments: 'investments',
     Assets: 'assets'
-};
-/**
- * The timeframe to base the spend power on.
- * @export
- * @enum {string}
- */
-export const SpendPowerTimeFrame = {
-    Daily: 'daily',
-    Weekly: 'weekly',
-    Monthly: 'monthly'
 };
 export const TransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
@@ -2149,6 +2150,68 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+         * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createConsumerRiskReport: (createConsumerRiskReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/risk_report/consumer`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = serializeDataIfNeeded(createConsumerRiskReportRequest, localVarRequestOptions, configuration);
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createConsumerRiskReportCustomization: (createConsumerRiskReportCustomizationRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            const localVarPath = `/v1/risk_report/consumer/customization`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = serializeDataIfNeeded(createConsumerRiskReportCustomizationRequest, localVarRequestOptions, configuration);
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Create a link token to start the process of a user connecting to a specific financial institution.
          * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
          * @param {*} [options] Override http request option.
@@ -2205,68 +2268,6 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             localVarRequestOptions.data = serializeDataIfNeeded(createSessionRequest, localVarRequestOptions, configuration);
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
-         * Starts the background process that will determine the spend power depending on the customization passed in.
-         * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createSpendPower: (createSpendPowerRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/spend_power`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            // authentication fuseApiKey required
-            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
-            // authentication fuseClientId required
-            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = serializeDataIfNeeded(createSpendPowerRequest, localVarRequestOptions, configuration);
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
-         *
-         * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createSpendPowerCustomization: (createSpendPowerCustomizationRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/spend_power/customization`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            // authentication fuseApiKey required
-            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
-            // authentication fuseClientId required
-            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = serializeDataIfNeeded(createSpendPowerCustomizationRequest, localVarRequestOptions, configuration);
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -2437,6 +2438,39 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             localVarRequestOptions.data = serializeDataIfNeeded(getAssetReportRequest, localVarRequestOptions, configuration);
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         *
+         * @summary Get consumer risk report
+         * @param {string} consumerRiskReportId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConsumerRiskReport: (consumerRiskReportId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'consumerRiskReportId' is not null or undefined
+            assertParamExists('getConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId);
+            const localVarPath = `/v1/risk_report/consumer/{consumer_risk_report_id}`
+                .replace(`{${"consumer_risk_report_id"}}`, encodeURIComponent(String(consumerRiskReportId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -2844,39 +2878,6 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
-         *
-         * @summary Get spend power
-         * @param {string} spendPowerId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSpendPower: (spendPowerId, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'spendPowerId' is not null or undefined
-            assertParamExists('getSpendPower', 'spendPowerId', spendPowerId);
-            const localVarPath = `/v1/spend_power/{spend_power_id}`
-                .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'GET' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            // authentication fuseApiKey required
-            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration);
-            // authentication fuseClientId required
-            yield setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -2975,17 +2976,17 @@ export const FuseApiAxiosParamCreator = function (configuration) {
         }),
         /**
          *
-         * @summary Update spend power customization
-         * @param {string} spendPowerCustomizationId
-         * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+         * @summary Update consumer risk report customization
+         * @param {string} consumerRiskReportCustomizationId
+         * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpendPowerCustomization: (spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'spendPowerCustomizationId' is not null or undefined
-            assertParamExists('updateSpendPowerCustomization', 'spendPowerCustomizationId', spendPowerCustomizationId);
-            const localVarPath = `/v1/spend_power/customization/{spend_power_customization_id}`
-                .replace(`{${"spend_power_customization_id"}}`, encodeURIComponent(String(spendPowerCustomizationId)));
+        updateConsumerRiskReportCustomization: (consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'consumerRiskReportCustomizationId' is not null or undefined
+            assertParamExists('updateConsumerRiskReportCustomization', 'consumerRiskReportCustomizationId', consumerRiskReportCustomizationId);
+            const localVarPath = `/v1/risk_report/consumer/customization/{consumer_risk_report_customization_id}`
+                .replace(`{${"consumer_risk_report_customization_id"}}`, encodeURIComponent(String(consumerRiskReportCustomizationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3003,7 +3004,7 @@ export const FuseApiAxiosParamCreator = function (configuration) {
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = serializeDataIfNeeded(updateSpendPowerCustomizationRequest, localVarRequestOptions, configuration);
+            localVarRequestOptions.data = serializeDataIfNeeded(updateConsumerRiskReportCustomizationRequest, localVarRequestOptions, configuration);
             return {
                 url: toPathString(localVarUrlObj),
                 options: localVarRequestOptions,
@@ -3078,6 +3079,30 @@ export const FuseApiFp = function (configuration) {
             });
         },
         /**
+         * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+         * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createConsumerRiskReport(createConsumerRiskReportRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.createConsumerRiskReport(createConsumerRiskReportRequest, options);
+                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options);
+                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            });
+        },
+        /**
          * Create a link token to start the process of a user connecting to a specific financial institution.
          * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
          * @param {*} [options] Override http request option.
@@ -3098,30 +3123,6 @@ export const FuseApiFp = function (configuration) {
         createSession(createSessionRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createSession(createSessionRequest, options);
-                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-            });
-        },
-        /**
-         * Starts the background process that will determine the spend power depending on the customization passed in.
-         * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createSpendPower(createSpendPowerRequest, options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.createSpendPower(createSpendPowerRequest, options);
-                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-            });
-        },
-        /**
-         *
-         * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createSpendPowerCustomization(createSpendPowerCustomizationRequest, options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.createSpendPowerCustomization(createSpendPowerCustomizationRequest, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
@@ -3186,6 +3187,19 @@ export const FuseApiFp = function (configuration) {
         getAssetReport(getAssetReportRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getAssetReport(getAssetReportRequest, options);
+                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            });
+        },
+        /**
+         *
+         * @summary Get consumer risk report
+         * @param {string} consumerRiskReportId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConsumerRiskReport(consumerRiskReportId, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
@@ -3345,19 +3359,6 @@ export const FuseApiFp = function (configuration) {
             });
         },
         /**
-         *
-         * @summary Get spend power
-         * @param {string} spendPowerId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSpendPower(spendPowerId, options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.getSpendPower(spendPowerId, options);
-                return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-            });
-        },
-        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -3397,15 +3398,15 @@ export const FuseApiFp = function (configuration) {
         },
         /**
          *
-         * @summary Update spend power customization
-         * @param {string} spendPowerCustomizationId
-         * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+         * @summary Update consumer risk report customization
+         * @param {string} consumerRiskReportCustomizationId
+         * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options) {
+        updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
@@ -3451,6 +3452,24 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.createAssetReport(createAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+         * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createConsumerRiskReport(createConsumerRiskReportRequest, options) {
+            return localVarFp.createConsumerRiskReport(createConsumerRiskReportRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options) {
+            return localVarFp.createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * Create a link token to start the process of a user connecting to a specific financial institution.
          * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
          * @param {*} [options] Override http request option.
@@ -3467,24 +3486,6 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
          */
         createSession(createSessionRequest, options) {
             return localVarFp.createSession(createSessionRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Starts the background process that will determine the spend power depending on the customization passed in.
-         * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createSpendPower(createSpendPowerRequest, options) {
-            return localVarFp.createSpendPower(createSpendPowerRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         *
-         * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createSpendPowerCustomization(createSpendPowerCustomizationRequest, options) {
-            return localVarFp.createSpendPowerCustomization(createSpendPowerCustomizationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -3534,6 +3535,16 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
          */
         getAssetReport(getAssetReportRequest, options) {
             return localVarFp.getAssetReport(getAssetReportRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         *
+         * @summary Get consumer risk report
+         * @param {string} consumerRiskReportId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getConsumerRiskReport(consumerRiskReportId, options) {
+            return localVarFp.getConsumerRiskReport(consumerRiskReportId, options).then((request) => request(axios, basePath));
         },
         /**
          * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
@@ -3655,16 +3666,6 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         *
-         * @summary Get spend power
-         * @param {string} spendPowerId
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getSpendPower(spendPowerId, options) {
-            return localVarFp.getSpendPower(spendPowerId, options).then((request) => request(axios, basePath));
-        },
-        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -3695,14 +3696,14 @@ export const FuseApiFactory = function (configuration, basePath, axios) {
         },
         /**
          *
-         * @summary Update spend power customization
-         * @param {string} spendPowerCustomizationId
-         * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+         * @summary Update consumer risk report customization
+         * @param {string} consumerRiskReportCustomizationId
+         * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options) {
-            return localVarFp.updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options).then((request) => request(axios, basePath));
+        updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options) {
+            return localVarFp.updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -3745,6 +3746,26 @@ export class FuseApi extends BaseAPI {
         return FuseApiFp(this.configuration).createAssetReport(createAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
+     * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
+     * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createConsumerRiskReport(createConsumerRiskReportRequest, options) {
+        return FuseApiFp(this.configuration).createConsumerRiskReport(createConsumerRiskReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options) {
+        return FuseApiFp(this.configuration).createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
@@ -3763,26 +3784,6 @@ export class FuseApi extends BaseAPI {
      */
     createSession(createSessionRequest, options) {
         return FuseApiFp(this.configuration).createSession(createSessionRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Starts the background process that will determine the spend power depending on the customization passed in.
-     * @param {CreateSpendPowerRequest} [createSpendPowerRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    createSpendPower(createSpendPowerRequest, options) {
-        return FuseApiFp(this.configuration).createSpendPower(createSpendPowerRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     *
-     * @param {CreateSpendPowerCustomizationRequest} [createSpendPowerCustomizationRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    createSpendPowerCustomization(createSpendPowerCustomizationRequest, options) {
-        return FuseApiFp(this.configuration).createSpendPowerCustomization(createSpendPowerCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -3837,6 +3838,17 @@ export class FuseApi extends BaseAPI {
      */
     getAssetReport(getAssetReportRequest, options) {
         return FuseApiFp(this.configuration).getAssetReport(getAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     *
+     * @summary Get consumer risk report
+     * @param {string} consumerRiskReportId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getConsumerRiskReport(consumerRiskReportId, options) {
+        return FuseApiFp(this.configuration).getConsumerRiskReport(consumerRiskReportId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
@@ -3970,17 +3982,6 @@ export class FuseApi extends BaseAPI {
         return FuseApiFp(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     *
-     * @summary Get spend power
-     * @param {string} spendPowerId
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    getSpendPower(spendPowerId, options) {
-        return FuseApiFp(this.configuration).getSpendPower(spendPowerId, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -4014,15 +4015,15 @@ export class FuseApi extends BaseAPI {
     }
     /**
      *
-     * @summary Update spend power customization
-     * @param {string} spendPowerCustomizationId
-     * @param {UpdateSpendPowerCustomizationRequest} [updateSpendPowerCustomizationRequest]
+     * @summary Update consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
+     * @param {UpdateConsumerRiskReportCustomizationRequest} [updateConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options) {
-        return FuseApiFp(this.configuration).updateSpendPowerCustomization(spendPowerCustomizationId, updateSpendPowerCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
+    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options) {
+        return FuseApiFp(this.configuration).updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
@@ -4037,29 +4038,29 @@ export class FuseApi extends BaseAPI {
     }
 }
 /**
- * SpendPowerApi - axios parameter creator
+ * RiskReportApi - axios parameter creator
  * @export
  */
-export const SpendPowerApiAxiosParamCreator = function (configuration) {
+export const RiskReportApiAxiosParamCreator = function (configuration) {
     return {
         /**
          *
-         * @summary Delete spend power customization
-         * @param {string} spendPowerId
+         * @summary Delete consumer risk report
+         * @param {string} consumerRiskReportId
          * @param {string} fuseClientId
          * @param {string} fuseApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteSpendPower: (spendPowerId, fuseClientId, fuseApiKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'spendPowerId' is not null or undefined
-            assertParamExists('deleteSpendPower', 'spendPowerId', spendPowerId);
+        deleteConsumerRiskReport: (consumerRiskReportId, fuseClientId, fuseApiKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'consumerRiskReportId' is not null or undefined
+            assertParamExists('deleteConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId);
             // verify required parameter 'fuseClientId' is not null or undefined
-            assertParamExists('deleteSpendPower', 'fuseClientId', fuseClientId);
+            assertParamExists('deleteConsumerRiskReport', 'fuseClientId', fuseClientId);
             // verify required parameter 'fuseApiKey' is not null or undefined
-            assertParamExists('deleteSpendPower', 'fuseApiKey', fuseApiKey);
-            const localVarPath = `/v1/spend_power/{spend_power_id}`
-                .replace(`{${"spend_power_id"}}`, encodeURIComponent(String(spendPowerId)));
+            assertParamExists('deleteConsumerRiskReport', 'fuseApiKey', fuseApiKey);
+            const localVarPath = `/v1/risk_report/consumer/{consumer_risk_report_id}`
+                .replace(`{${"consumer_risk_report_id"}}`, encodeURIComponent(String(consumerRiskReportId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4089,22 +4090,22 @@ export const SpendPowerApiAxiosParamCreator = function (configuration) {
         }),
         /**
          *
-         * @summary Get spend power customization
-         * @param {string} spendPowerCustomizationId
+         * @summary Get consumer risk report customization
+         * @param {string} consumerRiskReportCustomizationId
          * @param {string} fuseClientId
          * @param {string} fuseApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSpendPowerCustomization: (spendPowerCustomizationId, fuseClientId, fuseApiKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            // verify required parameter 'spendPowerCustomizationId' is not null or undefined
-            assertParamExists('getSpendPowerCustomization', 'spendPowerCustomizationId', spendPowerCustomizationId);
+        getConsumerRiskReportCustomization: (consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'consumerRiskReportCustomizationId' is not null or undefined
+            assertParamExists('getConsumerRiskReportCustomization', 'consumerRiskReportCustomizationId', consumerRiskReportCustomizationId);
             // verify required parameter 'fuseClientId' is not null or undefined
-            assertParamExists('getSpendPowerCustomization', 'fuseClientId', fuseClientId);
+            assertParamExists('getConsumerRiskReportCustomization', 'fuseClientId', fuseClientId);
             // verify required parameter 'fuseApiKey' is not null or undefined
-            assertParamExists('getSpendPowerCustomization', 'fuseApiKey', fuseApiKey);
-            const localVarPath = `/v1/spend_power/customization/{spend_power_customization_id}`
-                .replace(`{${"spend_power_customization_id"}}`, encodeURIComponent(String(spendPowerCustomizationId)));
+            assertParamExists('getConsumerRiskReportCustomization', 'fuseApiKey', fuseApiKey);
+            const localVarPath = `/v1/risk_report/consumer/customization/{consumer_risk_report_customization_id}`
+                .replace(`{${"consumer_risk_report_customization_id"}}`, encodeURIComponent(String(consumerRiskReportCustomizationId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4135,108 +4136,108 @@ export const SpendPowerApiAxiosParamCreator = function (configuration) {
     };
 };
 /**
- * SpendPowerApi - functional programming interface
+ * RiskReportApi - functional programming interface
  * @export
  */
-export const SpendPowerApiFp = function (configuration) {
-    const localVarAxiosParamCreator = SpendPowerApiAxiosParamCreator(configuration);
+export const RiskReportApiFp = function (configuration) {
+    const localVarAxiosParamCreator = RiskReportApiAxiosParamCreator(configuration);
     return {
         /**
          *
-         * @summary Delete spend power customization
-         * @param {string} spendPowerId
+         * @summary Delete consumer risk report
+         * @param {string} consumerRiskReportId
          * @param {string} fuseClientId
          * @param {string} fuseApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options) {
+        deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
         /**
          *
-         * @summary Get spend power customization
-         * @param {string} spendPowerCustomizationId
+         * @summary Get consumer risk report customization
+         * @param {string} consumerRiskReportCustomizationId
          * @param {string} fuseClientId
          * @param {string} fuseApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options) {
+        getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options);
                 return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
             });
         },
     };
 };
 /**
- * SpendPowerApi - factory interface
+ * RiskReportApi - factory interface
  * @export
  */
-export const SpendPowerApiFactory = function (configuration, basePath, axios) {
-    const localVarFp = SpendPowerApiFp(configuration);
+export const RiskReportApiFactory = function (configuration, basePath, axios) {
+    const localVarFp = RiskReportApiFp(configuration);
     return {
         /**
          *
-         * @summary Delete spend power customization
-         * @param {string} spendPowerId
+         * @summary Delete consumer risk report
+         * @param {string} consumerRiskReportId
          * @param {string} fuseClientId
          * @param {string} fuseApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options) {
-            return localVarFp.deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options).then((request) => request(axios, basePath));
+        deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options) {
+            return localVarFp.deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options).then((request) => request(axios, basePath));
         },
         /**
          *
-         * @summary Get spend power customization
-         * @param {string} spendPowerCustomizationId
+         * @summary Get consumer risk report customization
+         * @param {string} consumerRiskReportCustomizationId
          * @param {string} fuseClientId
          * @param {string} fuseApiKey
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options) {
-            return localVarFp.getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(axios, basePath));
+        getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options) {
+            return localVarFp.getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(axios, basePath));
         },
     };
 };
 /**
- * SpendPowerApi - object-oriented interface
+ * RiskReportApi - object-oriented interface
  * @export
- * @class SpendPowerApi
+ * @class RiskReportApi
  * @extends {BaseAPI}
  */
-export class SpendPowerApi extends BaseAPI {
+export class RiskReportApi extends BaseAPI {
     /**
      *
-     * @summary Delete spend power customization
-     * @param {string} spendPowerId
+     * @summary Delete consumer risk report
+     * @param {string} consumerRiskReportId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SpendPowerApi
+     * @memberof RiskReportApi
      */
-    deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options) {
-        return SpendPowerApiFp(this.configuration).deleteSpendPower(spendPowerId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
+    deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options) {
+        return RiskReportApiFp(this.configuration).deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
-     * @summary Get spend power customization
-     * @param {string} spendPowerCustomizationId
+     * @summary Get consumer risk report customization
+     * @param {string} consumerRiskReportCustomizationId
      * @param {string} fuseClientId
      * @param {string} fuseApiKey
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof SpendPowerApi
+     * @memberof RiskReportApi
      */
-    getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options) {
-        return SpendPowerApiFp(this.configuration).getSpendPowerCustomization(spendPowerCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
+    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options) {
+        return RiskReportApiFp(this.configuration).getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
     }
 }
