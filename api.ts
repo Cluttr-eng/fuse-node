@@ -7046,11 +7046,11 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Get consumer risk report
          * @param {string} consumerRiskReportId 
-         * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+         * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport: async (consumerRiskReportId: string, recalculateLimit?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getConsumerRiskReport: async (consumerRiskReportId: string, recalculate?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'consumerRiskReportId' is not null or undefined
             assertParamExists('getConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId)
             const localVarPath = `/v1/risk_report/consumer/{consumer_risk_report_id}`
@@ -7072,8 +7072,8 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             // authentication fuseClientId required
             await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
 
-            if (recalculateLimit !== undefined) {
-                localVarQueryParameter['recalculate_limit'] = recalculateLimit;
+            if (recalculate !== undefined) {
+                localVarQueryParameter['recalculate'] = recalculate;
             }
 
 
@@ -7916,12 +7916,12 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get consumer risk report
          * @param {string} consumerRiskReportId 
-         * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+         * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getConsumerRiskReport(consumerRiskReportId: string, recalculateLimit?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options);
+        async getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, recalculate, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -8228,12 +8228,12 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          * 
          * @summary Get consumer risk report
          * @param {string} consumerRiskReportId 
-         * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+         * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport(consumerRiskReportId: string, recalculateLimit?: boolean, options?: any): AxiosPromise<GetConsumerRiskReportResponse> {
-            return localVarFp.getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options).then((request) => request(axios, basePath));
+        getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: any): AxiosPromise<GetConsumerRiskReportResponse> {
+            return localVarFp.getConsumerRiskReport(consumerRiskReportId, recalculate, options).then((request) => request(axios, basePath));
         },
         /**
          * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
@@ -8544,13 +8544,13 @@ export class FuseApi extends BaseAPI {
      * 
      * @summary Get consumer risk report
      * @param {string} consumerRiskReportId 
-     * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+     * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getConsumerRiskReport(consumerRiskReportId: string, recalculateLimit?: boolean, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options).then((request) => request(this.axios, this.basePath));
+    public getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getConsumerRiskReport(consumerRiskReportId, recalculate, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

@@ -2451,11 +2451,11 @@ const FuseApiAxiosParamCreator = function (configuration) {
          *
          * @summary Get consumer risk report
          * @param {string} consumerRiskReportId
-         * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+         * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport: (consumerRiskReportId, recalculateLimit, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getConsumerRiskReport: (consumerRiskReportId, recalculate, options = {}) => __awaiter(this, void 0, void 0, function* () {
             // verify required parameter 'consumerRiskReportId' is not null or undefined
             (0, common_1.assertParamExists)('getConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId);
             const localVarPath = `/v1/risk_report/consumer/{consumer_risk_report_id}`
@@ -2473,8 +2473,8 @@ const FuseApiAxiosParamCreator = function (configuration) {
             yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
             // authentication fuseClientId required
             yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            if (recalculateLimit !== undefined) {
-                localVarQueryParameter['recalculate_limit'] = recalculateLimit;
+            if (recalculate !== undefined) {
+                localVarQueryParameter['recalculate'] = recalculate;
             }
             (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -3203,13 +3203,13 @@ const FuseApiFp = function (configuration) {
          *
          * @summary Get consumer risk report
          * @param {string} consumerRiskReportId
-         * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+         * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options) {
+        getConsumerRiskReport(consumerRiskReportId, recalculate, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, recalculate, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -3551,12 +3551,12 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          *
          * @summary Get consumer risk report
          * @param {string} consumerRiskReportId
-         * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+         * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options) {
-            return localVarFp.getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options).then((request) => request(axios, basePath));
+        getConsumerRiskReport(consumerRiskReportId, recalculate, options) {
+            return localVarFp.getConsumerRiskReport(consumerRiskReportId, recalculate, options).then((request) => request(axios, basePath));
         },
         /**
          * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
@@ -3856,13 +3856,13 @@ class FuseApi extends base_1.BaseAPI {
      *
      * @summary Get consumer risk report
      * @param {string} consumerRiskReportId
-     * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
+     * @param {boolean} [recalculate] An optional boolean parameter. If set to true, the system will recalculate before returning the risk report. If omitted or set to false, the current risk report will be returned without recalculation.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options) {
-        return (0, exports.FuseApiFp)(this.configuration).getConsumerRiskReport(consumerRiskReportId, recalculateLimit, options).then((request) => request(this.axios, this.basePath));
+    getConsumerRiskReport(consumerRiskReportId, recalculate, options) {
+        return (0, exports.FuseApiFp)(this.configuration).getConsumerRiskReport(consumerRiskReportId, recalculate, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
