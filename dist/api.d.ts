@@ -2104,7 +2104,7 @@ export interface ExternalTransactionEvent {
      */
     'status': ExternalTransactionEventStatus;
     /**
-     * Use positive values to represent money going out and negative to represent money going in.
+     * Amount in cents associated with the transaction. Use positive values to represent money going out and negative to represent money going in.
      * @type {number}
      * @memberof ExternalTransactionEvent
      */
@@ -6502,10 +6502,11 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      *
      * @summary Get consumer risk report
      * @param {string} consumerRiskReportId
+     * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReport: (consumerRiskReportId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getConsumerRiskReport: (consumerRiskReportId: string, recalculateLimit?: boolean, options?: AxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -6733,10 +6734,11 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      *
      * @summary Get consumer risk report
      * @param {string} consumerRiskReportId
+     * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReport(consumerRiskReportId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>>;
+    getConsumerRiskReport(consumerRiskReportId: string, recalculateLimit?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -6964,10 +6966,11 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      *
      * @summary Get consumer risk report
      * @param {string} consumerRiskReportId
+     * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReport(consumerRiskReportId: string, options?: any): AxiosPromise<GetConsumerRiskReportResponse>;
+    getConsumerRiskReport(consumerRiskReportId: string, recalculateLimit?: boolean, options?: any): AxiosPromise<GetConsumerRiskReportResponse>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -7208,11 +7211,12 @@ export declare class FuseApi extends BaseAPI {
      *
      * @summary Get consumer risk report
      * @param {string} consumerRiskReportId
+     * @param {boolean} [recalculateLimit] An optional boolean parameter. If set to true, the system will recalculate the consumer\&#39;s spend limit before returning the risk report. If omitted or set to false, the current spend limit will be returned without recalculation.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getConsumerRiskReport(consumerRiskReportId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportResponse, any>>;
+    getConsumerRiskReport(consumerRiskReportId: string, recalculateLimit?: boolean, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportResponse, any>>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
