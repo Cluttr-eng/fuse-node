@@ -1522,6 +1522,12 @@ export interface CreateLinkTokenRequest {
      * @memberof CreateLinkTokenRequest
      */
     'teller'?: CreateLinkTokenRequestTeller;
+    /**
+     *
+     * @type {CreateLinkTokenRequestSnaptrade}
+     * @memberof CreateLinkTokenRequest
+     */
+    'snaptrade'?: CreateLinkTokenRequestSnaptrade;
 }
 /**
  * An object specifying information about the MX configuration to use for deciding which MX supported financial institutions to display.
@@ -1549,6 +1555,37 @@ export interface CreateLinkTokenRequestPlaid {
      */
     'config'?: object;
 }
+/**
+ * An object specifying information about the SnapTrade configuration to use when creating a link token.
+ * @export
+ * @interface CreateLinkTokenRequestSnaptrade
+ */
+export interface CreateLinkTokenRequestSnaptrade {
+    /**
+     *
+     * @type {CreateLinkTokenRequestSnaptradeConfig}
+     * @memberof CreateLinkTokenRequestSnaptrade
+     */
+    'config'?: CreateLinkTokenRequestSnaptradeConfig;
+}
+/**
+ *
+ * @export
+ * @interface CreateLinkTokenRequestSnaptradeConfig
+ */
+export interface CreateLinkTokenRequestSnaptradeConfig {
+    /**
+     * SnapTrade connection type. Defaults to \'read\'
+     * @type {string}
+     * @memberof CreateLinkTokenRequestSnaptradeConfig
+     */
+    'connectionType'?: CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum;
+}
+export declare const CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum: {
+    readonly Read: "read";
+    readonly Trade: "trade";
+};
+export type CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum = typeof CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum[keyof typeof CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum];
 /**
  * An object specifying information about the Teller configuration to use when creating a link token.
  * @export

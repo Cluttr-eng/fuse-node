@@ -929,6 +929,10 @@ export const CountryCode = {
     Zm: 'ZM',
     Zw: 'ZW'
 };
+export const CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum = {
+    Read: 'read',
+    Trade: 'trade'
+};
 export const CreateLinkTokenRequestTellerConfigSelectAccountEnum = {
     Disabled: 'disabled',
     Single: 'single',
