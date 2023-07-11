@@ -1414,6 +1414,12 @@ export interface CreateConsumerRiskReportRequest {
      */
     'iso_currency_code': string;
     /**
+     * The name of the end user associated with this consumer risk report.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportRequest
+     */
+    'end_user_name'?: string;
+    /**
      * This is used to determine the timeframe and other metadata for the consumer risk report.
      * @type {string}
      * @memberof CreateConsumerRiskReportRequest
@@ -3043,13 +3049,13 @@ export interface FinancialConnectionsAccountBalance {
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * Amount in cents without factoring in pending balances. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'current'?: number;
+    'current'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
@@ -3074,13 +3080,13 @@ export interface FinancialConnectionsAccountCachedBalance {
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * Amount without factoring in pending balances, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'current'?: number;
+    'current'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
