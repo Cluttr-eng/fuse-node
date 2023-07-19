@@ -6336,7 +6336,7 @@ export interface TransactionToEnrich {
      */
     'iso_currency_code'?: string;
     /**
-     * 
+     * The date the transaction was posted.
      * @type {string}
      * @memberof TransactionToEnrich
      */
