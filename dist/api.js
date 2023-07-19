@@ -22,8 +22,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RiskReportApiFp = exports.RiskReportApiAxiosParamCreator = exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.UpdatedBalanceEventEventTypeEnum = exports.TransactionToEnrichTypeEnum = exports.TransactionEventType = exports.TransactionCategoryPrimary = exports.TransactionCategoryDetailed = exports.TransactionTypeEnum = exports.TransactionStatusEnum = exports.TransactionCategoryEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.InAppTransactionEventStatus = exports.InAppTransactionEventEventTypeEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorType = exports.FuseApiErrorCode = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionsInvestmentTransactionSubtype = exports.FinancialConnectionsInvestmentTransactionTypeEnum = exports.FinancialConnectionsInvestmentSecurityType = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.FinQLFrequencyFeatureTimePeriodEnum = exports.FinQLFeatureRequest = exports.ExternalTransactionEventStatus = exports.ExternalTransactionEventEventTypeEnum = exports.EnrichedTransactionTypeEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigSelectAccountEnum = exports.CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum = exports.CountryCode = exports.ConsumerRiskReportTimeFrame = exports.AssetReportTransactionStatusEnum = exports.AssetReportTransactionCategoryEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
-exports.RiskReportApi = exports.RiskReportApiFactory = void 0;
+exports.RiskReportApiAxiosParamCreator = exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.UpdatedBalanceEventEventTypeEnum = exports.TransactionToEnrichOwnerTypeEnum = exports.TransactionToEnrichDirectionEnum = exports.TransactionEventType = exports.TransactionCategoryPrimary = exports.TransactionCategoryDetailed = exports.TransactionTypeEnum = exports.TransactionStatusEnum = exports.TransactionCategoryEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.InAppTransactionEventStatus = exports.InAppTransactionEventEventTypeEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorType = exports.FuseApiErrorCode = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionsInvestmentTransactionSubtype = exports.FinancialConnectionsInvestmentTransactionTypeEnum = exports.FinancialConnectionsInvestmentSecurityType = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.FinQLFrequencyFeatureTimePeriodEnum = exports.FinQLFeatureRequest = exports.ExternalTransactionEventStatus = exports.ExternalTransactionEventTransactionOwnerTypeEnum = exports.ExternalTransactionEventEventTypeEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigSelectAccountEnum = exports.CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum = exports.CountryCode = exports.ConsumerRiskReportTimeFrame = exports.AssetReportTransactionStatusEnum = exports.AssetReportTransactionCategoryEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
+exports.RiskReportApi = exports.RiskReportApiFactory = exports.RiskReportApiFp = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -294,6 +294,7 @@ exports.AssetReportTransactionCategoryEnum = {
     Boat: 'boat',
     BoatDealers: 'boat_dealers',
     Boating: 'boating',
+    BooksAndSupplies: 'books_and_supplies',
     Bookstores: 'bookstores',
     Boutique: 'boutique',
     Bowling: 'bowling',
@@ -949,12 +950,12 @@ exports.CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEn
     Checking: 'checking',
     Savings: 'savings'
 };
-exports.EnrichedTransactionTypeEnum = {
-    Debit: 'debit',
-    Credit: 'credit'
-};
 exports.ExternalTransactionEventEventTypeEnum = {
     ExternalTransaction: 'external_transaction'
+};
+exports.ExternalTransactionEventTransactionOwnerTypeEnum = {
+    Consumer: 'consumer',
+    Business: 'business'
 };
 /**
  *
@@ -1294,6 +1295,7 @@ exports.TransactionCategoryEnum = {
     Boat: 'boat',
     BoatDealers: 'boat_dealers',
     Boating: 'boating',
+    BooksAndSupplies: 'books_and_supplies',
     Bookstores: 'bookstores',
     Boutique: 'boutique',
     Bowling: 'bowling',
@@ -2047,9 +2049,13 @@ exports.TransactionEventType = {
     Wire: 'wire',
     Withdrawal: 'withdrawal'
 };
-exports.TransactionToEnrichTypeEnum = {
-    Debit: 'debit',
-    Credit: 'credit'
+exports.TransactionToEnrichDirectionEnum = {
+    Incoming: 'incoming',
+    Outgoing: 'outgoing'
+};
+exports.TransactionToEnrichOwnerTypeEnum = {
+    Consumer: 'consumer',
+    Business: 'business'
 };
 exports.UpdatedBalanceEventEventTypeEnum = {
     UpdatedBalance: 'updated_balance'
