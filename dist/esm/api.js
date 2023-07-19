@@ -290,6 +290,7 @@ export const AssetReportTransactionCategoryEnum = {
     Boat: 'boat',
     BoatDealers: 'boat_dealers',
     Boating: 'boating',
+    BooksAndSupplies: 'books_and_supplies',
     Bookstores: 'bookstores',
     Boutique: 'boutique',
     Bowling: 'bowling',
@@ -945,12 +946,12 @@ export const CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubty
     Checking: 'checking',
     Savings: 'savings'
 };
-export const EnrichedTransactionTypeEnum = {
-    Debit: 'debit',
-    Credit: 'credit'
-};
 export const ExternalTransactionEventEventTypeEnum = {
     ExternalTransaction: 'external_transaction'
+};
+export const ExternalTransactionEventTransactionOwnerTypeEnum = {
+    Consumer: 'consumer',
+    Business: 'business'
 };
 /**
  *
@@ -1290,6 +1291,7 @@ export const TransactionCategoryEnum = {
     Boat: 'boat',
     BoatDealers: 'boat_dealers',
     Boating: 'boating',
+    BooksAndSupplies: 'books_and_supplies',
     Bookstores: 'bookstores',
     Boutique: 'boutique',
     Bowling: 'bowling',
@@ -2043,9 +2045,13 @@ export const TransactionEventType = {
     Wire: 'wire',
     Withdrawal: 'withdrawal'
 };
-export const TransactionToEnrichTypeEnum = {
-    Debit: 'debit',
-    Credit: 'credit'
+export const TransactionToEnrichDirectionEnum = {
+    Incoming: 'incoming',
+    Outgoing: 'outgoing'
+};
+export const TransactionToEnrichOwnerTypeEnum = {
+    Consumer: 'consumer',
+    Business: 'business'
 };
 export const UpdatedBalanceEventEventTypeEnum = {
     UpdatedBalance: 'updated_balance'

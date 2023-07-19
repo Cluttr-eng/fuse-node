@@ -545,6 +545,7 @@ export const AssetReportTransactionCategoryEnum = {
     Boat: 'boat',
     BoatDealers: 'boat_dealers',
     Boating: 'boating',
+    BooksAndSupplies: 'books_and_supplies',
     Bookstores: 'bookstores',
     Boutique: 'boutique',
     Bowling: 'bowling',
@@ -1414,6 +1415,12 @@ export interface CreateConsumerRiskReportRequest {
      */
     'iso_currency_code': string;
     /**
+     * The name of the end user associated with this consumer risk report.
+     * @type {string}
+     * @memberof CreateConsumerRiskReportRequest
+     */
+    'end_user_name'?: string;
+    /**
      * This is used to determine the timeframe and other metadata for the consumer risk report.
      * @type {string}
      * @memberof CreateConsumerRiskReportRequest
@@ -1936,11 +1943,11 @@ export interface EnrichedTransaction {
      */
     'merchant_id'?: string;
     /**
-     * The original or enhanced name of the merchant.
+     * The name of the merchant.
      * @type {string}
      * @memberof EnrichedTransaction
      */
-    'name'?: string;
+    'merchant_name'?: string;
     /**
      * 
      * @type {MerchantLogo}
@@ -1948,86 +1955,12 @@ export interface EnrichedTransaction {
      */
     'logo'?: MerchantLogo;
     /**
-     * The amount of the transaction in cents, in the currency of the account.
-     * @type {number}
+     * Hierarchical transaction categories: Each element narrows down from parent to nested sub-categories. Example: [\'personnel\', \'employee\', \'payroll\'].
+     * @type {Array<string>}
      * @memberof EnrichedTransaction
      */
-    'amount'?: number;
-    /**
-     * 
-     * @type {TransactionCategory}
-     * @memberof EnrichedTransaction
-     */
-    'category'?: TransactionCategory;
-    /**
-     * Whether the transaction is a bill pay.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_bill_pay'?: boolean;
-    /**
-     * Whether the transaction is a direct deposit.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_direct_deposit'?: boolean;
-    /**
-     * Whether the transaction is a an expense
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_expense'?: boolean;
-    /**
-     * Whether the transaction is a fee.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_fee'?: boolean;
-    /**
-     * Whether the transaction is income.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_income'?: boolean;
-    /**
-     * Whether the transaction is international.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_international'?: boolean;
-    /**
-     * This indicates whether the transaction represents an overdraft fee.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_overdraft_fee'?: boolean;
-    /**
-     * Whether the transaction is a payroll advance.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_payroll_advance'?: boolean;
-    /**
-     * Whether the transaction is a subscription.
-     * @type {boolean}
-     * @memberof EnrichedTransaction
-     */
-    'is_subscription'?: boolean;
-    /**
-     * The type of transaction
-     * @type {string}
-     * @memberof EnrichedTransaction
-     */
-    'type'?: EnrichedTransactionTypeEnum;
+    'categories'?: Array<string>;
 }
-
-export const EnrichedTransactionTypeEnum = {
-    Debit: 'debit',
-    Credit: 'credit'
-} as const;
-
-export type EnrichedTransactionTypeEnum = typeof EnrichedTransactionTypeEnum[keyof typeof EnrichedTransactionTypeEnum];
-
 /**
  * 
  * @export
@@ -2205,6 +2138,12 @@ export interface ExternalTransactionEvent {
      */
     'amount': number;
     /**
+     * 
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'country_code'?: string;
+    /**
      * The ISO-4217 currency code.
      * @type {string}
      * @memberof ExternalTransactionEvent
@@ -2216,6 +2155,18 @@ export interface ExternalTransactionEvent {
      * @memberof ExternalTransactionEvent
      */
     'transaction_type'?: TransactionEventType;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'transaction_description'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExternalTransactionEvent
+     */
+    'transaction_owner_type'?: ExternalTransactionEventTransactionOwnerTypeEnum;
     /**
      * 
      * @type {string}
@@ -2241,6 +2192,12 @@ export const ExternalTransactionEventEventTypeEnum = {
 } as const;
 
 export type ExternalTransactionEventEventTypeEnum = typeof ExternalTransactionEventEventTypeEnum[keyof typeof ExternalTransactionEventEventTypeEnum];
+export const ExternalTransactionEventTransactionOwnerTypeEnum = {
+    Consumer: 'consumer',
+    Business: 'business'
+} as const;
+
+export type ExternalTransactionEventTransactionOwnerTypeEnum = typeof ExternalTransactionEventTransactionOwnerTypeEnum[keyof typeof ExternalTransactionEventTransactionOwnerTypeEnum];
 
 /**
  * 
@@ -2976,6 +2933,12 @@ export interface FinancialConnectionsAccount {
      */
     'remote_id': string;
     /**
+     * The ISO-4217 currency code of the account.
+     * @type {string}
+     * @memberof FinancialConnectionsAccount
+     */
+    'currency': string;
+    /**
      * Uniquely identifies this account across all accounts for a single financial connection. Used for reconnection deduplication. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof FinancialConnectionsAccount
@@ -3043,13 +3006,13 @@ export interface FinancialConnectionsAccountBalance {
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * Amount in cents without factoring in pending balances. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'current'?: number;
+    'current'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
@@ -3074,13 +3037,13 @@ export interface FinancialConnectionsAccountCachedBalance {
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * Amount without factoring in pending balances, in cents. The format of this value is a double.
      * @type {number}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'current'?: number;
+    'current'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
@@ -3224,6 +3187,12 @@ export interface FinancialConnectionsAccountLiability {
      * @memberof FinancialConnectionsAccountLiability
      */
     'remote_id': string;
+    /**
+     * The ISO-4217 currency code of the account.
+     * @type {string}
+     * @memberof FinancialConnectionsAccountLiability
+     */
+    'currency': string;
     /**
      * Uniquely identifies this account across all accounts for a single financial connection. Used for reconnection deduplication. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
@@ -5508,6 +5477,7 @@ export const TransactionCategoryEnum = {
     Boat: 'boat',
     BoatDealers: 'boat_dealers',
     Boating: 'boating',
+    BooksAndSupplies: 'books_and_supplies',
     Bookstores: 'bookstores',
     Boutique: 'boutique',
     Bowling: 'bowling',
@@ -6330,11 +6300,11 @@ export interface TransactionToEnrich {
      */
     'id': string;
     /**
-     * The name of the merchant.
+     * The name of the merchant if available or a description of the transaction.
      * @type {string}
      * @memberof TransactionToEnrich
      */
-    'merchant_name': string;
+    'description': string;
     /**
      * The merchant category code.
      * @type {string}
@@ -6342,25 +6312,55 @@ export interface TransactionToEnrich {
      */
     'mcc'?: string;
     /**
-     * The amount of the transaction in cents, in the currency of the account. 
+     * The amount of the transaction in cents, in the currency of the account. Must be a positive value. Use the type field to indicate the direction.
      * @type {number}
      * @memberof TransactionToEnrich
      */
-    'amount'?: number;
+    'amount': number;
     /**
-     * The type of the transaction
+     * The direction of the transaction.
      * @type {string}
      * @memberof TransactionToEnrich
      */
-    'type'?: TransactionToEnrichTypeEnum;
+    'direction': TransactionToEnrichDirectionEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'country_code'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'iso_currency_code'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'date'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TransactionToEnrich
+     */
+    'owner_type'?: TransactionToEnrichOwnerTypeEnum;
 }
 
-export const TransactionToEnrichTypeEnum = {
-    Debit: 'debit',
-    Credit: 'credit'
+export const TransactionToEnrichDirectionEnum = {
+    Incoming: 'incoming',
+    Outgoing: 'outgoing'
 } as const;
 
-export type TransactionToEnrichTypeEnum = typeof TransactionToEnrichTypeEnum[keyof typeof TransactionToEnrichTypeEnum];
+export type TransactionToEnrichDirectionEnum = typeof TransactionToEnrichDirectionEnum[keyof typeof TransactionToEnrichDirectionEnum];
+export const TransactionToEnrichOwnerTypeEnum = {
+    Consumer: 'consumer',
+    Business: 'business'
+} as const;
+
+export type TransactionToEnrichOwnerTypeEnum = typeof TransactionToEnrichOwnerTypeEnum[keyof typeof TransactionToEnrichOwnerTypeEnum];
 
 /**
  * 
