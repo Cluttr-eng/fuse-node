@@ -210,16 +210,17 @@ exports.AccountType = {
  * @enum {string}
  */
 exports.Aggregator = {
-    Plaid: 'plaid',
-    Teller: 'teller',
-    Mx: 'mx',
-    Snaptrade: 'snaptrade',
+    Basiq: 'basiq',
+    Belvo: 'belvo',
+    Finicity: 'finicity',
+    Finverse: 'finverse',
     Flinks: 'flinks',
     Mono: 'mono',
-    Truelayer: 'truelayer',
-    Finverse: 'finverse',
-    Basiq: 'basiq',
-    Belvo: 'belvo'
+    Mx: 'mx',
+    Plaid: 'plaid',
+    Snaptrade: 'snaptrade',
+    Teller: 'teller',
+    Truelayer: 'truelayer'
 };
 exports.AssetReportTransactionCategoryEnum = {
     AccessoriesStore: 'accessories_store',
@@ -1158,6 +1159,9 @@ exports.FuseApiErrorCode = {
     MissingBasiqApiKeyHeader: 'missing_basiq_api_key_header',
     MissingBelvoSecretIdHeader: 'missing_belvo_secret_id_header',
     MissingBelvoSecretPasswordHeader: 'missing_belvo_secret_password_header',
+    MissingFinicityPartnerIdHeader: 'missing_finicity_partner_id_header',
+    MissingFinicityAppKeyHeader: 'missing_finicity_app_key_header',
+    MissingFinicityPartnerSecretHeader: 'missing_finicity_partner_secret_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
