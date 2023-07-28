@@ -252,16 +252,17 @@ export interface AddAccountEventsResponse {
  */
 
 export const Aggregator = {
-    Plaid: 'plaid',
-    Teller: 'teller',
-    Mx: 'mx',
-    Snaptrade: 'snaptrade',
+    Basiq: 'basiq',
+    Belvo: 'belvo',
+    Finicity: 'finicity',
+    Finverse: 'finverse',
     Flinks: 'flinks',
     Mono: 'mono',
-    Truelayer: 'truelayer',
-    Finverse: 'finverse',
-    Basiq: 'basiq',
-    Belvo: 'belvo'
+    Mx: 'mx',
+    Plaid: 'plaid',
+    Snaptrade: 'snaptrade',
+    Teller: 'teller',
+    Truelayer: 'truelayer'
 } as const;
 
 export type Aggregator = typeof Aggregator[keyof typeof Aggregator];
@@ -2101,12 +2102,26 @@ export interface ExchangeFinancialConnectionsPublicTokenResponse {
      */
     'financial_connection_id': string;
     /**
+     * 
+     * @type {FinancialInstitution}
+     * @memberof ExchangeFinancialConnectionsPublicTokenResponse
+     */
+    'institution'?: FinancialInstitution;
+    /**
+     * 
+     * @type {Aggregator}
+     * @memberof ExchangeFinancialConnectionsPublicTokenResponse
+     */
+    'aggregator': Aggregator;
+    /**
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof ExchangeFinancialConnectionsPublicTokenResponse
      */
     'request_id': string;
 }
+
+
 /**
  * 
  * @export
@@ -2732,6 +2747,12 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'belvo'?: FinancialConnectionDetailsBelvo;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsFinicity}
+     * @memberof FinancialConnectionDetails
+     */
+    'finicity'?: FinancialConnectionDetailsFinicity;
 }
 
 export const FinancialConnectionDetailsConnectionStatusEnum = {
@@ -2779,6 +2800,25 @@ export interface FinancialConnectionDetailsBelvo {
      * @memberof FinancialConnectionDetailsBelvo
      */
     'institution'?: string;
+}
+/**
+ * Data needed to query data from Finicity.
+ * @export
+ * @interface FinancialConnectionDetailsFinicity
+ */
+export interface FinancialConnectionDetailsFinicity {
+    /**
+     * The identifier of the customer for Finicity.
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFinicity
+     */
+    'customer_id': string;
+    /**
+     * The Finicity institution login id.
+     * @type {string}
+     * @memberof FinancialConnectionDetailsFinicity
+     */
+    'institution_login_id': string;
 }
 /**
  * Data needed to query data from Finverse
@@ -4086,6 +4126,9 @@ export const FuseApiErrorCode = {
     MissingBasiqApiKeyHeader: 'missing_basiq_api_key_header',
     MissingBelvoSecretIdHeader: 'missing_belvo_secret_id_header',
     MissingBelvoSecretPasswordHeader: 'missing_belvo_secret_password_header',
+    MissingFinicityPartnerIdHeader: 'missing_finicity_partner_id_header',
+    MissingFinicityAppKeyHeader: 'missing_finicity_app_key_header',
+    MissingFinicityPartnerSecretHeader: 'missing_finicity_partner_secret_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
