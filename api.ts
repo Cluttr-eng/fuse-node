@@ -3058,13 +3058,13 @@ export interface FinancialConnectionsAccountBalance {
      * @type {string}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'iso_currency_code'?: string;
+    'iso_currency_code'?: string | null;
     /**
      * The last time the account balance was updated, represented as an ISO 8601 timestamp (YYYY-MM-DDTHH:mm:ssZ). This value may not be available for some accounts.
      * @type {string}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'last_updated_date'?: string;
+    'last_updated_date'?: string | null;
 }
 /**
  * 
@@ -3089,13 +3089,13 @@ export interface FinancialConnectionsAccountCachedBalance {
      * @type {string}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'iso_currency_code'?: string;
+    'iso_currency_code'?: string | null;
     /**
      * The date of the last update to the balance.
      * @type {string}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'last_updated_date'?: string;
+    'last_updated_date'?: string | null;
 }
 /**
  * 
@@ -5380,7 +5380,7 @@ export interface Transaction {
      */
     'remote_id': string;
     /**
-     * Uniquely identifies this account across all transactions for a single financial connection. Used for reconnection deduplication. This field may or may not be present depending on if a transaction can be uniquely identified. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
+     * Uniquely identifies this transaction across all transactions for a single financial connection. Used for reconnection deduplication. This field may or may not be present depending on if a transaction can be uniquely identified. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof Transaction
      */
