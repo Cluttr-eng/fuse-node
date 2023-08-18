@@ -10,6 +10,8 @@ npm install fuse-node
 ## Quick start
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
 
+BREAKING: the syncFinancialConnectionsData has changed from v2 onwards, see below for more information.
+
 ### Initialising the Fuse Api
 ```typescript
 
@@ -98,6 +100,15 @@ console.log(responseData.accounts[0].name);
 <br/>
 
 ### Sync financial connections data
+V2 onwards:
+```typescript
+const fuseVerificationHeader = headers[
+    'fuse-verification'
+] as string;
+const response = await fuseApi.syncFinancialConnectionsData(fuseVerificationHeader, webhookEvent);
+```
+
+V1:
 ```typescript
 const fuseVerificationHeader = headers[
     'fuse-verification'
