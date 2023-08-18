@@ -2231,361 +2231,6 @@ export type ExternalTransactionEventStatus = typeof ExternalTransactionEventStat
 /**
  * 
  * @export
- * @interface FinQLComparisonFeature
- */
-export interface FinQLComparisonFeature {
-    /**
-     * 
-     * @type {Merchant}
-     * @memberof FinQLComparisonFeature
-     */
-    'merchant_a'?: Merchant;
-    /**
-     * 
-     * @type {Merchant}
-     * @memberof FinQLComparisonFeature
-     */
-    'merchant_b'?: Merchant;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLComparisonFeature
-     */
-    'comparison_metric'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLComparisonFeature
-     */
-    'value_a'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLComparisonFeature
-     */
-    'value_b'?: string;
-}
-/**
- * @type FinQLFeature
- * @export
- */
-export type FinQLFeature = FinQLFeatureOneOf | FinQLFeatureOneOf1 | FinQLFeatureOneOf2 | FinQLFeatureOneOf3 | FinQLFeatureOneOf4 | FinQLFeatureOneOf5 | FinQLFeatureOneOf6 | FinQLFeatureOneOf7;
-
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf
- */
-export interface FinQLFeatureOneOf {
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLFeatureOneOf
-     */
-    'text'?: string;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf1
- */
-export interface FinQLFeatureOneOf1 {
-    /**
-     * 
-     * @type {FinQLIndividualMerchantFeature}
-     * @memberof FinQLFeatureOneOf1
-     */
-    'individual_merchant'?: FinQLIndividualMerchantFeature;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf2
- */
-export interface FinQLFeatureOneOf2 {
-    /**
-     * 
-     * @type {Array<FinQLTimeBasedFeatureInner>}
-     * @memberof FinQLFeatureOneOf2
-     */
-    'time_based'?: Array<FinQLTimeBasedFeatureInner>;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf3
- */
-export interface FinQLFeatureOneOf3 {
-    /**
-     * 
-     * @type {FinQLInterestFeature}
-     * @memberof FinQLFeatureOneOf3
-     */
-    'interest'?: FinQLInterestFeature;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf4
- */
-export interface FinQLFeatureOneOf4 {
-    /**
-     * 
-     * @type {FinQLFrequencyFeature}
-     * @memberof FinQLFeatureOneOf4
-     */
-    'frequency'?: FinQLFrequencyFeature;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf5
- */
-export interface FinQLFeatureOneOf5 {
-    /**
-     * 
-     * @type {Array<FinQLTopMerchantsFeatureInner>}
-     * @memberof FinQLFeatureOneOf5
-     */
-    'top_merchants'?: Array<FinQLTopMerchantsFeatureInner>;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf6
- */
-export interface FinQLFeatureOneOf6 {
-    /**
-     * 
-     * @type {FinQLComparisonFeature}
-     * @memberof FinQLFeatureOneOf6
-     */
-    'comparison'?: FinQLComparisonFeature;
-}
-/**
- * 
- * @export
- * @interface FinQLFeatureOneOf7
- */
-export interface FinQLFeatureOneOf7 {
-    /**
-     * 
-     * @type {Array<FinQLMerchantCategoriesFeatureInner>}
-     * @memberof FinQLFeatureOneOf7
-     */
-    'merchant_categories'?: Array<FinQLMerchantCategoriesFeatureInner>;
-}
-/**
- * Feature to return in the response. See response for a description of each feature.
- * @export
- * @enum {string}
- */
-
-export const FinQLFeatureRequest = {
-    Text: 'text',
-    IndividualMerchant: 'individual_merchant',
-    TimeBased: 'time_based',
-    Interest: 'interest',
-    Frequency: 'frequency',
-    TopMerchants: 'top_merchants',
-    Comparison: 'comparison',
-    MerchantCategories: 'merchant_categories'
-} as const;
-
-export type FinQLFeatureRequest = typeof FinQLFeatureRequest[keyof typeof FinQLFeatureRequest];
-
-
-/**
- * 
- * @export
- * @interface FinQLFrequencyFeature
- */
-export interface FinQLFrequencyFeature {
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLFrequencyFeature
-     */
-    'time_period'?: FinQLFrequencyFeatureTimePeriodEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLFrequencyFeature
-     */
-    'frequency'?: number;
-}
-
-export const FinQLFrequencyFeatureTimePeriodEnum = {
-    Day: 'day',
-    Month: 'month',
-    Year: 'year'
-} as const;
-
-export type FinQLFrequencyFeatureTimePeriodEnum = typeof FinQLFrequencyFeatureTimePeriodEnum[keyof typeof FinQLFrequencyFeatureTimePeriodEnum];
-
-/**
- * 
- * @export
- * @interface FinQLIndividualMerchantFeature
- */
-export interface FinQLIndividualMerchantFeature {
-    /**
-     * 
-     * @type {Merchant}
-     * @memberof FinQLIndividualMerchantFeature
-     */
-    'merchant'?: Merchant;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLIndividualMerchantFeature
-     */
-    'value'?: string;
-}
-/**
- * 
- * @export
- * @interface FinQLInterestFeature
- */
-export interface FinQLInterestFeature {
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLInterestFeature
-     */
-    'interest_level'?: number;
-}
-/**
- * 
- * @export
- * @interface FinQLMerchantCategoriesFeatureInner
- */
-export interface FinQLMerchantCategoriesFeatureInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLMerchantCategoriesFeatureInner
-     */
-    'category'?: string;
-    /**
-     * 
-     * @type {Array<FinQLMerchantCategoriesFeatureInnerResultInner>}
-     * @memberof FinQLMerchantCategoriesFeatureInner
-     */
-    'result'?: Array<FinQLMerchantCategoriesFeatureInnerResultInner>;
-}
-/**
- * 
- * @export
- * @interface FinQLMerchantCategoriesFeatureInnerResultInner
- */
-export interface FinQLMerchantCategoriesFeatureInnerResultInner {
-    /**
-     * 
-     * @type {Merchant}
-     * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
-     */
-    'merchant'?: Merchant;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLMerchantCategoriesFeatureInnerResultInner
-     */
-    'value'?: string;
-}
-/**
- * 
- * @export
- * @interface FinQLPromptRequest
- */
-export interface FinQLPromptRequest {
-    /**
-     * Description of the search in natural language.
-     * @type {string}
-     * @memberof FinQLPromptRequest
-     */
-    'prompt': string;
-    /**
-     * ID of account to be queried
-     * @type {string}
-     * @memberof FinQLPromptRequest
-     */
-    'account_id': string;
-    /**
-     * 
-     * @type {FinQLFeatureRequest}
-     * @memberof FinQLPromptRequest
-     */
-    'feature': FinQLFeatureRequest;
-}
-
-
-/**
- * 
- * @export
- * @interface FinQLPromptResponse
- */
-export interface FinQLPromptResponse {
-    /**
-     * 
-     * @type {FinQLFeature}
-     * @memberof FinQLPromptResponse
-     */
-    'feature'?: FinQLFeature;
-    /**
-     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
-     * @type {string}
-     * @memberof FinQLPromptResponse
-     */
-    'request_id': string;
-}
-/**
- * 
- * @export
- * @interface FinQLTimeBasedFeatureInner
- */
-export interface FinQLTimeBasedFeatureInner {
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLTimeBasedFeatureInner
-     */
-    'time_period'?: string;
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLTimeBasedFeatureInner
-     */
-    'value'?: number;
-}
-/**
- * 
- * @export
- * @interface FinQLTopMerchantsFeatureInner
- */
-export interface FinQLTopMerchantsFeatureInner {
-    /**
-     * 
-     * @type {number}
-     * @memberof FinQLTopMerchantsFeatureInner
-     */
-    'rank'?: number;
-    /**
-     * 
-     * @type {Merchant}
-     * @memberof FinQLTopMerchantsFeatureInner
-     */
-    'merchant'?: Merchant;
-    /**
-     * 
-     * @type {string}
-     * @memberof FinQLTopMerchantsFeatureInner
-     */
-    'value'?: string;
-}
-/**
- * 
- * @export
  * @interface FinanceScore
  */
 export interface FinanceScore {
@@ -2649,7 +2294,7 @@ export interface FinancialConnectionData {
      * @type {string}
      * @memberof FinancialConnectionData
      */
-    'institution_id': string;
+    'institution_id'?: string | null;
 }
 /**
  * 
@@ -3013,7 +2658,7 @@ export interface FinancialConnectionsAccount {
      * @type {AccountSubtype}
      * @memberof FinancialConnectionsAccount
      */
-    'subtype'?: AccountSubtype;
+    'subtype'?: AccountSubtype | null;
     /**
      * 
      * @type {FinancialConnectionsAccountCachedBalance}
@@ -3058,13 +2703,13 @@ export interface FinancialConnectionsAccountBalance {
      * @type {string}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'iso_currency_code'?: string;
+    'iso_currency_code'?: string | null;
     /**
      * The last time the account balance was updated, represented as an ISO 8601 timestamp (YYYY-MM-DDTHH:mm:ssZ). This value may not be available for some accounts.
      * @type {string}
      * @memberof FinancialConnectionsAccountBalance
      */
-    'last_updated_date'?: string;
+    'last_updated_date'?: string | null;
 }
 /**
  * 
@@ -3089,13 +2734,13 @@ export interface FinancialConnectionsAccountCachedBalance {
      * @type {string}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'iso_currency_code'?: string;
+    'iso_currency_code'?: string | null;
     /**
      * The date of the last update to the balance.
      * @type {string}
      * @memberof FinancialConnectionsAccountCachedBalance
      */
-    'last_updated_date'?: string;
+    'last_updated_date'?: string | null;
 }
 /**
  * 
@@ -3114,7 +2759,7 @@ export interface FinancialConnectionsAccountDetails {
      * @type {FinancialConnectionsAccountDetailsAch}
      * @memberof FinancialConnectionsAccountDetails
      */
-    'ach': FinancialConnectionsAccountDetailsAch;
+    'ach'?: FinancialConnectionsAccountDetailsAch;
     /**
      * 
      * @type {FinancialConnectionsAccountDetailsAccountNumber}
@@ -3139,7 +2784,7 @@ export interface FinancialConnectionsAccountDetailsAccountNumber {
      * @type {string}
      * @memberof FinancialConnectionsAccountDetailsAccountNumber
      */
-    'number'?: string;
+    'number': string;
     /**
      * A six-digit number used by banks in the United Kingdom and Ireland to identify the branch where the account is held.
      * @type {string}
@@ -3268,7 +2913,7 @@ export interface FinancialConnectionsAccountLiability {
      * @type {AccountSubtype}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'subtype'?: AccountSubtype;
+    'subtype'?: AccountSubtype | null;
     /**
      * 
      * @type {FinancialConnectionsAccountCachedBalance}
@@ -3991,31 +3636,31 @@ export interface FuseApiAggregatorError {
      * @type {string}
      * @memberof FuseApiAggregatorError
      */
-    'request_id'?: string;
+    'request_id'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof FuseApiAggregatorError
      */
-    'title'?: string;
+    'title'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof FuseApiAggregatorError
      */
-    'details'?: string;
+    'details'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof FuseApiAggregatorError
      */
-    'code'?: string;
+    'code'?: string | null;
     /**
      * 
      * @type {string}
      * @memberof FuseApiAggregatorError
      */
-    'type'?: string;
+    'type'?: string | null;
     /**
      * 
      * @type {string}
@@ -5380,7 +5025,7 @@ export interface Transaction {
      */
     'remote_id': string;
     /**
-     * Uniquely identifies this account across all transactions for a single financial connection. Used for reconnection deduplication. This field may or may not be present depending on if a transaction can be uniquely identified. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
+     * Uniquely identifies this transaction across all transactions for a single financial connection. Used for reconnection deduplication. This field may or may not be present depending on if a transaction can be uniquely identified. See more information here: https://letsfuse.readme.io/docs/duplicate-accounts
      * @type {string}
      * @memberof Transaction
      */
@@ -7047,46 +6692,6 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-         * @summary FinQL Prompt
-         * @param {FinQLPromptRequest} [finQLPromptRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        finQLPrompt: async (finQLPromptRequest?: FinQLPromptRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/v1/finql/prompt`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication fuseApiKey required
-            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
-
-            // authentication fuseClientId required
-            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(finQLPromptRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest] 
          * @param {*} [options] Override http request option.
@@ -7745,11 +7350,14 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: async (body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        syncFinancialConnectionsData: async (fuseVerification: string, body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'fuseVerification' is not null or undefined
+            assertParamExists('syncFinancialConnectionsData', 'fuseVerification', fuseVerification)
             // verify required parameter 'body' is not null or undefined
             assertParamExists('syncFinancialConnectionsData', 'body', body)
             const localVarPath = `/v1/financial_connections/sync`;
@@ -7769,6 +7377,10 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
 
             // authentication fuseClientId required
             await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+            if (fuseVerification != null) {
+                localVarHeaderParameter['Fuse-Verification'] = String(fuseVerification);
+            }
 
 
     
@@ -7975,17 +7587,6 @@ export const FuseApiFp = function(configuration?: Configuration) {
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
-         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-         * @summary FinQL Prompt
-         * @param {FinQLPromptRequest} [finQLPromptRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async finQLPrompt(finQLPromptRequest?: FinQLPromptRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<FinQLPromptResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.finQLPrompt(finQLPromptRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest] 
          * @param {*} [options] Override http request option.
@@ -8162,12 +7763,13 @@ export const FuseApiFp = function(configuration?: Configuration) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(body, options);
+        async syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -8287,16 +7889,6 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: any): AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse> {
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-         * @summary FinQL Prompt
-         * @param {FinQLPromptRequest} [finQLPromptRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        finQLPrompt(finQLPromptRequest?: FinQLPromptRequest, options?: any): AxiosPromise<FinQLPromptResponse> {
-            return localVarFp.finQLPrompt(finQLPromptRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -8459,12 +8051,13 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification 
          * @param {object} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse> {
-            return localVarFp.syncFinancialConnectionsData(body, options).then((request) => request(axios, basePath));
+        syncFinancialConnectionsData(fuseVerification: string, body: object, options?: any): AxiosPromise<SyncFinancialConnectionsDataResponse> {
+            return localVarFp.syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -8598,18 +8191,6 @@ export class FuseApi extends BaseAPI {
      */
     public exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) {
         return FuseApiFp(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-     * @summary FinQL Prompt
-     * @param {FinQLPromptRequest} [finQLPromptRequest] 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    public finQLPrompt(finQLPromptRequest?: FinQLPromptRequest, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).finQLPrompt(finQLPromptRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8805,13 +8386,14 @@ export class FuseApi extends BaseAPI {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
+     * @param {string} fuseVerification 
      * @param {object} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public syncFinancialConnectionsData(body: object, options?: AxiosRequestConfig) {
-        return FuseApiFp(this.configuration).syncFinancialConnectionsData(body, options).then((request) => request(this.axios, this.basePath));
+    public syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig) {
+        return FuseApiFp(this.configuration).syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

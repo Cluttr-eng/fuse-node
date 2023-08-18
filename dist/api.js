@@ -22,8 +22,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RiskReportApiAxiosParamCreator = exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.UpdatedBalanceEventEventTypeEnum = exports.TransactionToEnrichOwnerTypeEnum = exports.TransactionToEnrichDirectionEnum = exports.TransactionEventType = exports.TransactionCategoryPrimary = exports.TransactionCategoryDetailed = exports.TransactionTypeEnum = exports.TransactionStatusEnum = exports.TransactionCategoryEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.InAppTransactionEventStatus = exports.InAppTransactionEventEventTypeEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorType = exports.FuseApiErrorCode = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionsInvestmentTransactionSubtype = exports.FinancialConnectionsInvestmentTransactionTypeEnum = exports.FinancialConnectionsInvestmentSecurityType = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.FinQLFrequencyFeatureTimePeriodEnum = exports.FinQLFeatureRequest = exports.ExternalTransactionEventStatus = exports.ExternalTransactionEventTransactionOwnerTypeEnum = exports.ExternalTransactionEventEventTypeEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigSelectAccountEnum = exports.CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum = exports.CountryCode = exports.ConsumerRiskReportTimeFrame = exports.AssetReportTransactionStatusEnum = exports.AssetReportTransactionCategoryEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
-exports.RiskReportApi = exports.RiskReportApiFactory = exports.RiskReportApiFp = void 0;
+exports.RiskReportApiFactory = exports.RiskReportApiFp = exports.RiskReportApiAxiosParamCreator = exports.FuseApi = exports.FuseApiFactory = exports.FuseApiFp = exports.FuseApiAxiosParamCreator = exports.WebhookType = exports.WebhookSource = exports.WebhookEventEnvironmentEnum = exports.UpdatedBalanceEventEventTypeEnum = exports.TransactionToEnrichOwnerTypeEnum = exports.TransactionToEnrichDirectionEnum = exports.TransactionEventType = exports.TransactionCategoryPrimary = exports.TransactionCategoryDetailed = exports.TransactionTypeEnum = exports.TransactionStatusEnum = exports.TransactionCategoryEnum = exports.Product = exports.MigrateFinancialConnectionsTokenRequestAggregatorEnum = exports.InAppTransactionEventStatus = exports.InAppTransactionEventEventTypeEnum = exports.FuseApiWarningDataWarningsInnerSourceEnum = exports.FuseApiWarningSourceEnum = exports.FuseApiErrorType = exports.FuseApiErrorCode = exports.FuseApiErrorSourceEnum = exports.FinancialInstitutionLogoFormatEnum = exports.FinancialInstitutionLogoTypeEnum = exports.FinancialConnectionsOwnerPhoneNumbersInnerTypeEnum = exports.FinancialConnectionsOwnerEmailsInnerTypeEnum = exports.FinancialConnectionsInvestmentTransactionSubtype = exports.FinancialConnectionsInvestmentTransactionTypeEnum = exports.FinancialConnectionsInvestmentSecurityType = exports.FinancialConnectionDetailsConnectionStatusEnum = exports.ExternalTransactionEventStatus = exports.ExternalTransactionEventTransactionOwnerTypeEnum = exports.ExternalTransactionEventEventTypeEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterDepositoryOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigAccountFilterCreditOneOfSubtypesEnum = exports.CreateLinkTokenRequestTellerConfigSelectAccountEnum = exports.CreateLinkTokenRequestSnaptradeConfigConnectionTypeEnum = exports.CountryCode = exports.ConsumerRiskReportTimeFrame = exports.AssetReportTransactionStatusEnum = exports.AssetReportTransactionCategoryEnum = exports.Aggregator = exports.AccountType = exports.AccountSubtype = void 0;
+exports.RiskReportApi = void 0;
 const axios_1 = require("axios");
 // Some imports not used depending on template conditions
 // @ts-ignore
@@ -966,26 +966,6 @@ exports.ExternalTransactionEventTransactionOwnerTypeEnum = {
 exports.ExternalTransactionEventStatus = {
     Pending: 'pending',
     Posted: 'posted'
-};
-/**
- * Feature to return in the response. See response for a description of each feature.
- * @export
- * @enum {string}
- */
-exports.FinQLFeatureRequest = {
-    Text: 'text',
-    IndividualMerchant: 'individual_merchant',
-    TimeBased: 'time_based',
-    Interest: 'interest',
-    Frequency: 'frequency',
-    TopMerchants: 'top_merchants',
-    Comparison: 'comparison',
-    MerchantCategories: 'merchant_categories'
-};
-exports.FinQLFrequencyFeatureTimePeriodEnum = {
-    Day: 'day',
-    Month: 'month',
-    Year: 'year'
 };
 exports.FinancialConnectionDetailsConnectionStatusEnum = {
     Connected: 'connected',
@@ -2399,38 +2379,6 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
-         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-         * @summary FinQL Prompt
-         * @param {FinQLPromptRequest} [finQLPromptRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        finQLPrompt: (finQLPromptRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
-            const localVarPath = `/v1/finql/prompt`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
-            const localVarHeaderParameter = {};
-            const localVarQueryParameter = {};
-            // authentication fuseApiKey required
-            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
-            // authentication fuseClientId required
-            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
-            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(finQLPromptRequest, localVarRequestOptions, configuration);
-            return {
-                url: (0, common_1.toPathString)(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        }),
-        /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
          * @param {GetAssetReportRequest} [getAssetReportRequest]
          * @param {*} [options] Override http request option.
@@ -2965,11 +2913,14 @@ const FuseApiAxiosParamCreator = function (configuration) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: (body, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        syncFinancialConnectionsData: (fuseVerification, body, options = {}) => __awaiter(this, void 0, void 0, function* () {
+            // verify required parameter 'fuseVerification' is not null or undefined
+            (0, common_1.assertParamExists)('syncFinancialConnectionsData', 'fuseVerification', fuseVerification);
             // verify required parameter 'body' is not null or undefined
             (0, common_1.assertParamExists)('syncFinancialConnectionsData', 'body', body);
             const localVarPath = `/v1/financial_connections/sync`;
@@ -2986,6 +2937,9 @@ const FuseApiAxiosParamCreator = function (configuration) {
             yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
             // authentication fuseClientId required
             yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            if (fuseVerification != null) {
+                localVarHeaderParameter['Fuse-Verification'] = String(fuseVerification);
+            }
             localVarHeaderParameter['Content-Type'] = 'application/json';
             (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -3185,19 +3139,6 @@ const FuseApiFp = function (configuration) {
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
-            });
-        },
-        /**
-         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-         * @summary FinQL Prompt
-         * @param {FinQLPromptRequest} [finQLPromptRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        finQLPrompt(finQLPromptRequest, options) {
-            return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.finQLPrompt(finQLPromptRequest, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -3410,13 +3351,14 @@ const FuseApiFp = function (configuration) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(body, options) {
+        syncFinancialConnectionsData(fuseVerification, body, options) {
             return __awaiter(this, void 0, void 0, function* () {
-                const localVarAxiosArgs = yield localVarAxiosParamCreator.syncFinancialConnectionsData(body, options);
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
                 return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
             });
         },
@@ -3541,16 +3483,6 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
             return localVarFp.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-         * @summary FinQL Prompt
-         * @param {FinQLPromptRequest} [finQLPromptRequest]
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        finQLPrompt(finQLPromptRequest, options) {
-            return localVarFp.finQLPrompt(finQLPromptRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -3713,12 +3645,13 @@ const FuseApiFactory = function (configuration, basePath, axios) {
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
+         * @param {string} fuseVerification
          * @param {object} body
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData(body, options) {
-            return localVarFp.syncFinancialConnectionsData(body, options).then((request) => request(axios, basePath));
+        syncFinancialConnectionsData(fuseVerification, body, options) {
+            return localVarFp.syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(axios, basePath));
         },
         /**
          *
@@ -3844,17 +3777,6 @@ class FuseApi extends base_1.BaseAPI {
      */
     exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * Retrieve information using finQL. Uses data submitted via the /events endpoint. This feature is being built and is not currently available.
-     * @summary FinQL Prompt
-     * @param {FinQLPromptRequest} [finQLPromptRequest]
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof FuseApi
-     */
-    finQLPrompt(finQLPromptRequest, options) {
-        return (0, exports.FuseApiFp)(this.configuration).finQLPrompt(finQLPromptRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -4033,13 +3955,14 @@ class FuseApi extends base_1.BaseAPI {
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
+     * @param {string} fuseVerification
      * @param {object} body
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    syncFinancialConnectionsData(body, options) {
-        return (0, exports.FuseApiFp)(this.configuration).syncFinancialConnectionsData(body, options).then((request) => request(this.axios, this.basePath));
+    syncFinancialConnectionsData(fuseVerification, body, options) {
+        return (0, exports.FuseApiFp)(this.configuration).syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      *
