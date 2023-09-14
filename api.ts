@@ -181,6 +181,16 @@ export const AccountSubtype = {
     Revolving: 'revolving',
     Other: 'other',
     TimeDeposit: 'time_deposit',
+    Roth: 'roth',
+    Military: 'military',
+    Installment: 'installment',
+    InstitutionalTrust: 'institutional_trust',
+    HomeLineOfCredit: 'home_line_of_credit',
+    Guardian: 'guardian',
+    CommercialLineOfCredit: 'commercial_line_of_credit',
+    Charge: 'charge',
+    Coverdell: 'coverdell',
+    Escrow: 'escrow',
     Minus: '-'
 } as const;
 
@@ -200,6 +210,7 @@ export const AccountType = {
     Investment: 'investment',
     Insurance: 'insurance',
     Property: 'property',
+    Annuity: 'annuity',
     Other: 'other',
     Minus: '-'
 } as const;
@@ -252,6 +263,7 @@ export interface AddAccountEventsResponse {
  */
 
 export const Aggregator = {
+    Akoya: 'akoya',
     Basiq: 'basiq',
     Belvo: 'belvo',
     Finicity: 'finicity',
@@ -260,6 +272,7 @@ export const Aggregator = {
     Mono: 'mono',
     Mx: 'mx',
     Plaid: 'plaid',
+    Saltedge: 'saltedge',
     Snaptrade: 'snaptrade',
     Teller: 'teller',
     Truelayer: 'truelayer'
@@ -1218,11 +1231,13 @@ export const CountryCode = {
     Au: 'AU',
     Bd: 'BD',
     Be: 'BE',
+    Bg: 'BG',
     Bh: 'BH',
     Bm: 'BM',
     Bn: 'BN',
     Br: 'BR',
     Bw: 'BW',
+    By: 'BY',
     Ca: 'CA',
     Ch: 'CH',
     Ci: 'CI',
@@ -1232,7 +1247,9 @@ export const CountryCode = {
     Co: 'CO',
     Cz: 'CZ',
     De: 'DE',
+    Do: 'DO',
     Dz: 'DZ',
+    Ec: 'EC',
     Eg: 'EG',
     Es: 'ES',
     Fi: 'FI',
@@ -1244,6 +1261,7 @@ export const CountryCode = {
     Gm: 'GM',
     Gr: 'GR',
     Hk: 'HK',
+    Hu: 'HU',
     Id: 'ID',
     Ie: 'IE',
     Il: 'IL',
@@ -1263,6 +1281,8 @@ export const CountryCode = {
     Lt: 'LT',
     Lu: 'LU',
     Mc: 'MC',
+    Md: 'MD',
+    Mk: 'MK',
     Mo: 'MO',
     Mt: 'MT',
     Mu: 'MU',
@@ -1280,15 +1300,18 @@ export const CountryCode = {
     Pl: 'PL',
     Pt: 'PT',
     Qa: 'QA',
+    Ro: 'RO',
     Ru: 'RU',
     Sa: 'SA',
     Se: 'SE',
     Sg: 'SG',
+    Sk: 'SK',
     Sl: 'SL',
     Th: 'TH',
     Tr: 'TR',
     Tw: 'TW',
     Tz: 'TZ',
+    Ua: 'UA',
     Ug: 'UG',
     Us: 'US',
     Uy: 'UY',
@@ -2398,6 +2421,18 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'finicity'?: FinancialConnectionDetailsFinicity;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsAkoya}
+     * @memberof FinancialConnectionDetails
+     */
+    'akoya'?: FinancialConnectionDetailsAkoya;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsSaltedge}
+     * @memberof FinancialConnectionDetails
+     */
+    'saltedge'?: FinancialConnectionDetailsSaltedge;
 }
 
 export const FinancialConnectionDetailsConnectionStatusEnum = {
@@ -2408,6 +2443,31 @@ export const FinancialConnectionDetailsConnectionStatusEnum = {
 
 export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
 
+/**
+ * Data needed to query data from Akoya.
+ * @export
+ * @interface FinancialConnectionDetailsAkoya
+ */
+export interface FinancialConnectionDetailsAkoya {
+    /**
+     * 
+     * @type {string}
+     * @memberof FinancialConnectionDetailsAkoya
+     */
+    'id_token': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FinancialConnectionDetailsAkoya
+     */
+    'refresh_token': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof FinancialConnectionDetailsAkoya
+     */
+    'expires_at': string;
+}
 /**
  * Data needed to query data from Basiq
  * @export
@@ -2547,6 +2607,19 @@ export interface FinancialConnectionDetailsPlaid {
      * @memberof FinancialConnectionDetailsPlaid
      */
     'item_id': string;
+}
+/**
+ * Data needed to query data from SaltEdge.
+ * @export
+ * @interface FinancialConnectionDetailsSaltedge
+ */
+export interface FinancialConnectionDetailsSaltedge {
+    /**
+     * 
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSaltedge
+     */
+    'connection_id': string;
 }
 /**
  * Data needed to query data from SnapTrade
@@ -2971,55 +3044,6 @@ export interface FinancialConnectionsAccountLiability {
 }
 
 
-/**
- * 
- * @export
- * @interface FinancialConnectionsAccountLiabilityAllOf
- */
-export interface FinancialConnectionsAccountLiabilityAllOf {
-    /**
-     * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
-     * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'aprs'?: Array<FinancialConnectionsAccountLiabilityAllOfAprs>;
-    /**
-     * The interest rate on the loan as a percentage.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'interest_rate_percentage'?: number;
-    /**
-     * The original principal balance of the loan.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'origination_principal_amount'?: number;
-    /**
-     * The due date for the next payment. The due date is null if a payment is not expected.
-     * @type {string}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'next_payment_due_date'?: string;
-    /**
-     * The date of the last payment. Dates are returned in an ISO 8601 format (YYYY-MM-DD).
-     * @type {string}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'last_payment_date'?: string;
-    /**
-     * The amount of the last payment.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'last_payment_amount'?: number;
-    /**
-     * The minimum payment required for an account. This can apply to any debt account.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'minimum_payment_amount'?: number;
-}
 /**
  * 
  * @export
@@ -3775,6 +3799,10 @@ export const FuseApiErrorCode = {
     MissingFinicityAppKeyHeader: 'missing_finicity_app_key_header',
     MissingFinicityPartnerSecretHeader: 'missing_finicity_partner_secret_header',
     MissingFuseVerificationHeader: 'missing_fuse_verification_header',
+    MissingAkoyaClientIdHeader: 'missing_akoya_client_id_header',
+    MissingAkoyaClientSecretHeader: 'missing_akoya_client_secret_header',
+    MissingSaltedgeAppIdHeader: 'missing_saltedge_app_id_header',
+    MissingSaltedgeAppSecretHeader: 'missing_saltedge_app_secret_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
     AggregatorConnectionFinishedError: 'aggregator_connection_finished_error',
@@ -4096,6 +4124,25 @@ export interface GetFinancialConnectionsAccountDetailsRequest {
      * @memberof GetFinancialConnectionsAccountDetailsRequest
      */
     'access_token': string;
+    /**
+     * 
+     * @type {GetFinancialConnectionsAccountDetailsRequestOptions}
+     * @memberof GetFinancialConnectionsAccountDetailsRequest
+     */
+    'options'?: GetFinancialConnectionsAccountDetailsRequestOptions;
+}
+/**
+ * 
+ * @export
+ * @interface GetFinancialConnectionsAccountDetailsRequestOptions
+ */
+export interface GetFinancialConnectionsAccountDetailsRequestOptions {
+    /**
+     * An array of remote account ids to retrieve account details for.
+     * @type {Array<string>}
+     * @memberof GetFinancialConnectionsAccountDetailsRequestOptions
+     */
+    'remote_account_ids'?: Array<string>;
 }
 /**
  * 
@@ -6193,13 +6240,13 @@ export interface UpdatedBalanceEvent {
      * @type {number}
      * @memberof UpdatedBalanceEvent
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * The current balance of the account without factoring in pending transactions.
      * @type {number}
      * @memberof UpdatedBalanceEvent
      */
-    'current'?: number;
+    'current'?: number | null;
 }
 
 export const UpdatedBalanceEventEventTypeEnum = {
@@ -7592,7 +7639,7 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>> {
+        async getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetReport(getAssetReportRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -7756,7 +7803,7 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>> {
+        async refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refreshAssetReport(refreshAssetReportRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -7896,7 +7943,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse> {
+        getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<AssetReportResponse> {
             return localVarFp.getAssetReport(getAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -8045,7 +8092,7 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<AssetReportResponse> {
+        refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse> {
             return localVarFp.refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -8423,6 +8470,7 @@ export class FuseApi extends BaseAPI {
 }
 
 
+
 /**
  * RiskReportApi - axios parameter creator
  * @export
@@ -8645,5 +8693,6 @@ export class RiskReportApi extends BaseAPI {
         return RiskReportApiFp(this.configuration).getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
     }
 }
+
 
 
