@@ -170,6 +170,16 @@ export declare const AccountSubtype: {
     readonly Revolving: "revolving";
     readonly Other: "other";
     readonly TimeDeposit: "time_deposit";
+    readonly Roth: "roth";
+    readonly Military: "military";
+    readonly Installment: "installment";
+    readonly InstitutionalTrust: "institutional_trust";
+    readonly HomeLineOfCredit: "home_line_of_credit";
+    readonly Guardian: "guardian";
+    readonly CommercialLineOfCredit: "commercial_line_of_credit";
+    readonly Charge: "charge";
+    readonly Coverdell: "coverdell";
+    readonly Escrow: "escrow";
     readonly Minus: "-";
 };
 export type AccountSubtype = typeof AccountSubtype[keyof typeof AccountSubtype];
@@ -185,6 +195,7 @@ export declare const AccountType: {
     readonly Investment: "investment";
     readonly Insurance: "insurance";
     readonly Property: "property";
+    readonly Annuity: "annuity";
     readonly Other: "other";
     readonly Minus: "-";
 };
@@ -232,6 +243,7 @@ export interface AddAccountEventsResponse {
  * @enum {string}
  */
 export declare const Aggregator: {
+    readonly Akoya: "akoya";
     readonly Basiq: "basiq";
     readonly Belvo: "belvo";
     readonly Finicity: "finicity";
@@ -240,6 +252,7 @@ export declare const Aggregator: {
     readonly Mono: "mono";
     readonly Mx: "mx";
     readonly Plaid: "plaid";
+    readonly Saltedge: "saltedge";
     readonly Snaptrade: "snaptrade";
     readonly Teller: "teller";
     readonly Truelayer: "truelayer";
@@ -1184,11 +1197,13 @@ export declare const CountryCode: {
     readonly Au: "AU";
     readonly Bd: "BD";
     readonly Be: "BE";
+    readonly Bg: "BG";
     readonly Bh: "BH";
     readonly Bm: "BM";
     readonly Bn: "BN";
     readonly Br: "BR";
     readonly Bw: "BW";
+    readonly By: "BY";
     readonly Ca: "CA";
     readonly Ch: "CH";
     readonly Ci: "CI";
@@ -1198,7 +1213,9 @@ export declare const CountryCode: {
     readonly Co: "CO";
     readonly Cz: "CZ";
     readonly De: "DE";
+    readonly Do: "DO";
     readonly Dz: "DZ";
+    readonly Ec: "EC";
     readonly Eg: "EG";
     readonly Es: "ES";
     readonly Fi: "FI";
@@ -1210,6 +1227,7 @@ export declare const CountryCode: {
     readonly Gm: "GM";
     readonly Gr: "GR";
     readonly Hk: "HK";
+    readonly Hu: "HU";
     readonly Id: "ID";
     readonly Ie: "IE";
     readonly Il: "IL";
@@ -1229,6 +1247,8 @@ export declare const CountryCode: {
     readonly Lt: "LT";
     readonly Lu: "LU";
     readonly Mc: "MC";
+    readonly Md: "MD";
+    readonly Mk: "MK";
     readonly Mo: "MO";
     readonly Mt: "MT";
     readonly Mu: "MU";
@@ -1246,15 +1266,18 @@ export declare const CountryCode: {
     readonly Pl: "PL";
     readonly Pt: "PT";
     readonly Qa: "QA";
+    readonly Ro: "RO";
     readonly Ru: "RU";
     readonly Sa: "SA";
     readonly Se: "SE";
     readonly Sg: "SG";
+    readonly Sk: "SK";
     readonly Sl: "SL";
     readonly Th: "TH";
     readonly Tr: "TR";
     readonly Tw: "TW";
     readonly Tz: "TZ";
+    readonly Ua: "UA";
     readonly Ug: "UG";
     readonly Us: "US";
     readonly Uy: "UY";
@@ -2333,6 +2356,18 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'finicity'?: FinancialConnectionDetailsFinicity;
+    /**
+     *
+     * @type {FinancialConnectionDetailsAkoya}
+     * @memberof FinancialConnectionDetails
+     */
+    'akoya'?: FinancialConnectionDetailsAkoya;
+    /**
+     *
+     * @type {FinancialConnectionDetailsSaltedge}
+     * @memberof FinancialConnectionDetails
+     */
+    'saltedge'?: FinancialConnectionDetailsSaltedge;
 }
 export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Connected: "connected";
@@ -2340,6 +2375,31 @@ export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Finished: "finished";
 };
 export type FinancialConnectionDetailsConnectionStatusEnum = typeof FinancialConnectionDetailsConnectionStatusEnum[keyof typeof FinancialConnectionDetailsConnectionStatusEnum];
+/**
+ * Data needed to query data from Akoya.
+ * @export
+ * @interface FinancialConnectionDetailsAkoya
+ */
+export interface FinancialConnectionDetailsAkoya {
+    /**
+     *
+     * @type {string}
+     * @memberof FinancialConnectionDetailsAkoya
+     */
+    'id_token': string;
+    /**
+     *
+     * @type {string}
+     * @memberof FinancialConnectionDetailsAkoya
+     */
+    'refresh_token': string;
+    /**
+     *
+     * @type {string}
+     * @memberof FinancialConnectionDetailsAkoya
+     */
+    'expires_at': string;
+}
 /**
  * Data needed to query data from Basiq
  * @export
@@ -2479,6 +2539,19 @@ export interface FinancialConnectionDetailsPlaid {
      * @memberof FinancialConnectionDetailsPlaid
      */
     'item_id': string;
+}
+/**
+ * Data needed to query data from SaltEdge.
+ * @export
+ * @interface FinancialConnectionDetailsSaltedge
+ */
+export interface FinancialConnectionDetailsSaltedge {
+    /**
+     *
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSaltedge
+     */
+    'connection_id': string;
 }
 /**
  * Data needed to query data from SnapTrade
@@ -2896,55 +2969,6 @@ export interface FinancialConnectionsAccountLiability {
      * The minimum payment required for an account. This can apply to any debt account.
      * @type {number}
      * @memberof FinancialConnectionsAccountLiability
-     */
-    'minimum_payment_amount'?: number;
-}
-/**
- *
- * @export
- * @interface FinancialConnectionsAccountLiabilityAllOf
- */
-export interface FinancialConnectionsAccountLiabilityAllOf {
-    /**
-     * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
-     * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'aprs'?: Array<FinancialConnectionsAccountLiabilityAllOfAprs>;
-    /**
-     * The interest rate on the loan as a percentage.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'interest_rate_percentage'?: number;
-    /**
-     * The original principal balance of the loan.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'origination_principal_amount'?: number;
-    /**
-     * The due date for the next payment. The due date is null if a payment is not expected.
-     * @type {string}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'next_payment_due_date'?: string;
-    /**
-     * The date of the last payment. Dates are returned in an ISO 8601 format (YYYY-MM-DD).
-     * @type {string}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'last_payment_date'?: string;
-    /**
-     * The amount of the last payment.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
-     */
-    'last_payment_amount'?: number;
-    /**
-     * The minimum payment required for an account. This can apply to any debt account.
-     * @type {number}
-     * @memberof FinancialConnectionsAccountLiabilityAllOf
      */
     'minimum_payment_amount'?: number;
 }
@@ -3676,6 +3700,10 @@ export declare const FuseApiErrorCode: {
     readonly MissingFinicityAppKeyHeader: "missing_finicity_app_key_header";
     readonly MissingFinicityPartnerSecretHeader: "missing_finicity_partner_secret_header";
     readonly MissingFuseVerificationHeader: "missing_fuse_verification_header";
+    readonly MissingAkoyaClientIdHeader: "missing_akoya_client_id_header";
+    readonly MissingAkoyaClientSecretHeader: "missing_akoya_client_secret_header";
+    readonly MissingSaltedgeAppIdHeader: "missing_saltedge_app_id_header";
+    readonly MissingSaltedgeAppSecretHeader: "missing_saltedge_app_secret_header";
     readonly AggregatorError: "aggregator_error";
     readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
     readonly AggregatorConnectionFinishedError: "aggregator_connection_finished_error";
@@ -3980,6 +4008,25 @@ export interface GetFinancialConnectionsAccountDetailsRequest {
      * @memberof GetFinancialConnectionsAccountDetailsRequest
      */
     'access_token': string;
+    /**
+     *
+     * @type {GetFinancialConnectionsAccountDetailsRequestOptions}
+     * @memberof GetFinancialConnectionsAccountDetailsRequest
+     */
+    'options'?: GetFinancialConnectionsAccountDetailsRequestOptions;
+}
+/**
+ *
+ * @export
+ * @interface GetFinancialConnectionsAccountDetailsRequestOptions
+ */
+export interface GetFinancialConnectionsAccountDetailsRequestOptions {
+    /**
+     * An array of remote account ids to retrieve account details for.
+     * @type {Array<string>}
+     * @memberof GetFinancialConnectionsAccountDetailsRequestOptions
+     */
+    'remote_account_ids'?: Array<string>;
 }
 /**
  *
@@ -6038,13 +6085,13 @@ export interface UpdatedBalanceEvent {
      * @type {number}
      * @memberof UpdatedBalanceEvent
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * The current balance of the account without factoring in pending transactions.
      * @type {number}
      * @memberof UpdatedBalanceEvent
      */
-    'current'?: number;
+    'current'?: number | null;
 }
 export declare const UpdatedBalanceEventEventTypeEnum: {
     readonly UpdatedBalance: "updated_balance";
@@ -6448,7 +6495,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>>;
+    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>>;
     /**
      *
      * @summary Get consumer risk report
@@ -6567,7 +6614,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>>;
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
@@ -6673,7 +6720,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse>;
+    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: any): AxiosPromise<AssetReportResponse>;
     /**
      *
      * @summary Get consumer risk report
@@ -6792,7 +6839,7 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<AssetReportResponse>;
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
@@ -6910,7 +6957,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<RefreshAssetReportResponse, any>>;
+    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AssetReportResponse, any>>;
     /**
      *
      * @summary Get consumer risk report
@@ -7044,7 +7091,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AssetReportResponse, any>>;
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<RefreshAssetReportResponse, any>>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
