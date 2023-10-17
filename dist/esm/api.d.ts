@@ -254,6 +254,7 @@ export declare const Aggregator: {
     readonly Plaid: "plaid";
     readonly Saltedge: "saltedge";
     readonly Snaptrade: "snaptrade";
+    readonly Sophtron: "sophtron";
     readonly Teller: "teller";
     readonly Truelayer: "truelayer";
 };
@@ -2368,6 +2369,12 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'saltedge'?: FinancialConnectionDetailsSaltedge;
+    /**
+     *
+     * @type {FinancialConnectionDetailsSophtron}
+     * @memberof FinancialConnectionDetails
+     */
+    'sophtron'?: FinancialConnectionDetailsSophtron;
 }
 export declare const FinancialConnectionDetailsConnectionStatusEnum: {
     readonly Connected: "connected";
@@ -2579,6 +2586,19 @@ export interface FinancialConnectionDetailsSnaptrade {
     'user_secret': string;
 }
 /**
+ * Data needed to query data from Sophtron.
+ * @export
+ * @interface FinancialConnectionDetailsSophtron
+ */
+export interface FinancialConnectionDetailsSophtron {
+    /**
+     *
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSophtron
+     */
+    'user_institution_id': string;
+}
+/**
  * Data needed to query data from Teller
  * @export
  * @interface FinancialConnectionDetailsTeller
@@ -2670,6 +2690,12 @@ export interface FinancialConnectionsAccount {
      * @memberof FinancialConnectionsAccount
      */
     'balance': FinancialConnectionsAccountCachedBalance;
+    /**
+     * An array of additional balances. This may be used for investment type accounts where the user can have multiple balances across different currencies.
+     * @type {Array<FinancialConnectionsAccountCachedBalance>}
+     * @memberof FinancialConnectionsAccount
+     */
+    'additional_balances'?: Array<FinancialConnectionsAccountCachedBalance>;
     /**
      *
      * @type {any}
@@ -2923,6 +2949,12 @@ export interface FinancialConnectionsAccountLiability {
      * @memberof FinancialConnectionsAccountLiability
      */
     'balance': FinancialConnectionsAccountCachedBalance;
+    /**
+     * An array of additional balances. This may be used for investment type accounts where the user can have multiple balances across different currencies.
+     * @type {Array<FinancialConnectionsAccountCachedBalance>}
+     * @memberof FinancialConnectionsAccountLiability
+     */
+    'additional_balances'?: Array<FinancialConnectionsAccountCachedBalance>;
     /**
      *
      * @type {any}
@@ -3704,6 +3736,8 @@ export declare const FuseApiErrorCode: {
     readonly MissingAkoyaClientSecretHeader: "missing_akoya_client_secret_header";
     readonly MissingSaltedgeAppIdHeader: "missing_saltedge_app_id_header";
     readonly MissingSaltedgeAppSecretHeader: "missing_saltedge_app_secret_header";
+    readonly MissingSophtronUserIdHeader: "missing_sophtron_user_id_header";
+    readonly MissingSophtronAccessKeyHeader: "missing_sophtron_access_key_header";
     readonly AggregatorError: "aggregator_error";
     readonly AggregatorDisconnectedError: "aggregator_disconnected_error";
     readonly AggregatorConnectionFinishedError: "aggregator_connection_finished_error";
