@@ -228,6 +228,7 @@ export const Aggregator = {
     Plaid: 'plaid',
     Saltedge: 'saltedge',
     Snaptrade: 'snaptrade',
+    Sophtron: 'sophtron',
     Teller: 'teller',
     Truelayer: 'truelayer'
 };
@@ -1166,6 +1167,8 @@ export const FuseApiErrorCode = {
     MissingAkoyaClientSecretHeader: 'missing_akoya_client_secret_header',
     MissingSaltedgeAppIdHeader: 'missing_saltedge_app_id_header',
     MissingSaltedgeAppSecretHeader: 'missing_saltedge_app_secret_header',
+    MissingSophtronUserIdHeader: 'missing_sophtron_user_id_header',
+    MissingSophtronAccessKeyHeader: 'missing_sophtron_access_key_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
     AggregatorConnectionFinishedError: 'aggregator_connection_finished_error',

@@ -274,6 +274,7 @@ export const Aggregator = {
     Plaid: 'plaid',
     Saltedge: 'saltedge',
     Snaptrade: 'snaptrade',
+    Sophtron: 'sophtron',
     Teller: 'teller',
     Truelayer: 'truelayer'
 } as const;
@@ -2433,6 +2434,12 @@ export interface FinancialConnectionDetails {
      * @memberof FinancialConnectionDetails
      */
     'saltedge'?: FinancialConnectionDetailsSaltedge;
+    /**
+     * 
+     * @type {FinancialConnectionDetailsSophtron}
+     * @memberof FinancialConnectionDetails
+     */
+    'sophtron'?: FinancialConnectionDetailsSophtron;
 }
 
 export const FinancialConnectionDetailsConnectionStatusEnum = {
@@ -2647,6 +2654,19 @@ export interface FinancialConnectionDetailsSnaptrade {
     'user_secret': string;
 }
 /**
+ * Data needed to query data from Sophtron.
+ * @export
+ * @interface FinancialConnectionDetailsSophtron
+ */
+export interface FinancialConnectionDetailsSophtron {
+    /**
+     * 
+     * @type {string}
+     * @memberof FinancialConnectionDetailsSophtron
+     */
+    'user_institution_id': string;
+}
+/**
  * Data needed to query data from Teller
  * @export
  * @interface FinancialConnectionDetailsTeller
@@ -2738,6 +2758,12 @@ export interface FinancialConnectionsAccount {
      * @memberof FinancialConnectionsAccount
      */
     'balance': FinancialConnectionsAccountCachedBalance;
+    /**
+     * An array of additional balances. This may be used for investment type accounts where the user can have multiple balances across different currencies.
+     * @type {Array<FinancialConnectionsAccountCachedBalance>}
+     * @memberof FinancialConnectionsAccount
+     */
+    'additional_balances'?: Array<FinancialConnectionsAccountCachedBalance>;
     /**
      * 
      * @type {any}
@@ -2993,6 +3019,12 @@ export interface FinancialConnectionsAccountLiability {
      * @memberof FinancialConnectionsAccountLiability
      */
     'balance': FinancialConnectionsAccountCachedBalance;
+    /**
+     * An array of additional balances. This may be used for investment type accounts where the user can have multiple balances across different currencies.
+     * @type {Array<FinancialConnectionsAccountCachedBalance>}
+     * @memberof FinancialConnectionsAccountLiability
+     */
+    'additional_balances'?: Array<FinancialConnectionsAccountCachedBalance>;
     /**
      * 
      * @type {any}
@@ -3803,6 +3835,8 @@ export const FuseApiErrorCode = {
     MissingAkoyaClientSecretHeader: 'missing_akoya_client_secret_header',
     MissingSaltedgeAppIdHeader: 'missing_saltedge_app_id_header',
     MissingSaltedgeAppSecretHeader: 'missing_saltedge_app_secret_header',
+    MissingSophtronUserIdHeader: 'missing_sophtron_user_id_header',
+    MissingSophtronAccessKeyHeader: 'missing_sophtron_access_key_header',
     AggregatorError: 'aggregator_error',
     AggregatorDisconnectedError: 'aggregator_disconnected_error',
     AggregatorConnectionFinishedError: 'aggregator_connection_finished_error',
