@@ -42,7 +42,6 @@ const fuseApi = new FuseApi(configuration);
 
 ### Creating a session
 ```typescript
-//If you are using web SDKs, pass in the "is_web_view" property and set it to false, otherwise the Fuse frontend will not work. 
 const response = await fuseApi.createSession({
     supported_financial_institution_aggregators: ["plaid", "teller", "mx"],
     entity: {
