@@ -13,7 +13,7 @@
  * Do not edit the class manually.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RequiredError = exports.BaseAPI = exports.COLLECTION_FORMATS = exports.BASE_PATH = void 0;
+exports.operationServerMap = exports.RequiredError = exports.BaseAPI = exports.COLLECTION_FORMATS = exports.BASE_PATH = void 0;
 const axios_1 = require("axios");
 exports.BASE_PATH = "https://sandbox-api.letsfuse.com".replace(/\/+$/, "");
 /**
@@ -33,11 +33,12 @@ exports.COLLECTION_FORMATS = {
  */
 class BaseAPI {
     constructor(configuration, basePath = exports.BASE_PATH, axios = axios_1.default) {
+        var _a;
         this.basePath = basePath;
         this.axios = axios;
         if (configuration) {
             this.configuration = configuration;
-            this.basePath = configuration.basePath || this.basePath;
+            this.basePath = (_a = configuration.basePath) !== null && _a !== void 0 ? _a : basePath;
         }
     }
 }
@@ -57,3 +58,8 @@ class RequiredError extends Error {
     }
 }
 exports.RequiredError = RequiredError;
+/**
+ *
+ * @export
+ */
+exports.operationServerMap = {};

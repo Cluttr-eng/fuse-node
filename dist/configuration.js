@@ -21,6 +21,7 @@ class Configuration {
         this.password = param.password;
         this.accessToken = param.accessToken;
         this.basePath = param.basePath;
+        this.serverIndex = param.serverIndex;
         this.baseOptions = param.baseOptions;
         this.formDataCtor = param.formDataCtor;
     }
