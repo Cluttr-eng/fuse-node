@@ -153,7 +153,8 @@ exports.toPathString = toPathString;
  */
 const createRequestFunction = function (axiosArgs, globalAxios, BASE_PATH, configuration) {
     return (axios = globalAxios, basePath = BASE_PATH) => {
-        const axiosRequestArgs = Object.assign(Object.assign({}, axiosArgs.options), { url: ((configuration === null || configuration === void 0 ? void 0 : configuration.basePath) || axios.defaults.baseURL || basePath) + axiosArgs.url });
+        var _a;
+        const axiosRequestArgs = Object.assign(Object.assign({}, axiosArgs.options), { url: (axios.defaults.baseURL ? '' : (_a = configuration === null || configuration === void 0 ? void 0 : configuration.basePath) !== null && _a !== void 0 ? _a : basePath) + axiosArgs.url });
         return axios.request(axiosRequestArgs);
     };
 };
