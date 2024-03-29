@@ -14,14 +14,14 @@
 
 
 import type { Configuration } from './configuration';
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 import type { RequestArgs } from './base';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError } from './base';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * The account\'s subtype
@@ -361,19 +361,19 @@ export interface AssetReportAccountsInnerBalance {
      * @type {number}
      * @memberof AssetReportAccountsInnerBalance
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * Amount without factoring in pending balances
      * @type {number}
      * @memberof AssetReportAccountsInnerBalance
      */
-    'current'?: number;
+    'current'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
      * @memberof AssetReportAccountsInnerBalance
      */
-    'iso_currency_code'?: string;
+    'iso_currency_code'?: string | null;
 }
 /**
  * 
@@ -2733,7 +2733,7 @@ export interface FinancialConnectionsAccount {
      * @type {string}
      * @memberof FinancialConnectionsAccount
      */
-    'mask'?: string;
+    'mask'?: string | null;
     /**
      * The account\'s name, ie \'My Checking\'
      * @type {string}
@@ -2828,6 +2828,12 @@ export interface FinancialConnectionsAccountCachedBalance {
      * @memberof FinancialConnectionsAccountCachedBalance
      */
     'current'?: number | null;
+    /**
+     * Amount in cents. For investment accounts.
+     * @type {number}
+     * @memberof FinancialConnectionsAccountCachedBalance
+     */
+    'buying_power'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
@@ -2994,7 +3000,7 @@ export interface FinancialConnectionsAccountLiability {
      * @type {string}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'mask'?: string;
+    'mask'?: string | null;
     /**
      * The account\'s name, ie \'My Checking\'
      * @type {string}
@@ -3027,10 +3033,10 @@ export interface FinancialConnectionsAccountLiability {
     'additional_balances'?: Array<FinancialConnectionsAccountCachedBalance>;
     /**
      * 
-     * @type {any}
+     * @type {object}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'remote_data': any;
+    'remote_data': object;
     /**
      * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
      * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
@@ -4647,6 +4653,38 @@ export interface GetLiabilitiesResponse {
 /**
  * 
  * @export
+ * @interface GetRecommendedFinancialInstitutionsRequest
+ */
+export interface GetRecommendedFinancialInstitutionsRequest {
+    /**
+     * The session client secret created.
+     * @type {string}
+     * @memberof GetRecommendedFinancialInstitutionsRequest
+     */
+    'session_client_secret': string;
+}
+/**
+ * 
+ * @export
+ * @interface GetRecommendedFinancialInstitutionsResponse
+ */
+export interface GetRecommendedFinancialInstitutionsResponse {
+    /**
+     * 
+     * @type {Array<FinancialInstitution>}
+     * @memberof GetRecommendedFinancialInstitutionsResponse
+     */
+    'financial_institutions': Array<FinancialInstitution>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetRecommendedFinancialInstitutionsResponse
+     */
+    'request_id'?: string;
+}
+/**
+ * 
+ * @export
  * @interface InAppTransactionEvent
  */
 export interface InAppTransactionEvent {
@@ -4990,6 +5028,82 @@ export interface RefreshAssetReportResponse {
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof RefreshAssetReportResponse
+     */
+    'request_id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SearchFinancialInstitutionsRequest
+ */
+export interface SearchFinancialInstitutionsRequest {
+    /**
+     * The session client secret created.
+     * @type {string}
+     * @memberof SearchFinancialInstitutionsRequest
+     */
+    'session_client_secret': string;
+    /**
+     * The search term, ie wells fargo.
+     * @type {string}
+     * @memberof SearchFinancialInstitutionsRequest
+     */
+    'search_term': string;
+}
+/**
+ * 
+ * @export
+ * @interface SearchFinancialInstitutionsResponse
+ */
+export interface SearchFinancialInstitutionsResponse {
+    /**
+     * 
+     * @type {Array<FinancialInstitution>}
+     * @memberof SearchFinancialInstitutionsResponse
+     */
+    'financial_institutions': Array<FinancialInstitution>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof SearchFinancialInstitutionsResponse
+     */
+    'request_id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SelectFinancialInstitutionsRequest
+ */
+export interface SelectFinancialInstitutionsRequest {
+    /**
+     * The session client secret created.
+     * @type {string}
+     * @memberof SelectFinancialInstitutionsRequest
+     */
+    'session_client_secret': string;
+    /**
+     * The selected financial institution id
+     * @type {string}
+     * @memberof SelectFinancialInstitutionsRequest
+     */
+    'financial_institution_id': string;
+}
+/**
+ * 
+ * @export
+ * @interface SelectFinancialInstitutionsResponse
+ */
+export interface SelectFinancialInstitutionsResponse {
+    /**
+     * 
+     * @type {FinancialInstitution}
+     * @memberof SelectFinancialInstitutionsResponse
+     */
+    'financial_institution': FinancialInstitution;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof SelectFinancialInstitutionsResponse
      */
     'request_id'?: string;
 }
@@ -6409,7 +6523,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addAccountEvents: async (accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addAccountEvents: async (accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'accountId' is not null or undefined
             assertParamExists('addAccountEvents', 'accountId', accountId)
             const localVarPath = `/v1/accounts/{account_id}/events`
@@ -6451,7 +6565,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetReport: async (createAssetReportRequest?: CreateAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createAssetReport: async (createAssetReportRequest?: CreateAssetReportRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/asset_report/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6490,7 +6604,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createConsumerRiskReport: async (createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createConsumerRiskReport: async (createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/risk_report/consumer`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6529,7 +6643,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createConsumerRiskReportCustomization: async (createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createConsumerRiskReportCustomization: async (createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/risk_report/consumer/customization`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6568,7 +6682,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createLinkToken: async (createLinkTokenRequest?: CreateLinkTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createLinkToken: async (createLinkTokenRequest?: CreateLinkTokenRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/link/token`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6607,7 +6721,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSession: async (createSessionRequest?: CreateSessionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createSession: async (createSessionRequest?: CreateSessionRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/session`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6647,7 +6761,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteFinancialConnection: async (financialConnectionIdToDelete: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteFinancialConnection: async (financialConnectionIdToDelete: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'financialConnectionIdToDelete' is not null or undefined
             assertParamExists('deleteFinancialConnection', 'financialConnectionIdToDelete', financialConnectionIdToDelete)
             const localVarPath = `/v1/financial_connections/{financial_connection_id_to_delete}`
@@ -6688,7 +6802,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrichTransactions: async (fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        enrichTransactions: async (fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'fuseClientId' is not null or undefined
             assertParamExists('enrichTransactions', 'fuseClientId', fuseClientId)
             // verify required parameter 'fuseApiKey' is not null or undefined
@@ -6739,7 +6853,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeFinancialConnectionsPublicToken: async (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        exchangeFinancialConnectionsPublicToken: async (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/public_token/exchange`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6778,7 +6892,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetReport: async (getAssetReportRequest?: GetAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getAssetReport: async (getAssetReportRequest?: GetAssetReportRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/asset_report`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6819,7 +6933,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport: async (consumerRiskReportId: string, recalculate?: boolean, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getConsumerRiskReport: async (consumerRiskReportId: string, recalculate?: boolean, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'consumerRiskReportId' is not null or undefined
             assertParamExists('getConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId)
             const localVarPath = `/v1/risk_report/consumer/{consumer_risk_report_id}`
@@ -6863,7 +6977,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEntity: async (entityId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getEntity: async (entityId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'entityId' is not null or undefined
             assertParamExists('getEntity', 'entityId', entityId)
             const localVarPath = `/v1/entities/{entity_id}`
@@ -6903,7 +7017,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinanceScore: async (accountId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinanceScore: async (accountId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'accountId' is not null or undefined
             assertParamExists('getFinanceScore', 'accountId', accountId)
             const localVarPath = `/v1/accounts/{account_id}/finance_score`
@@ -6943,7 +7057,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnection: async (financialConnectionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnection: async (financialConnectionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'financialConnectionId' is not null or undefined
             assertParamExists('getFinancialConnection', 'financialConnectionId', financialConnectionId)
             const localVarPath = `/v1/financial_connections/{financial_connection_id}`
@@ -6983,7 +7097,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsAccountDetails: async (getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnectionsAccountDetails: async (getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getFinancialConnectionsAccountDetailsRequest' is not null or undefined
             assertParamExists('getFinancialConnectionsAccountDetails', 'getFinancialConnectionsAccountDetailsRequest', getFinancialConnectionsAccountDetailsRequest)
             const localVarPath = `/v1/financial_connections/accounts/details`;
@@ -7024,7 +7138,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsAccountStatement: async (getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnectionsAccountStatement: async (getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/accounts/statement`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7064,7 +7178,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsAccounts: async (getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnectionsAccounts: async (getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getFinancialConnectionsAccountsRequest' is not null or undefined
             assertParamExists('getFinancialConnectionsAccounts', 'getFinancialConnectionsAccountsRequest', getFinancialConnectionsAccountsRequest)
             const localVarPath = `/v1/financial_connections/accounts`;
@@ -7106,7 +7220,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsBalances: async (getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnectionsBalances: async (getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getFinancialConnectionsBalanceRequest' is not null or undefined
             assertParamExists('getFinancialConnectionsBalances', 'getFinancialConnectionsBalanceRequest', getFinancialConnectionsBalanceRequest)
             const localVarPath = `/v1/financial_connections/balances`;
@@ -7148,7 +7262,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsOwners: async (getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnectionsOwners: async (getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getFinancialConnectionsOwnersRequest' is not null or undefined
             assertParamExists('getFinancialConnectionsOwners', 'getFinancialConnectionsOwnersRequest', getFinancialConnectionsOwnersRequest)
             const localVarPath = `/v1/financial_connections/owners`;
@@ -7190,7 +7304,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions: async (getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialConnectionsTransactions: async (getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getFinancialConnectionsTransactionsRequest' is not null or undefined
             assertParamExists('getFinancialConnectionsTransactions', 'getFinancialConnectionsTransactionsRequest', getFinancialConnectionsTransactionsRequest)
             const localVarPath = `/v1/financial_connections/transactions`;
@@ -7232,7 +7346,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialInstitution: async (institutionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getFinancialInstitution: async (institutionId: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'institutionId' is not null or undefined
             assertParamExists('getFinancialInstitution', 'institutionId', institutionId)
             const localVarPath = `/v1/financial_connections/institutions/{institution_id}`
@@ -7272,7 +7386,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInvestmentHoldings: async (getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getInvestmentHoldings: async (getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getInvestmentHoldingsRequest' is not null or undefined
             assertParamExists('getInvestmentHoldings', 'getInvestmentHoldingsRequest', getInvestmentHoldingsRequest)
             const localVarPath = `/v1/financial_connections/investments/holdings`;
@@ -7314,7 +7428,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInvestmentTransactions: async (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getInvestmentTransactions: async (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getInvestmentTransactionsRequest' is not null or undefined
             assertParamExists('getInvestmentTransactions', 'getInvestmentTransactionsRequest', getInvestmentTransactionsRequest)
             const localVarPath = `/v1/financial_connections/investments/transactions`;
@@ -7350,13 +7464,52 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+         * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendedFinancialInstitutions: async (getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/financial_connections/institutions/recommended`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(getRecommendedFinancialInstitutionsRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        migrateFinancialConnection: async (migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        migrateFinancialConnection: async (migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/migrate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7395,7 +7548,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshAssetReport: async (refreshAssetReportRequest?: RefreshAssetReportRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        refreshAssetReport: async (refreshAssetReportRequest?: RefreshAssetReportRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v1/financial_connections/asset_report/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -7429,6 +7582,84 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
+         * Search for financial institutions given a search term.
+         * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchFinancialInstitutions: async (searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/financial_connections/institutions/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(searchFinancialInstitutionsRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Endpoint to call when the user has selected a financial institution.
+         * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        selectFinancialInstitutions: async (selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/v1/financial_connections/institutions/select`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication fuseApiKey required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Api-Key", configuration)
+
+            // authentication fuseClientId required
+            await setApiKeyToObject(localVarHeaderParameter, "Fuse-Client-Id", configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(selectFinancialInstitutionsRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
          * @param {string} fuseVerification 
@@ -7436,7 +7667,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: async (fuseVerification: string, body: object, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        syncFinancialConnectionsData: async (fuseVerification: string, body: object, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'fuseVerification' is not null or undefined
             assertParamExists('syncFinancialConnectionsData', 'fuseVerification', fuseVerification)
             // verify required parameter 'body' is not null or undefined
@@ -7485,7 +7716,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateConsumerRiskReportCustomization: async (consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateConsumerRiskReportCustomization: async (consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'consumerRiskReportCustomizationId' is not null or undefined
             assertParamExists('updateConsumerRiskReportCustomization', 'consumerRiskReportCustomizationId', consumerRiskReportCustomizationId)
             const localVarPath = `/v1/risk_report/consumer/customization/{consumer_risk_report_customization_id}`
@@ -7528,7 +7759,7 @@ export const FuseApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        v1FinancialConnectionsLiabilitiesPost: async (getLiabilitiesRequest: GetLiabilitiesRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        v1FinancialConnectionsLiabilitiesPost: async (getLiabilitiesRequest: GetLiabilitiesRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'getLiabilitiesRequest' is not null or undefined
             assertParamExists('v1FinancialConnectionsLiabilitiesPost', 'getLiabilitiesRequest', getLiabilitiesRequest)
             const localVarPath = `/v1/financial_connections/liabilities`;
@@ -7580,9 +7811,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddAccountEventsResponse>> {
+        async addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddAccountEventsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addAccountEvents(accountId, addAccountEventsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.addAccountEvents']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -7590,9 +7823,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>> {
+        async createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createAssetReport(createAssetReportRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.createAssetReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
@@ -7600,9 +7835,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportResponse>> {
+        async createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createConsumerRiskReport(createConsumerRiskReportRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.createConsumerRiskReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7610,9 +7847,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportCustomizationResponse>> {
+        async createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportCustomizationResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.createConsumerRiskReportCustomization']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Create a link token to start the process of a user connecting to a specific financial institution.
@@ -7620,9 +7859,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateLinkTokenResponse>> {
+        async createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateLinkTokenResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createLinkToken(createLinkTokenRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.createLinkToken']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Creates a session that returns a client_secret which is required as a parameter when initializing the Fuse SDK.
@@ -7630,9 +7871,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSessionResponse>> {
+        async createSession(createSessionRequest?: CreateSessionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSessionResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.createSession(createSessionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.createSession']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7641,9 +7884,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>> {
+        async deleteFinancialConnection(financialConnectionIdToDelete: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteFinancialConnection(financialConnectionIdToDelete, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.deleteFinancialConnection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7653,9 +7898,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrichTransactionsResponse>> {
+        async enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrichTransactionsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.enrichTransactions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * API to exchange a public token for an access token and financial connection id
@@ -7663,9 +7910,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>> {
+        async exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.exchangeFinancialConnectionsPublicToken']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -7673,9 +7922,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>> {
+        async getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAssetReport(getAssetReportRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getAssetReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7685,9 +7936,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>> {
+        async getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, recalculate, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getConsumerRiskReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
@@ -7696,9 +7949,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getEntity(entityId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>> {
+        async getEntity(entityId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getEntity(entityId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getEntity']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7707,9 +7962,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinanceScore(accountId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinanceScoreResponse>> {
+        async getFinanceScore(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinanceScoreResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinanceScore(accountId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinanceScore']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7718,9 +7975,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnection(financialConnectionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionResponse>> {
+        async getFinancialConnection(financialConnectionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnection(financialConnectionId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7729,9 +7988,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountDetailsResponse>> {
+        async getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountDetailsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnectionsAccountDetails']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
@@ -7739,9 +8000,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountStatementResponse>> {
+        async getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountStatementResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnectionsAccountStatement']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7750,9 +8013,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountsResponse>> {
+        async getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnectionsAccounts']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7761,9 +8026,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsBalanceResponse>> {
+        async getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsBalanceResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnectionsBalances']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7772,9 +8039,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsOwnersResponse>> {
+        async getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsOwnersResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnectionsOwners']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7783,9 +8052,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsTransactionsResponse>> {
+        async getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsTransactionsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialConnectionsTransactions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Receive metadata for a financial institution
@@ -7794,9 +8065,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialInstitutionResponse>> {
+        async getFinancialInstitution(institutionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialInstitutionResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getFinancialInstitution(institutionId, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getFinancialInstitution']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7805,9 +8078,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentHoldingsResponse>> {
+        async getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentHoldingsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getInvestmentHoldings(getInvestmentHoldingsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getInvestmentHoldings']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7816,9 +8091,23 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>> {
+        async getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getInvestmentTransactions(getInvestmentTransactionsRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getInvestmentTransactions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+         * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetRecommendedFinancialInstitutionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.getRecommendedFinancialInstitutions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
@@ -7827,9 +8116,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>> {
+        async migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.migrateFinancialConnection(migrateFinancialConnectionsTokenRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.migrateFinancialConnection']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
@@ -7837,9 +8128,35 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>> {
+        async refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.refreshAssetReport(refreshAssetReportRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.refreshAssetReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Search for financial institutions given a search term.
+         * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchFinancialInstitutions(searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchFinancialInstitutionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchFinancialInstitutions(searchFinancialInstitutionsRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.searchFinancialInstitutions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * Endpoint to call when the user has selected a financial institution.
+         * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async selectFinancialInstitutions(selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SelectFinancialInstitutionsResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.selectFinancialInstitutions(selectFinancialInstitutionsRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.selectFinancialInstitutions']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
@@ -7849,9 +8166,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
+        async syncFinancialConnectionsData(fuseVerification: string, body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.syncFinancialConnectionsData']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7861,9 +8180,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateConsumerRiskReportCustomizationResponse>> {
+        async updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateConsumerRiskReportCustomizationResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.updateConsumerRiskReportCustomization']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -7872,9 +8193,11 @@ export const FuseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetLiabilitiesResponse>> {
+        async v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetLiabilitiesResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['FuseApi.v1FinancialConnectionsLiabilitiesPost']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -8111,6 +8434,15 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+         * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: any): AxiosPromise<GetRecommendedFinancialInstitutionsResponse> {
+            return localVarFp.getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest] 
@@ -8128,6 +8460,24 @@ export const FuseApiFactory = function (configuration?: Configuration, basePath?
          */
         refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse> {
             return localVarFp.refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Search for financial institutions given a search term.
+         * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchFinancialInstitutions(searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: any): AxiosPromise<SearchFinancialInstitutionsResponse> {
+            return localVarFp.searchFinancialInstitutions(searchFinancialInstitutionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Endpoint to call when the user has selected a financial institution.
+         * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        selectFinancialInstitutions(selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: any): AxiosPromise<SelectFinancialInstitutionsResponse> {
+            return localVarFp.selectFinancialInstitutions(selectFinancialInstitutionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
@@ -8179,7 +8529,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig) {
+    public addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).addAccountEvents(accountId, addAccountEventsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8190,7 +8540,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig) {
+    public createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).createAssetReport(createAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8201,7 +8551,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig) {
+    public createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).createConsumerRiskReport(createConsumerRiskReportRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8212,7 +8562,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig) {
+    public createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8223,7 +8573,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: AxiosRequestConfig) {
+    public createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).createLinkToken(createLinkTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8234,7 +8584,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig) {
+    public createSession(createSessionRequest?: CreateSessionRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).createSession(createSessionRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8246,7 +8596,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig) {
+    public deleteFinancialConnection(financialConnectionIdToDelete: string, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).deleteFinancialConnection(financialConnectionIdToDelete, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8259,7 +8609,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig) {
+    public enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8270,7 +8620,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) {
+    public exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8281,7 +8631,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig) {
+    public getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getAssetReport(getAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8294,7 +8644,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig) {
+    public getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getConsumerRiskReport(consumerRiskReportId, recalculate, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8306,7 +8656,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getEntity(entityId: string, options?: AxiosRequestConfig) {
+    public getEntity(entityId: string, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getEntity(entityId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8318,7 +8668,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinanceScore(accountId: string, options?: AxiosRequestConfig) {
+    public getFinanceScore(accountId: string, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinanceScore(accountId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8330,7 +8680,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnection(financialConnectionId: string, options?: AxiosRequestConfig) {
+    public getFinancialConnection(financialConnectionId: string, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnection(financialConnectionId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8342,7 +8692,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig) {
+    public getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8353,7 +8703,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig) {
+    public getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8365,7 +8715,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: AxiosRequestConfig) {
+    public getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8377,7 +8727,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig) {
+    public getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8389,7 +8739,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: AxiosRequestConfig) {
+    public getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8401,7 +8751,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig) {
+    public getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8413,7 +8763,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig) {
+    public getFinancialInstitution(institutionId: string, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getFinancialInstitution(institutionId, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8425,7 +8775,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig) {
+    public getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getInvestmentHoldings(getInvestmentHoldingsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8437,8 +8787,19 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) {
+    public getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+     * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: RawAxiosRequestConfig) {
+        return FuseApiFp(this.configuration).getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8449,7 +8810,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig) {
+    public migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).migrateFinancialConnection(migrateFinancialConnectionsTokenRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8460,8 +8821,30 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig) {
+    public refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Search for financial institutions given a search term.
+     * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public searchFinancialInstitutions(searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: RawAxiosRequestConfig) {
+        return FuseApiFp(this.configuration).searchFinancialInstitutions(searchFinancialInstitutionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Endpoint to call when the user has selected a financial institution.
+     * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    public selectFinancialInstitutions(selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: RawAxiosRequestConfig) {
+        return FuseApiFp(this.configuration).selectFinancialInstitutions(selectFinancialInstitutionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -8473,7 +8856,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig) {
+    public syncFinancialConnectionsData(fuseVerification: string, body: object, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).syncFinancialConnectionsData(fuseVerification, body, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8486,7 +8869,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig) {
+    public updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8498,7 +8881,7 @@ export class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    public v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig) {
+    public v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: RawAxiosRequestConfig) {
         return FuseApiFp(this.configuration).v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
@@ -8520,7 +8903,7 @@ export const RiskReportApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteConsumerRiskReport: async (consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteConsumerRiskReport: async (consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'consumerRiskReportId' is not null or undefined
             assertParamExists('deleteConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId)
             // verify required parameter 'fuseClientId' is not null or undefined
@@ -8574,7 +8957,7 @@ export const RiskReportApiAxiosParamCreator = function (configuration?: Configur
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReportCustomization: async (consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getConsumerRiskReportCustomization: async (consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'consumerRiskReportCustomizationId' is not null or undefined
             assertParamExists('getConsumerRiskReportCustomization', 'consumerRiskReportCustomizationId', consumerRiskReportCustomizationId)
             // verify required parameter 'fuseClientId' is not null or undefined
@@ -8638,9 +9021,11 @@ export const RiskReportApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteConsumerRiskReportResponse>> {
+        async deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteConsumerRiskReportResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['RiskReportApi.deleteConsumerRiskReport']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
          * 
@@ -8651,9 +9036,11 @@ export const RiskReportApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportCustomizationResponse>> {
+        async getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportCustomizationResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['RiskReportApi.getConsumerRiskReportCustomization']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
 };
@@ -8709,7 +9096,7 @@ export class RiskReportApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RiskReportApi
      */
-    public deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) {
+    public deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig) {
         return RiskReportApiFp(this.configuration).deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
     }
 
@@ -8723,7 +9110,7 @@ export class RiskReportApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RiskReportApi
      */
-    public getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) {
+    public getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig) {
         return RiskReportApiFp(this.configuration).getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options).then((request) => request(this.axios, this.basePath));
     }
 }

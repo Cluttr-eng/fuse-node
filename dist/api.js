@@ -2118,7 +2118,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addAccountEvents: (accountId, addAccountEventsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        addAccountEvents: (accountId_1, addAccountEventsRequest_1, ...args_1) => __awaiter(this, [accountId_1, addAccountEventsRequest_1, ...args_1], void 0, function* (accountId, addAccountEventsRequest, options = {}) {
             // verify required parameter 'accountId' is not null or undefined
             (0, common_1.assertParamExists)('addAccountEvents', 'accountId', accountId);
             const localVarPath = `/v1/accounts/{account_id}/events`
@@ -2152,7 +2152,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createAssetReport: (createAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        createAssetReport: (createAssetReportRequest_1, ...args_2) => __awaiter(this, [createAssetReportRequest_1, ...args_2], void 0, function* (createAssetReportRequest, options = {}) {
             const localVarPath = `/v1/financial_connections/asset_report/create`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2183,7 +2183,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createConsumerRiskReport: (createConsumerRiskReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        createConsumerRiskReport: (createConsumerRiskReportRequest_1, ...args_3) => __awaiter(this, [createConsumerRiskReportRequest_1, ...args_3], void 0, function* (createConsumerRiskReportRequest, options = {}) {
             const localVarPath = `/v1/risk_report/consumer`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2214,7 +2214,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createConsumerRiskReportCustomization: (createConsumerRiskReportCustomizationRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        createConsumerRiskReportCustomization: (createConsumerRiskReportCustomizationRequest_1, ...args_4) => __awaiter(this, [createConsumerRiskReportCustomizationRequest_1, ...args_4], void 0, function* (createConsumerRiskReportCustomizationRequest, options = {}) {
             const localVarPath = `/v1/risk_report/consumer/customization`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2245,7 +2245,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createLinkToken: (createLinkTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        createLinkToken: (createLinkTokenRequest_1, ...args_5) => __awaiter(this, [createLinkTokenRequest_1, ...args_5], void 0, function* (createLinkTokenRequest, options = {}) {
             const localVarPath = `/v1/link/token`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2276,7 +2276,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createSession: (createSessionRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        createSession: (createSessionRequest_1, ...args_6) => __awaiter(this, [createSessionRequest_1, ...args_6], void 0, function* (createSessionRequest, options = {}) {
             const localVarPath = `/v1/session`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2308,7 +2308,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteFinancialConnection: (financialConnectionIdToDelete, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        deleteFinancialConnection: (financialConnectionIdToDelete_1, ...args_7) => __awaiter(this, [financialConnectionIdToDelete_1, ...args_7], void 0, function* (financialConnectionIdToDelete, options = {}) {
             // verify required parameter 'financialConnectionIdToDelete' is not null or undefined
             (0, common_1.assertParamExists)('deleteFinancialConnection', 'financialConnectionIdToDelete', financialConnectionIdToDelete);
             const localVarPath = `/v1/financial_connections/{financial_connection_id_to_delete}`
@@ -2342,7 +2342,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        enrichTransactions: (fuseClientId, fuseApiKey, enrichTransactionsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        enrichTransactions: (fuseClientId_1, fuseApiKey_1, enrichTransactionsRequest_1, ...args_8) => __awaiter(this, [fuseClientId_1, fuseApiKey_1, enrichTransactionsRequest_1, ...args_8], void 0, function* (fuseClientId, fuseApiKey, enrichTransactionsRequest, options = {}) {
             // verify required parameter 'fuseClientId' is not null or undefined
             (0, common_1.assertParamExists)('enrichTransactions', 'fuseClientId', fuseClientId);
             // verify required parameter 'fuseApiKey' is not null or undefined
@@ -2383,7 +2383,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest_1, ...args_9) => __awaiter(this, [exchangeFinancialConnectionsPublicTokenRequest_1, ...args_9], void 0, function* (exchangeFinancialConnectionsPublicTokenRequest, options = {}) {
             const localVarPath = `/v1/financial_connections/public_token/exchange`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2414,7 +2414,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAssetReport: (getAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getAssetReport: (getAssetReportRequest_1, ...args_10) => __awaiter(this, [getAssetReportRequest_1, ...args_10], void 0, function* (getAssetReportRequest, options = {}) {
             const localVarPath = `/v1/financial_connections/asset_report`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2447,7 +2447,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReport: (consumerRiskReportId, recalculate, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getConsumerRiskReport: (consumerRiskReportId_1, recalculate_1, ...args_11) => __awaiter(this, [consumerRiskReportId_1, recalculate_1, ...args_11], void 0, function* (consumerRiskReportId, recalculate, options = {}) {
             // verify required parameter 'consumerRiskReportId' is not null or undefined
             (0, common_1.assertParamExists)('getConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId);
             const localVarPath = `/v1/risk_report/consumer/{consumer_risk_report_id}`
@@ -2483,7 +2483,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getEntity: (entityId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getEntity: (entityId_1, ...args_12) => __awaiter(this, [entityId_1, ...args_12], void 0, function* (entityId, options = {}) {
             // verify required parameter 'entityId' is not null or undefined
             (0, common_1.assertParamExists)('getEntity', 'entityId', entityId);
             const localVarPath = `/v1/entities/{entity_id}`
@@ -2516,7 +2516,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinanceScore: (accountId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinanceScore: (accountId_2, ...args_13) => __awaiter(this, [accountId_2, ...args_13], void 0, function* (accountId, options = {}) {
             // verify required parameter 'accountId' is not null or undefined
             (0, common_1.assertParamExists)('getFinanceScore', 'accountId', accountId);
             const localVarPath = `/v1/accounts/{account_id}/finance_score`
@@ -2549,7 +2549,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnection: (financialConnectionId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnection: (financialConnectionId_1, ...args_14) => __awaiter(this, [financialConnectionId_1, ...args_14], void 0, function* (financialConnectionId, options = {}) {
             // verify required parameter 'financialConnectionId' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialConnection', 'financialConnectionId', financialConnectionId);
             const localVarPath = `/v1/financial_connections/{financial_connection_id}`
@@ -2582,7 +2582,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsAccountDetails: (getFinancialConnectionsAccountDetailsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnectionsAccountDetails: (getFinancialConnectionsAccountDetailsRequest_1, ...args_15) => __awaiter(this, [getFinancialConnectionsAccountDetailsRequest_1, ...args_15], void 0, function* (getFinancialConnectionsAccountDetailsRequest, options = {}) {
             // verify required parameter 'getFinancialConnectionsAccountDetailsRequest' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialConnectionsAccountDetails', 'getFinancialConnectionsAccountDetailsRequest', getFinancialConnectionsAccountDetailsRequest);
             const localVarPath = `/v1/financial_connections/accounts/details`;
@@ -2615,7 +2615,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsAccountStatement: (getFinancialConnectionsAccountStatementRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnectionsAccountStatement: (getFinancialConnectionsAccountStatementRequest_1, ...args_16) => __awaiter(this, [getFinancialConnectionsAccountStatementRequest_1, ...args_16], void 0, function* (getFinancialConnectionsAccountStatementRequest, options = {}) {
             const localVarPath = `/v1/financial_connections/accounts/statement`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2647,7 +2647,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsAccounts: (getFinancialConnectionsAccountsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnectionsAccounts: (getFinancialConnectionsAccountsRequest_1, ...args_17) => __awaiter(this, [getFinancialConnectionsAccountsRequest_1, ...args_17], void 0, function* (getFinancialConnectionsAccountsRequest, options = {}) {
             // verify required parameter 'getFinancialConnectionsAccountsRequest' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialConnectionsAccounts', 'getFinancialConnectionsAccountsRequest', getFinancialConnectionsAccountsRequest);
             const localVarPath = `/v1/financial_connections/accounts`;
@@ -2681,7 +2681,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsBalances: (getFinancialConnectionsBalanceRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnectionsBalances: (getFinancialConnectionsBalanceRequest_1, ...args_18) => __awaiter(this, [getFinancialConnectionsBalanceRequest_1, ...args_18], void 0, function* (getFinancialConnectionsBalanceRequest, options = {}) {
             // verify required parameter 'getFinancialConnectionsBalanceRequest' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialConnectionsBalances', 'getFinancialConnectionsBalanceRequest', getFinancialConnectionsBalanceRequest);
             const localVarPath = `/v1/financial_connections/balances`;
@@ -2715,7 +2715,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsOwners: (getFinancialConnectionsOwnersRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnectionsOwners: (getFinancialConnectionsOwnersRequest_1, ...args_19) => __awaiter(this, [getFinancialConnectionsOwnersRequest_1, ...args_19], void 0, function* (getFinancialConnectionsOwnersRequest, options = {}) {
             // verify required parameter 'getFinancialConnectionsOwnersRequest' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialConnectionsOwners', 'getFinancialConnectionsOwnersRequest', getFinancialConnectionsOwnersRequest);
             const localVarPath = `/v1/financial_connections/owners`;
@@ -2749,7 +2749,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialConnectionsTransactions: (getFinancialConnectionsTransactionsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialConnectionsTransactions: (getFinancialConnectionsTransactionsRequest_1, ...args_20) => __awaiter(this, [getFinancialConnectionsTransactionsRequest_1, ...args_20], void 0, function* (getFinancialConnectionsTransactionsRequest, options = {}) {
             // verify required parameter 'getFinancialConnectionsTransactionsRequest' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialConnectionsTransactions', 'getFinancialConnectionsTransactionsRequest', getFinancialConnectionsTransactionsRequest);
             const localVarPath = `/v1/financial_connections/transactions`;
@@ -2783,7 +2783,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFinancialInstitution: (institutionId, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getFinancialInstitution: (institutionId_1, ...args_21) => __awaiter(this, [institutionId_1, ...args_21], void 0, function* (institutionId, options = {}) {
             // verify required parameter 'institutionId' is not null or undefined
             (0, common_1.assertParamExists)('getFinancialInstitution', 'institutionId', institutionId);
             const localVarPath = `/v1/financial_connections/institutions/{institution_id}`
@@ -2816,7 +2816,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInvestmentHoldings: (getInvestmentHoldingsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getInvestmentHoldings: (getInvestmentHoldingsRequest_1, ...args_22) => __awaiter(this, [getInvestmentHoldingsRequest_1, ...args_22], void 0, function* (getInvestmentHoldingsRequest, options = {}) {
             // verify required parameter 'getInvestmentHoldingsRequest' is not null or undefined
             (0, common_1.assertParamExists)('getInvestmentHoldings', 'getInvestmentHoldingsRequest', getInvestmentHoldingsRequest);
             const localVarPath = `/v1/financial_connections/investments/holdings`;
@@ -2850,7 +2850,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getInvestmentTransactions: (getInvestmentTransactionsRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getInvestmentTransactions: (getInvestmentTransactionsRequest_1, ...args_23) => __awaiter(this, [getInvestmentTransactionsRequest_1, ...args_23], void 0, function* (getInvestmentTransactionsRequest, options = {}) {
             // verify required parameter 'getInvestmentTransactionsRequest' is not null or undefined
             (0, common_1.assertParamExists)('getInvestmentTransactions', 'getInvestmentTransactionsRequest', getInvestmentTransactionsRequest);
             const localVarPath = `/v1/financial_connections/investments/transactions`;
@@ -2878,13 +2878,44 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+         * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendedFinancialInstitutions: (getRecommendedFinancialInstitutionsRequest_1, ...args_24) => __awaiter(this, [getRecommendedFinancialInstitutionsRequest_1, ...args_24], void 0, function* (getRecommendedFinancialInstitutionsRequest, options = {}) {
+            const localVarPath = `/v1/financial_connections/institutions/recommended`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(getRecommendedFinancialInstitutionsRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        migrateFinancialConnection: (migrateFinancialConnectionsTokenRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        migrateFinancialConnection: (migrateFinancialConnectionsTokenRequest_1, ...args_25) => __awaiter(this, [migrateFinancialConnectionsTokenRequest_1, ...args_25], void 0, function* (migrateFinancialConnectionsTokenRequest, options = {}) {
             const localVarPath = `/v1/financial_connections/migrate`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2915,7 +2946,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshAssetReport: (refreshAssetReportRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        refreshAssetReport: (refreshAssetReportRequest_1, ...args_26) => __awaiter(this, [refreshAssetReportRequest_1, ...args_26], void 0, function* (refreshAssetReportRequest, options = {}) {
             const localVarPath = `/v1/financial_connections/asset_report/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
@@ -2941,6 +2972,68 @@ const FuseApiAxiosParamCreator = function (configuration) {
             };
         }),
         /**
+         * Search for financial institutions given a search term.
+         * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchFinancialInstitutions: (searchFinancialInstitutionsRequest_1, ...args_27) => __awaiter(this, [searchFinancialInstitutionsRequest_1, ...args_27], void 0, function* (searchFinancialInstitutionsRequest, options = {}) {
+            const localVarPath = `/v1/financial_connections/institutions/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(searchFinancialInstitutionsRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
+         * Endpoint to call when the user has selected a financial institution.
+         * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        selectFinancialInstitutions: (selectFinancialInstitutionsRequest_1, ...args_28) => __awaiter(this, [selectFinancialInstitutionsRequest_1, ...args_28], void 0, function* (selectFinancialInstitutionsRequest, options = {}) {
+            const localVarPath = `/v1/financial_connections/institutions/select`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, common_1.DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = Object.assign(Object.assign({ method: 'POST' }, baseOptions), options);
+            const localVarHeaderParameter = {};
+            const localVarQueryParameter = {};
+            // authentication fuseApiKey required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Api-Key", configuration);
+            // authentication fuseClientId required
+            yield (0, common_1.setApiKeyToObject)(localVarHeaderParameter, "Fuse-Client-Id", configuration);
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+            (0, common_1.setSearchParams)(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = Object.assign(Object.assign(Object.assign({}, localVarHeaderParameter), headersFromBaseOptions), options.headers);
+            localVarRequestOptions.data = (0, common_1.serializeDataIfNeeded)(selectFinancialInstitutionsRequest, localVarRequestOptions, configuration);
+            return {
+                url: (0, common_1.toPathString)(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        }),
+        /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
          * @summary Sync financial connections data
          * @param {string} fuseVerification
@@ -2948,7 +3041,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        syncFinancialConnectionsData: (fuseVerification, body, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        syncFinancialConnectionsData: (fuseVerification_1, body_1, ...args_29) => __awaiter(this, [fuseVerification_1, body_1, ...args_29], void 0, function* (fuseVerification, body, options = {}) {
             // verify required parameter 'fuseVerification' is not null or undefined
             (0, common_1.assertParamExists)('syncFinancialConnectionsData', 'fuseVerification', fuseVerification);
             // verify required parameter 'body' is not null or undefined
@@ -2988,7 +3081,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateConsumerRiskReportCustomization: (consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        updateConsumerRiskReportCustomization: (consumerRiskReportCustomizationId_1, updateConsumerRiskReportCustomizationRequest_1, ...args_30) => __awaiter(this, [consumerRiskReportCustomizationId_1, updateConsumerRiskReportCustomizationRequest_1, ...args_30], void 0, function* (consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options = {}) {
             // verify required parameter 'consumerRiskReportCustomizationId' is not null or undefined
             (0, common_1.assertParamExists)('updateConsumerRiskReportCustomization', 'consumerRiskReportCustomizationId', consumerRiskReportCustomizationId);
             const localVarPath = `/v1/risk_report/consumer/customization/{consumer_risk_report_customization_id}`
@@ -3023,7 +3116,7 @@ const FuseApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        v1FinancialConnectionsLiabilitiesPost: (getLiabilitiesRequest, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        v1FinancialConnectionsLiabilitiesPost: (getLiabilitiesRequest_1, ...args_31) => __awaiter(this, [getLiabilitiesRequest_1, ...args_31], void 0, function* (getLiabilitiesRequest, options = {}) {
             // verify required parameter 'getLiabilitiesRequest' is not null or undefined
             (0, common_1.assertParamExists)('v1FinancialConnectionsLiabilitiesPost', 'getLiabilitiesRequest', getLiabilitiesRequest);
             const localVarPath = `/v1/financial_connections/liabilities`;
@@ -3069,8 +3162,11 @@ const FuseApiFp = function (configuration) {
          */
         addAccountEvents(accountId, addAccountEventsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.addAccountEvents(accountId, addAccountEventsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.addAccountEvents']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3081,8 +3177,11 @@ const FuseApiFp = function (configuration) {
          */
         createAssetReport(createAssetReportRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createAssetReport(createAssetReportRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.createAssetReport']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3093,8 +3192,11 @@ const FuseApiFp = function (configuration) {
          */
         createConsumerRiskReport(createConsumerRiskReportRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createConsumerRiskReport(createConsumerRiskReportRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.createConsumerRiskReport']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3105,8 +3207,11 @@ const FuseApiFp = function (configuration) {
          */
         createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.createConsumerRiskReportCustomization']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3117,8 +3222,11 @@ const FuseApiFp = function (configuration) {
          */
         createLinkToken(createLinkTokenRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createLinkToken(createLinkTokenRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.createLinkToken']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3129,8 +3237,11 @@ const FuseApiFp = function (configuration) {
          */
         createSession(createSessionRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.createSession(createSessionRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.createSession']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3142,8 +3253,11 @@ const FuseApiFp = function (configuration) {
          */
         deleteFinancialConnection(financialConnectionIdToDelete, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.deleteFinancialConnection(financialConnectionIdToDelete, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.deleteFinancialConnection']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3156,8 +3270,11 @@ const FuseApiFp = function (configuration) {
          */
         enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.enrichTransactions(fuseClientId, fuseApiKey, enrichTransactionsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.enrichTransactions']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3168,8 +3285,11 @@ const FuseApiFp = function (configuration) {
          */
         exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.exchangeFinancialConnectionsPublicToken']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3180,8 +3300,11 @@ const FuseApiFp = function (configuration) {
          */
         getAssetReport(getAssetReportRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getAssetReport(getAssetReportRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getAssetReport']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3194,8 +3317,11 @@ const FuseApiFp = function (configuration) {
          */
         getConsumerRiskReport(consumerRiskReportId, recalculate, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getConsumerRiskReport(consumerRiskReportId, recalculate, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getConsumerRiskReport']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3207,8 +3333,11 @@ const FuseApiFp = function (configuration) {
          */
         getEntity(entityId, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getEntity(entityId, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getEntity']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3220,8 +3349,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinanceScore(accountId, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinanceScore(accountId, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinanceScore']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3233,8 +3365,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnection(financialConnectionId, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnection(financialConnectionId, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnection']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3246,8 +3381,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnectionsAccountDetails']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3258,8 +3396,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnectionsAccountStatement']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3271,8 +3412,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnectionsAccounts']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3284,8 +3428,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnectionsBalances']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3297,8 +3444,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnectionsOwners']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3310,8 +3460,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialConnectionsTransactions']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3323,8 +3476,11 @@ const FuseApiFp = function (configuration) {
          */
         getFinancialInstitution(institutionId, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getFinancialInstitution(institutionId, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getFinancialInstitution']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3336,8 +3492,11 @@ const FuseApiFp = function (configuration) {
          */
         getInvestmentHoldings(getInvestmentHoldingsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getInvestmentHoldings(getInvestmentHoldingsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getInvestmentHoldings']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3349,8 +3508,26 @@ const FuseApiFp = function (configuration) {
          */
         getInvestmentTransactions(getInvestmentTransactionsRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getInvestmentTransactions(getInvestmentTransactionsRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getInvestmentTransactions']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+            });
+        },
+        /**
+         * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+         * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.getRecommendedFinancialInstitutions']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3362,8 +3539,11 @@ const FuseApiFp = function (configuration) {
          */
         migrateFinancialConnection(migrateFinancialConnectionsTokenRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.migrateFinancialConnection(migrateFinancialConnectionsTokenRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.migrateFinancialConnection']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3374,8 +3554,41 @@ const FuseApiFp = function (configuration) {
          */
         refreshAssetReport(refreshAssetReportRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.refreshAssetReport(refreshAssetReportRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.refreshAssetReport']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+            });
+        },
+        /**
+         * Search for financial institutions given a search term.
+         * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchFinancialInstitutions(searchFinancialInstitutionsRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.searchFinancialInstitutions(searchFinancialInstitutionsRequest, options);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.searchFinancialInstitutions']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+            });
+        },
+        /**
+         * Endpoint to call when the user has selected a financial institution.
+         * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        selectFinancialInstitutions(selectFinancialInstitutionsRequest, options) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
+                const localVarAxiosArgs = yield localVarAxiosParamCreator.selectFinancialInstitutions(selectFinancialInstitutionsRequest, options);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.selectFinancialInstitutions']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3388,8 +3601,11 @@ const FuseApiFp = function (configuration) {
          */
         syncFinancialConnectionsData(fuseVerification, body, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.syncFinancialConnectionsData(fuseVerification, body, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.syncFinancialConnectionsData']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3402,8 +3618,11 @@ const FuseApiFp = function (configuration) {
          */
         updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId, updateConsumerRiskReportCustomizationRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.updateConsumerRiskReportCustomization']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -3415,8 +3634,11 @@ const FuseApiFp = function (configuration) {
          */
         v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['FuseApi.v1FinancialConnectionsLiabilitiesPost']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
     };
@@ -3654,6 +3876,15 @@ const FuseApiFactory = function (configuration, basePath, axios) {
             return localVarFp.getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
+         * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+         * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options) {
+            return localVarFp.getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
          * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
          * @summary Migrate financial connection
          * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -3671,6 +3902,24 @@ const FuseApiFactory = function (configuration, basePath, axios) {
          */
         refreshAssetReport(refreshAssetReportRequest, options) {
             return localVarFp.refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Search for financial institutions given a search term.
+         * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchFinancialInstitutions(searchFinancialInstitutionsRequest, options) {
+            return localVarFp.searchFinancialInstitutions(searchFinancialInstitutionsRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Endpoint to call when the user has selected a financial institution.
+         * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        selectFinancialInstitutions(selectFinancialInstitutionsRequest, options) {
+            return localVarFp.selectFinancialInstitutions(selectFinancialInstitutionsRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
@@ -3962,6 +4211,16 @@ class FuseApi extends base_1.BaseAPI {
         return (0, exports.FuseApiFp)(this.configuration).getInvestmentTransactions(getInvestmentTransactionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
+     * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+     * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -3981,6 +4240,26 @@ class FuseApi extends base_1.BaseAPI {
      */
     refreshAssetReport(refreshAssetReportRequest, options) {
         return (0, exports.FuseApiFp)(this.configuration).refreshAssetReport(refreshAssetReportRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Search for financial institutions given a search term.
+     * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    searchFinancialInstitutions(searchFinancialInstitutionsRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).searchFinancialInstitutions(searchFinancialInstitutionsRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * Endpoint to call when the user has selected a financial institution.
+     * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    selectFinancialInstitutions(selectFinancialInstitutionsRequest, options) {
+        return (0, exports.FuseApiFp)(this.configuration).selectFinancialInstitutions(selectFinancialInstitutionsRequest, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
@@ -4034,7 +4313,7 @@ const RiskReportApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteConsumerRiskReport: (consumerRiskReportId, fuseClientId, fuseApiKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        deleteConsumerRiskReport: (consumerRiskReportId_1, fuseClientId_1, fuseApiKey_1, ...args_1) => __awaiter(this, [consumerRiskReportId_1, fuseClientId_1, fuseApiKey_1, ...args_1], void 0, function* (consumerRiskReportId, fuseClientId, fuseApiKey, options = {}) {
             // verify required parameter 'consumerRiskReportId' is not null or undefined
             (0, common_1.assertParamExists)('deleteConsumerRiskReport', 'consumerRiskReportId', consumerRiskReportId);
             // verify required parameter 'fuseClientId' is not null or undefined
@@ -4079,7 +4358,7 @@ const RiskReportApiAxiosParamCreator = function (configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getConsumerRiskReportCustomization: (consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options = {}) => __awaiter(this, void 0, void 0, function* () {
+        getConsumerRiskReportCustomization: (consumerRiskReportCustomizationId_1, fuseClientId_2, fuseApiKey_2, ...args_2) => __awaiter(this, [consumerRiskReportCustomizationId_1, fuseClientId_2, fuseApiKey_2, ...args_2], void 0, function* (consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options = {}) {
             // verify required parameter 'consumerRiskReportCustomizationId' is not null or undefined
             (0, common_1.assertParamExists)('getConsumerRiskReportCustomization', 'consumerRiskReportCustomizationId', consumerRiskReportCustomizationId);
             // verify required parameter 'fuseClientId' is not null or undefined
@@ -4136,8 +4415,11 @@ const RiskReportApiFp = function (configuration) {
          */
         deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.deleteConsumerRiskReport(consumerRiskReportId, fuseClientId, fuseApiKey, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['RiskReportApi.deleteConsumerRiskReport']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
         /**
@@ -4151,8 +4433,11 @@ const RiskReportApiFp = function (configuration) {
          */
         getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options) {
             return __awaiter(this, void 0, void 0, function* () {
+                var _a, _b, _c;
                 const localVarAxiosArgs = yield localVarAxiosParamCreator.getConsumerRiskReportCustomization(consumerRiskReportCustomizationId, fuseClientId, fuseApiKey, options);
-                return (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration);
+                const localVarOperationServerIndex = (_a = configuration === null || configuration === void 0 ? void 0 : configuration.serverIndex) !== null && _a !== void 0 ? _a : 0;
+                const localVarOperationServerBasePath = (_c = (_b = base_1.operationServerMap['RiskReportApi.getConsumerRiskReportCustomization']) === null || _b === void 0 ? void 0 : _b[localVarOperationServerIndex]) === null || _c === void 0 ? void 0 : _c.url;
+                return (axios, basePath) => (0, common_1.createRequestFunction)(localVarAxiosArgs, axios_1.default, base_1.BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
             });
         },
     };
