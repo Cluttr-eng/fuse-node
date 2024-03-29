@@ -10,7 +10,7 @@
  * Do not edit the class manually.
  */
 import type { Configuration } from './configuration';
-import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
 import type { RequestArgs } from './base';
 import { BaseAPI } from './base';
 /**
@@ -338,19 +338,19 @@ export interface AssetReportAccountsInnerBalance {
      * @type {number}
      * @memberof AssetReportAccountsInnerBalance
      */
-    'available'?: number;
+    'available'?: number | null;
     /**
      * Amount without factoring in pending balances
      * @type {number}
      * @memberof AssetReportAccountsInnerBalance
      */
-    'current'?: number;
+    'current'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
      * @memberof AssetReportAccountsInnerBalance
      */
-    'iso_currency_code'?: string;
+    'iso_currency_code'?: string | null;
 }
 /**
  *
@@ -2665,7 +2665,7 @@ export interface FinancialConnectionsAccount {
      * @type {string}
      * @memberof FinancialConnectionsAccount
      */
-    'mask'?: string;
+    'mask'?: string | null;
     /**
      * The account\'s name, ie \'My Checking\'
      * @type {string}
@@ -2758,6 +2758,12 @@ export interface FinancialConnectionsAccountCachedBalance {
      * @memberof FinancialConnectionsAccountCachedBalance
      */
     'current'?: number | null;
+    /**
+     * Amount in cents. For investment accounts.
+     * @type {number}
+     * @memberof FinancialConnectionsAccountCachedBalance
+     */
+    'buying_power'?: number | null;
     /**
      * The ISO-4217 currency code of the balance.
      * @type {string}
@@ -2924,7 +2930,7 @@ export interface FinancialConnectionsAccountLiability {
      * @type {string}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'mask'?: string;
+    'mask'?: string | null;
     /**
      * The account\'s name, ie \'My Checking\'
      * @type {string}
@@ -2957,10 +2963,10 @@ export interface FinancialConnectionsAccountLiability {
     'additional_balances'?: Array<FinancialConnectionsAccountCachedBalance>;
     /**
      *
-     * @type {any}
+     * @type {object}
      * @memberof FinancialConnectionsAccountLiability
      */
-    'remote_data': any;
+    'remote_data': object;
     /**
      * The various interest rates that apply to the account. If APR data is not available, this array will be empty.
      * @type {Array<FinancialConnectionsAccountLiabilityAllOfAprs>}
@@ -4531,6 +4537,38 @@ export interface GetLiabilitiesResponse {
 /**
  *
  * @export
+ * @interface GetRecommendedFinancialInstitutionsRequest
+ */
+export interface GetRecommendedFinancialInstitutionsRequest {
+    /**
+     * The session client secret created.
+     * @type {string}
+     * @memberof GetRecommendedFinancialInstitutionsRequest
+     */
+    'session_client_secret': string;
+}
+/**
+ *
+ * @export
+ * @interface GetRecommendedFinancialInstitutionsResponse
+ */
+export interface GetRecommendedFinancialInstitutionsResponse {
+    /**
+     *
+     * @type {Array<FinancialInstitution>}
+     * @memberof GetRecommendedFinancialInstitutionsResponse
+     */
+    'financial_institutions': Array<FinancialInstitution>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof GetRecommendedFinancialInstitutionsResponse
+     */
+    'request_id'?: string;
+}
+/**
+ *
+ * @export
  * @interface InAppTransactionEvent
  */
 export interface InAppTransactionEvent {
@@ -4860,6 +4898,82 @@ export interface RefreshAssetReportResponse {
      * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
      * @type {string}
      * @memberof RefreshAssetReportResponse
+     */
+    'request_id'?: string;
+}
+/**
+ *
+ * @export
+ * @interface SearchFinancialInstitutionsRequest
+ */
+export interface SearchFinancialInstitutionsRequest {
+    /**
+     * The session client secret created.
+     * @type {string}
+     * @memberof SearchFinancialInstitutionsRequest
+     */
+    'session_client_secret': string;
+    /**
+     * The search term, ie wells fargo.
+     * @type {string}
+     * @memberof SearchFinancialInstitutionsRequest
+     */
+    'search_term': string;
+}
+/**
+ *
+ * @export
+ * @interface SearchFinancialInstitutionsResponse
+ */
+export interface SearchFinancialInstitutionsResponse {
+    /**
+     *
+     * @type {Array<FinancialInstitution>}
+     * @memberof SearchFinancialInstitutionsResponse
+     */
+    'financial_institutions': Array<FinancialInstitution>;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof SearchFinancialInstitutionsResponse
+     */
+    'request_id'?: string;
+}
+/**
+ *
+ * @export
+ * @interface SelectFinancialInstitutionsRequest
+ */
+export interface SelectFinancialInstitutionsRequest {
+    /**
+     * The session client secret created.
+     * @type {string}
+     * @memberof SelectFinancialInstitutionsRequest
+     */
+    'session_client_secret': string;
+    /**
+     * The selected financial institution id
+     * @type {string}
+     * @memberof SelectFinancialInstitutionsRequest
+     */
+    'financial_institution_id': string;
+}
+/**
+ *
+ * @export
+ * @interface SelectFinancialInstitutionsResponse
+ */
+export interface SelectFinancialInstitutionsResponse {
+    /**
+     *
+     * @type {FinancialInstitution}
+     * @memberof SelectFinancialInstitutionsResponse
+     */
+    'financial_institution': FinancialInstitution;
+    /**
+     * An identifier that is exclusive to the request and can serve as a means for investigating and resolving issues.
+     * @type {string}
+     * @memberof SelectFinancialInstitutionsResponse
      */
     'request_id'?: string;
 }
@@ -6238,42 +6352,42 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addAccountEvents: (accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    addAccountEvents: (accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createAssetReport: (createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    createAssetReport: (createAssetReportRequest?: CreateAssetReportRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
      * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createConsumerRiskReport: (createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    createConsumerRiskReport: (createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createConsumerRiskReportCustomization: (createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    createConsumerRiskReportCustomization: (createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createLinkToken: (createLinkTokenRequest?: CreateLinkTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    createLinkToken: (createLinkTokenRequest?: CreateLinkTokenRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Creates a session that returns a client_secret which is required as a parameter when initializing the Fuse SDK.
      * @param {CreateSessionRequest} [createSessionRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSession: (createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    createSession: (createSessionRequest?: CreateSessionRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Delete a financial connection
@@ -6281,7 +6395,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteFinancialConnection: (financialConnectionIdToDelete: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    deleteFinancialConnection: (financialConnectionIdToDelete: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @param {string} fuseClientId
@@ -6290,21 +6404,21 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    enrichTransactions: (fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    enrichTransactions: (fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    exchangeFinancialConnectionsPublicToken: (exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getAssetReport: (getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getAssetReport: (getAssetReportRequest?: GetAssetReportRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get consumer risk report
@@ -6313,7 +6427,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReport: (consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getConsumerRiskReport: (consumerRiskReportId: string, recalculate?: boolean, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -6321,7 +6435,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getEntity: (entityId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getEntity: (entityId: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get finance score
@@ -6329,7 +6443,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinanceScore: (accountId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinanceScore: (accountId: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get financial connection details
@@ -6337,7 +6451,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnection: (financialConnectionId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnection: (financialConnectionId: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get account details
@@ -6345,14 +6459,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsAccountDetails: (getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsAccountDetails: (getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
      * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsAccountStatement: (getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsAccountStatement: (getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get accounts
@@ -6360,7 +6474,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsAccounts: (getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsAccounts: (getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get balances
@@ -6368,7 +6482,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsBalances: (getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsBalances: (getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get account owners
@@ -6376,7 +6490,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsOwners: (getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsOwners: (getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get transactions
@@ -6384,7 +6498,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsTransactions: (getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialConnectionsTransactions: (getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
@@ -6392,7 +6506,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialInstitution: (institutionId: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getFinancialInstitution: (institutionId: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get investment holdings
@@ -6400,7 +6514,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getInvestmentHoldings: (getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getInvestmentHoldings: (getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get investment transactions
@@ -6408,7 +6522,14 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getInvestmentTransactions: (getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+     * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecommendedFinancialInstitutions: (getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
@@ -6416,14 +6537,28 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    migrateFinancialConnection: (migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    migrateFinancialConnection: (migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    refreshAssetReport: (refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    refreshAssetReport: (refreshAssetReportRequest?: RefreshAssetReportRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     * Search for financial institutions given a search term.
+     * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchFinancialInstitutions: (searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
+    /**
+     * Endpoint to call when the user has selected a financial institution.
+     * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    selectFinancialInstitutions: (selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
@@ -6432,7 +6567,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    syncFinancialConnectionsData: (fuseVerification: string, body: object, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    syncFinancialConnectionsData: (fuseVerification: string, body: object, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Update consumer risk report customization
@@ -6441,7 +6576,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateConsumerRiskReportCustomization: (consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    updateConsumerRiskReportCustomization: (consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get liabilities
@@ -6449,7 +6584,7 @@ export declare const FuseApiAxiosParamCreator: (configuration?: Configuration) =
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    v1FinancialConnectionsLiabilitiesPost: (getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    v1FinancialConnectionsLiabilitiesPost: (getLiabilitiesRequest: GetLiabilitiesRequest, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
 };
 /**
  * FuseApi - functional programming interface
@@ -6463,42 +6598,42 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddAccountEventsResponse>>;
+    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AddAccountEventsResponse>>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
+    createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateAssetReportResponse>>;
     /**
      * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
      * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportResponse>>;
+    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportResponse>>;
     /**
      *
      * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportCustomizationResponse>>;
+    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateConsumerRiskReportCustomizationResponse>>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateLinkTokenResponse>>;
+    createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateLinkTokenResponse>>;
     /**
      * Creates a session that returns a client_secret which is required as a parameter when initializing the Fuse SDK.
      * @param {CreateSessionRequest} [createSessionRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSessionResponse>>;
+    createSession(createSessionRequest?: CreateSessionRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CreateSessionResponse>>;
     /**
      *
      * @summary Delete a financial connection
@@ -6506,7 +6641,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>>;
+    deleteFinancialConnection(financialConnectionIdToDelete: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteFinancialConnectionResponse>>;
     /**
      *
      * @param {string} fuseClientId
@@ -6515,21 +6650,21 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrichTransactionsResponse>>;
+    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<EnrichTransactionsResponse>>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
+    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExchangeFinancialConnectionsPublicTokenResponse>>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>>;
+    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AssetReportResponse>>;
     /**
      *
      * @summary Get consumer risk report
@@ -6538,7 +6673,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>>;
+    getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportResponse>>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -6546,7 +6681,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getEntity(entityId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>>;
+    getEntity(entityId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetEntityResponse>>;
     /**
      *
      * @summary Get finance score
@@ -6554,7 +6689,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinanceScore(accountId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinanceScoreResponse>>;
+    getFinanceScore(accountId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinanceScoreResponse>>;
     /**
      *
      * @summary Get financial connection details
@@ -6562,7 +6697,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnection(financialConnectionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionResponse>>;
+    getFinancialConnection(financialConnectionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionResponse>>;
     /**
      *
      * @summary Get account details
@@ -6570,14 +6705,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountDetailsResponse>>;
+    getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountDetailsResponse>>;
     /**
      * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
      * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountStatementResponse>>;
+    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountStatementResponse>>;
     /**
      *
      * @summary Get accounts
@@ -6585,7 +6720,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountsResponse>>;
+    getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsAccountsResponse>>;
     /**
      *
      * @summary Get balances
@@ -6593,7 +6728,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsBalanceResponse>>;
+    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsBalanceResponse>>;
     /**
      *
      * @summary Get account owners
@@ -6601,7 +6736,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsOwnersResponse>>;
+    getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsOwnersResponse>>;
     /**
      *
      * @summary Get transactions
@@ -6609,7 +6744,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsTransactionsResponse>>;
+    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialConnectionsTransactionsResponse>>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
@@ -6617,7 +6752,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialInstitutionResponse>>;
+    getFinancialInstitution(institutionId: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetFinancialInstitutionResponse>>;
     /**
      *
      * @summary Get investment holdings
@@ -6625,7 +6760,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentHoldingsResponse>>;
+    getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentHoldingsResponse>>;
     /**
      *
      * @summary Get investment transactions
@@ -6633,7 +6768,14 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
+    getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetInvestmentTransactionsResponse>>;
+    /**
+     * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+     * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetRecommendedFinancialInstitutionsResponse>>;
     /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
@@ -6641,14 +6783,28 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>>;
+    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MigrateFinancialConnectionsTokenResponse>>;
     /**
      * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>>;
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<RefreshAssetReportResponse>>;
+    /**
+     * Search for financial institutions given a search term.
+     * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchFinancialInstitutions(searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchFinancialInstitutionsResponse>>;
+    /**
+     * Endpoint to call when the user has selected a financial institution.
+     * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    selectFinancialInstitutions(selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SelectFinancialInstitutionsResponse>>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
@@ -6657,7 +6813,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
+    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SyncFinancialConnectionsDataResponse>>;
     /**
      *
      * @summary Update consumer risk report customization
@@ -6666,7 +6822,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateConsumerRiskReportCustomizationResponse>>;
+    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UpdateConsumerRiskReportCustomizationResponse>>;
     /**
      *
      * @summary Get liabilities
@@ -6674,7 +6830,7 @@ export declare const FuseApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetLiabilitiesResponse>>;
+    v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetLiabilitiesResponse>>;
 };
 /**
  * FuseApi - factory interface
@@ -6860,6 +7016,13 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      */
     getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: any): AxiosPromise<GetInvestmentTransactionsResponse>;
     /**
+     * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+     * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: any): AxiosPromise<GetRecommendedFinancialInstitutionsResponse>;
+    /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
      * @param {MigrateFinancialConnectionsTokenRequest} [migrateFinancialConnectionsTokenRequest]
@@ -6874,6 +7037,20 @@ export declare const FuseApiFactory: (configuration?: Configuration, basePath?: 
      * @throws {RequiredError}
      */
     refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: any): AxiosPromise<RefreshAssetReportResponse>;
+    /**
+     * Search for financial institutions given a search term.
+     * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    searchFinancialInstitutions(searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: any): AxiosPromise<SearchFinancialInstitutionsResponse>;
+    /**
+     * Endpoint to call when the user has selected a financial institution.
+     * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     */
+    selectFinancialInstitutions(selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: any): AxiosPromise<SelectFinancialInstitutionsResponse>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
@@ -6916,7 +7093,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AddAccountEventsResponse, any>>;
+    addAccountEvents(accountId: string, addAccountEventsRequest?: AddAccountEventsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<AddAccountEventsResponse, any>>;
     /**
      * Use this endpoint to generate an Asset Report for a user. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {CreateAssetReportRequest} [createAssetReportRequest]
@@ -6924,7 +7101,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
+    createAssetReport(createAssetReportRequest?: CreateAssetReportRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateAssetReportResponse, any>>;
     /**
      * Starts the background process that will calculate the consumer risk report depending on the customization passed in.
      * @param {CreateConsumerRiskReportRequest} [createConsumerRiskReportRequest]
@@ -6932,7 +7109,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateConsumerRiskReportResponse, any>>;
+    createConsumerRiskReport(createConsumerRiskReportRequest?: CreateConsumerRiskReportRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateConsumerRiskReportResponse, any>>;
     /**
      *
      * @param {CreateConsumerRiskReportCustomizationRequest} [createConsumerRiskReportCustomizationRequest]
@@ -6940,7 +7117,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateConsumerRiskReportCustomizationResponse, any>>;
+    createConsumerRiskReportCustomization(createConsumerRiskReportCustomizationRequest?: CreateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateConsumerRiskReportCustomizationResponse, any>>;
     /**
      * Create a link token to start the process of a user connecting to a specific financial institution.
      * @param {CreateLinkTokenRequest} [createLinkTokenRequest]
@@ -6948,7 +7125,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateLinkTokenResponse, any>>;
+    createLinkToken(createLinkTokenRequest?: CreateLinkTokenRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateLinkTokenResponse, any>>;
     /**
      * Creates a session that returns a client_secret which is required as a parameter when initializing the Fuse SDK.
      * @param {CreateSessionRequest} [createSessionRequest]
@@ -6956,7 +7133,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    createSession(createSessionRequest?: CreateSessionRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSessionResponse, any>>;
+    createSession(createSessionRequest?: CreateSessionRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<CreateSessionResponse, any>>;
     /**
      *
      * @summary Delete a financial connection
@@ -6965,7 +7142,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    deleteFinancialConnection(financialConnectionIdToDelete: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteFinancialConnectionResponse, any>>;
+    deleteFinancialConnection(financialConnectionIdToDelete: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteFinancialConnectionResponse, any>>;
     /**
      *
      * @param {string} fuseClientId
@@ -6975,7 +7152,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<EnrichTransactionsResponse, any>>;
+    enrichTransactions(fuseClientId: string, fuseApiKey: string, enrichTransactionsRequest?: EnrichTransactionsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<EnrichTransactionsResponse, any>>;
     /**
      * API to exchange a public token for an access token and financial connection id
      * @param {ExchangeFinancialConnectionsPublicTokenRequest} [exchangeFinancialConnectionsPublicTokenRequest]
@@ -6983,7 +7160,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
+    exchangeFinancialConnectionsPublicToken(exchangeFinancialConnectionsPublicTokenRequest?: ExchangeFinancialConnectionsPublicTokenRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<ExchangeFinancialConnectionsPublicTokenResponse, any>>;
     /**
      * Retrieves the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {GetAssetReportRequest} [getAssetReportRequest]
@@ -6991,7 +7168,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<AssetReportResponse, any>>;
+    getAssetReport(getAssetReportRequest?: GetAssetReportRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<AssetReportResponse, any>>;
     /**
      *
      * @summary Get consumer risk report
@@ -7001,7 +7178,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportResponse, any>>;
+    getConsumerRiskReport(consumerRiskReportId: string, recalculate?: boolean, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportResponse, any>>;
     /**
      * An entity is automatically created after a successful connection. The id of the entity is what is set when calling the \'create session\' endpoint
      * @summary Get entity
@@ -7010,7 +7187,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getEntity(entityId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetEntityResponse, any>>;
+    getEntity(entityId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetEntityResponse, any>>;
     /**
      *
      * @summary Get finance score
@@ -7019,7 +7196,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinanceScore(accountId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinanceScoreResponse, any>>;
+    getFinanceScore(accountId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinanceScoreResponse, any>>;
     /**
      *
      * @summary Get financial connection details
@@ -7028,7 +7205,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnection(financialConnectionId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionResponse, any>>;
+    getFinancialConnection(financialConnectionId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionResponse, any>>;
     /**
      *
      * @summary Get account details
@@ -7037,7 +7214,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountDetailsResponse, any>>;
+    getFinancialConnectionsAccountDetails(getFinancialConnectionsAccountDetailsRequest: GetFinancialConnectionsAccountDetailsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountDetailsResponse, any>>;
     /**
      * Retrieves an account statement for the given financial connection, account and date. This endpoint may time out so we recommend using a retry mechanism with exponential backoff.
      * @param {GetFinancialConnectionsAccountStatementRequest} [getFinancialConnectionsAccountStatementRequest]
@@ -7045,7 +7222,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountStatementResponse, any>>;
+    getFinancialConnectionsAccountStatement(getFinancialConnectionsAccountStatementRequest?: GetFinancialConnectionsAccountStatementRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountStatementResponse, any>>;
     /**
      *
      * @summary Get accounts
@@ -7054,7 +7231,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountsResponse, any>>;
+    getFinancialConnectionsAccounts(getFinancialConnectionsAccountsRequest: GetFinancialConnectionsAccountsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsAccountsResponse, any>>;
     /**
      *
      * @summary Get balances
@@ -7063,7 +7240,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsBalanceResponse, any>>;
+    getFinancialConnectionsBalances(getFinancialConnectionsBalanceRequest: GetFinancialConnectionsBalanceRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsBalanceResponse, any>>;
     /**
      *
      * @summary Get account owners
@@ -7072,7 +7249,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsOwnersResponse, any>>;
+    getFinancialConnectionsOwners(getFinancialConnectionsOwnersRequest: GetFinancialConnectionsOwnersRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsOwnersResponse, any>>;
     /**
      *
      * @summary Get transactions
@@ -7081,7 +7258,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsTransactionsResponse, any>>;
+    getFinancialConnectionsTransactions(getFinancialConnectionsTransactionsRequest: GetFinancialConnectionsTransactionsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialConnectionsTransactionsResponse, any>>;
     /**
      * Receive metadata for a financial institution
      * @summary Get a financial institution
@@ -7090,7 +7267,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getFinancialInstitution(institutionId: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialInstitutionResponse, any>>;
+    getFinancialInstitution(institutionId: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetFinancialInstitutionResponse, any>>;
     /**
      *
      * @summary Get investment holdings
@@ -7099,7 +7276,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentHoldingsResponse, any>>;
+    getInvestmentHoldings(getInvestmentHoldingsRequest: GetInvestmentHoldingsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentHoldingsResponse, any>>;
     /**
      *
      * @summary Get investment transactions
@@ -7108,7 +7285,15 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
+    getInvestmentTransactions(getInvestmentTransactionsRequest: GetInvestmentTransactionsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetInvestmentTransactionsResponse, any>>;
+    /**
+     * Get the default recommended list of institutions that will be displayed when the user is not searching for anything
+     * @param {GetRecommendedFinancialInstitutionsRequest} [getRecommendedFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    getRecommendedFinancialInstitutions(getRecommendedFinancialInstitutionsRequest?: GetRecommendedFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetRecommendedFinancialInstitutionsResponse, any>>;
     /**
      * This endpoint migrates financial connections from Plaid or MX into the unified Fuse API. It accepts a POST request with connection data, aggregator, entity, and Fuse products, and responds with a JSON payload containing the migrated connection\'s data, access token, ID, and request ID.
      * @summary Migrate financial connection
@@ -7117,7 +7302,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<MigrateFinancialConnectionsTokenResponse, any>>;
+    migrateFinancialConnection(migrateFinancialConnectionsTokenRequest?: MigrateFinancialConnectionsTokenRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<MigrateFinancialConnectionsTokenResponse, any>>;
     /**
      * Refreshes the Asset Report in JSON format. For Plaid, you will need to have the assets product enabled on your plaid account.
      * @param {RefreshAssetReportRequest} [refreshAssetReportRequest]
@@ -7125,7 +7310,23 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<RefreshAssetReportResponse, any>>;
+    refreshAssetReport(refreshAssetReportRequest?: RefreshAssetReportRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<RefreshAssetReportResponse, any>>;
+    /**
+     * Search for financial institutions given a search term.
+     * @param {SearchFinancialInstitutionsRequest} [searchFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    searchFinancialInstitutions(searchFinancialInstitutionsRequest?: SearchFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<SearchFinancialInstitutionsResponse, any>>;
+    /**
+     * Endpoint to call when the user has selected a financial institution.
+     * @param {SelectFinancialInstitutionsRequest} [selectFinancialInstitutionsRequest]
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof FuseApi
+     */
+    selectFinancialInstitutions(selectFinancialInstitutionsRequest?: SelectFinancialInstitutionsRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<SelectFinancialInstitutionsResponse, any>>;
     /**
      * Call this endpoint upon receiving a financial_connection.sync_data webhook. This will keep the financial connections data up to date.
      * @summary Sync financial connections data
@@ -7135,7 +7336,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
+    syncFinancialConnectionsData(fuseVerification: string, body: object, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<SyncFinancialConnectionsDataResponse, any>>;
     /**
      *
      * @summary Update consumer risk report customization
@@ -7145,7 +7346,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateConsumerRiskReportCustomizationResponse, any>>;
+    updateConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, updateConsumerRiskReportCustomizationRequest?: UpdateConsumerRiskReportCustomizationRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<UpdateConsumerRiskReportCustomizationResponse, any>>;
     /**
      *
      * @summary Get liabilities
@@ -7154,7 +7355,7 @@ export declare class FuseApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FuseApi
      */
-    v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetLiabilitiesResponse, any>>;
+    v1FinancialConnectionsLiabilitiesPost(getLiabilitiesRequest: GetLiabilitiesRequest, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetLiabilitiesResponse, any>>;
 }
 /**
  * RiskReportApi - axios parameter creator
@@ -7170,7 +7371,7 @@ export declare const RiskReportApiAxiosParamCreator: (configuration?: Configurat
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteConsumerRiskReport: (consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    deleteConsumerRiskReport: (consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
     /**
      *
      * @summary Get consumer risk report customization
@@ -7180,7 +7381,7 @@ export declare const RiskReportApiAxiosParamCreator: (configuration?: Configurat
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReportCustomization: (consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig) => Promise<RequestArgs>;
+    getConsumerRiskReportCustomization: (consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig) => Promise<RequestArgs>;
 };
 /**
  * RiskReportApi - functional programming interface
@@ -7196,7 +7397,7 @@ export declare const RiskReportApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteConsumerRiskReportResponse>>;
+    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<DeleteConsumerRiskReportResponse>>;
     /**
      *
      * @summary Get consumer risk report customization
@@ -7206,7 +7407,7 @@ export declare const RiskReportApiFp: (configuration?: Configuration) => {
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportCustomizationResponse>>;
+    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetConsumerRiskReportCustomizationResponse>>;
 };
 /**
  * RiskReportApi - factory interface
@@ -7251,7 +7452,7 @@ export declare class RiskReportApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RiskReportApi
      */
-    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteConsumerRiskReportResponse, any>>;
+    deleteConsumerRiskReport(consumerRiskReportId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<DeleteConsumerRiskReportResponse, any>>;
     /**
      *
      * @summary Get consumer risk report customization
@@ -7262,5 +7463,5 @@ export declare class RiskReportApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof RiskReportApi
      */
-    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: AxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportCustomizationResponse, any>>;
+    getConsumerRiskReportCustomization(consumerRiskReportCustomizationId: string, fuseClientId: string, fuseApiKey: string, options?: RawAxiosRequestConfig): Promise<import("axios").AxiosResponse<GetConsumerRiskReportCustomizationResponse, any>>;
 }
