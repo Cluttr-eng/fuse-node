@@ -2809,7 +2809,7 @@ export interface FinancialConnectionsAccountDetails {
     'remote_data': any;
 }
 /**
- *
+ * This field is optional, intended for use by financial institutions outside of the U.S.A.
  * @export
  * @interface FinancialConnectionsAccountDetailsAccountNumber
  */
@@ -2852,7 +2852,7 @@ export interface FinancialConnectionsAccountDetailsAccountNumber {
     'bic'?: string;
 }
 /**
- *
+ * This field is optional, intended for use by financial institutions based in the U.S.A.
  * @export
  * @interface FinancialConnectionsAccountDetailsAch
  */
